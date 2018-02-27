@@ -33,3 +33,4 @@ More details to come
 * Pair programming should be easy on Cloud9, we should probably use it at least once
 * When you finish a feature, create a pull request from your branch to master and let someone else review it
 * Let's use TDD 
+* run `git merge origin/master` frequently and deal with any merge conflicts within your branch!
