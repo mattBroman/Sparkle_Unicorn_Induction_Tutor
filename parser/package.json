@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build": "pegjs -o parser.js grammar.pegjs",
-    "test": "ava --verbose"
+    "test": "pegjs --allowed-start-rules 'BaseCase, Expressions, Equality, Expression, Term, Power, Factor, Integer, Variable, _' -o parser.js grammar.pegjs && ava"
   },
   "ava": {
     "files":[
       "tests/**/*.js"
-    ]
+    ],
+    "failTest": false
   },
   "author": "",
   "license": "ISC",

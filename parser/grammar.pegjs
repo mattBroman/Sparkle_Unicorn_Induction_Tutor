@@ -4,30 +4,44 @@
 // Accepts expressions like "2 * (3 + 4)" and computes their value.
 
 // Example pulled from pegjs.com/online
+// To compile do 'npm run build'
+// To test do 'npm run test'
+  
+BaseCase
+  = "\begin{base}" _* (Expressions)* _* "\end{base}"
+  
+Expressions 
+  = Expression _* Equality _* Expression
+
+Equality
+  = "="
 
 Expression
-  = head:Term tail:(_ ("+" / "-") _ Term)* {
-      return tail.reduce(function(result, element) {
-        if (element[1] === "+") { return result + element[3]; }
-        if (element[1] === "-") { return result - element[3]; }
-      }, head);
-    }
+  = Term _* "+" _* Expression
+  / Term _* "-" _* Expression
+  / Term _* "%" _* Expression
+  / Term
 
 Term
-  = head:Factor tail:(_ ("*" / "/") _ Factor)* {
-      return tail.reduce(function(result, element) {
-        if (element[1] === "*") { return result * element[3]; }
-        if (element[1] === "/") { return result / element[3]; }
-      }, head);
-    }
+  = Power _* "*" _* Term
+  / Power _* "/" _* Term
+  / Power
+
+Power
+  = Factor _* "^" _* Power
+  / Factor
 
 Factor
-  = "(" _ expr:Expression _ ")" { return expr; }
+  = "(" _* Expression _* ")" 
   / Integer
+  / Variable
 
 Integer "integer"
-  = _ [0-9]+ { return parseInt(text(), 10); }
+  = [-]?[0-9]+
+
+Variable "Variable"
+  = [a-zA-Z]
 
 _ "whitespace"
-  = [ \t\n\r]*
+  = [ \t\n\r]
               
