@@ -1,0 +1,20 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "pegjs -o parser.js grammar.pegjs",
+    "test": "ava --verbose"
+  },
+  "ava": {
+    "files":[
+      "tests/**/*.js"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.25.0"
+  }
+}
