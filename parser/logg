@@ -1,0 +1,4 @@
+
+> parser@1.0.0 test /home/ec2-user/environment/Sparkle_Unicorn_Induction_Tutor/parser
+> pegjs --allowed-start-rules 'BaseCase, Expression, Term, Power, Factor, Integer, Variable, _, BaseValue, Graph' -o parser.js grammar.pegjs && ava
+
