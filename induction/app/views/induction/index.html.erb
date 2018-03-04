@@ -1,9 +1,9 @@
 <div id = 'Entry'>
   
   <%= form_tag induction_index_path, :id => "my_form" do -%>
-    <%= text_area_tag "comment", @comment, :class=>'TextBox' %>
-    <%= submit_tag "to rails" %>
-    <input type="button" value="to js" id="submit" onclick="read()" />
+    <%= text_area_tag "comment", @comment, :id=>'plain_text' %>
+    <%= text_area_tag 'parse_result', nil, :id=>'pretty_page' %>
+    <%= submit_tag "to rails", :id=>'submit' %>
   <% end -%>
 </div>
 

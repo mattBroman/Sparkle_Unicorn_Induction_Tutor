@@ -12,10 +12,19 @@
     height : 90%;
 }
 
-.TextBox {
-    width : 100%;
+#plain_text {
+    width : 49%;
     height : 100%;
+    float : left;
 }
+
+#pretty_page {
+    width : 49%;
+    height : 100%;
+    float : right;
+}
+
+
 
 #submit {
     float : right;

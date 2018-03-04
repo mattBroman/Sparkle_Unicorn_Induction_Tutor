@@ -14,8 +14,15 @@
 //= require turbolinks
 //= require_tree .
 
-function read() {
-  let word = document.getElementById('comment').value;
-  console.log(word);
-}
+var parser = require('../parser/parser.js');
 
+window.onKeyPress = function parse() {
+  let text = document.getElementById('comment');
+  try {
+    parser.parse(text);
+    document.getElementById('parse_result').value = 'Good!';
+  }
+  catch(error) {
+    document.getElementById('parse_result').value = 'Bad!';
+  }
+}
