@@ -14,15 +14,13 @@
 //= require turbolinks
 //= require_tree .
 
-var parser = require('../parser/parser.js');
-
-window.onKeyPress = function parse() {
-  let text = document.getElementById('comment');
+window.onkeypress = function parse() {
+  let text = document.getElementById('plain_text').value;
   try {
-    parser.parse(text);
-    document.getElementById('parse_result').value = 'Good!';
+    PARSER.parse(text);
+    document.getElementById('pretty_page').value = 'Good!';
   }
   catch(error) {
-    document.getElementById('parse_result').value = 'Bad!';
+    document.getElementById('pretty_page').value = 'Bad!';
   }
 }

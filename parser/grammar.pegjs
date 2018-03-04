@@ -14,7 +14,7 @@
 //<Graph> ::= <Branch> | <Chain>
 //<Branch> ::= <Expression><Comparison><Expression>
 //<Chain> ::= <Expression><Equality><Expression> \n
-                         (<Equality><Expression> \n)*
+//                        (<Equality><Expression> \n)*
 
   
 BaseCase
