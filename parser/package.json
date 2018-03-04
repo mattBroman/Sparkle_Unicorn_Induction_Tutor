@@ -9,7 +9,8 @@
   },
   "ava": {
     "files":[
-      "tests/**/*.js"
+      "tests/**/*.js",
+      "!tests/common.js"
     ],
     "failTest": false
   },

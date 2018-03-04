@@ -1,8 +1,8 @@
 import test from 'ava';
 import parser from '../parser';
-import { pass, fail } from './common';
+import util from './common';
 
-const token = "BaseCase";
+const { pass, fail } = util('BaseCase');
 
-test('foo', pass, token, "\begin{base} \end{base}");
-test('foo8', fail, token, "\\begin{bas} \\end{base}");
+test('foo', pass, "\begin{base} \end{base}");
+test('foo8', fail, "\\begin{bas} \\end{base}");

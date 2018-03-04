@@ -1,11 +1,10 @@
 import test from 'ava';
 import parser from '../parser';
-import { pass, fail } from './common';
+import util from './common';
 
+const { pass, fail } = util('_');
 
-const token = "_";
-
-test('no space', fail, token, "");
-test('spaces', pass, token, " ");
-test('newline', pass, token, "\n");
+test('no space', fail, "");
+test('spaces', pass, " ");
+test('newline', pass, "\n");
 

@@ -1,9 +1,8 @@
 import test from 'ava';
 import parser from '../parser';
-import { pass, fail } from './common';
+import util from './common';
 
+const { pass, fail } = util('Integer');
 
-const token = "Integer";
-
-test('foo', pass, token, "234");
-test('foo8', fail, token, "a");
+test('foo', pass, "234");
+test('foo8', fail, "a");

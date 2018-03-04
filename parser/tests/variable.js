@@ -1,14 +1,14 @@
 import test from 'ava';
 import parser from '../parser';
-import { pass, fail } from './common';
+import util from './common';
 
-const token = "Variable";
+const { pass, fail } = util('Variable');
 
-test("vartest a", pass, token, "a");
-test("vartest A", pass, token, "A");
-test('vartest Z', pass, token, "Z");
-test("vartest 1", fail, token, "1");
-test("vartest a1", fail, token, "a1");
+test("vartest a", pass, "a");
+test("vartest A", pass, "A");
+test('vartest Z', pass, "Z");
+test("vartest 1", fail, "1");
+test("vartest a1", fail, "a1");
 
 // full test
 //for(var letter in "abdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") {
@@ -18,4 +18,4 @@ test("vartest a1", fail, token, "a1");
 //    test("vartest " + num,fail,token,num);
 //}
 
-test('word test', fail, token, 'failure')
+test('word test', fail, 'failure')
