@@ -13,3 +13,9 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+
+function read() {
+  let word = document.getElementById('comment').value;
+  console.log(word);
+}
+
