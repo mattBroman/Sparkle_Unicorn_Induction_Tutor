@@ -50,6 +50,8 @@ test('multiple lines w/ graphs', pass, `
 
 
 test('line by line w/ graphs, non =', pass, `
+
+
     \begin{base} 
     let b = 3
     3 > 3
@@ -58,25 +60,28 @@ test('line by line w/ graphs, non =', pass, `
     \end{base}
 `);
 
-test('multiple lines w/ graphs, non =', pass, `
+test('multiple lines w/ graphs, non =', pass, 
+
+`
     \begin{base} 
     
-    let b = 3
+    let y = 3
     
     3 \leq 3
     
     4 \geq 4
     
-    5 < 5
+    5 <5
       = 5
     
     6 = 6
+    = 7
     
     \end{base}
 `);
 
 
-test('bad variable name', fail, `
+test('lengthy variable name', fail, `
     \begin{base} 
     
     let bb = 3
@@ -85,6 +90,32 @@ test('bad variable name', fail, `
 `);
 
 
+test('too many spaces with varaible name', fail, `
+    \begin{base} 
+    
+    let bb =3
+    
+    \end{base}
+`);
 
+test('multi line but wrong graph structure', fail, 
 
-test('foo8', fail, "\\begin{bas} \\end{base}");
+`
+    \begin{base} 
+    
+    let y = 3
+    
+    3 \leq 3
+    
+    4 \geq 4
+    
+    5 <5
+      > 5
+    
+    6 = 6
+    = 7
+    
+    \end{base}
+`);
+
+test('empty', fail, "\\begin{bas} \\end{base}");

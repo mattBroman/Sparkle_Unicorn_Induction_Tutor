@@ -1,12 +1,3 @@
 <h1>Hello, World!!</h1>
 
-<div id = 'Entry'>
-  
-  <%= form_tag welcome_index_path, :id => "my_form" do -%>
-    <%= text_area_tag "comment", @comment, :class=>'TextBox' %>
-    <%= submit_tag "to rails" %>
-    <input type="button" value="to js" id="submit" onclick="read()" />
-  <% end -%>
-</div>
-
-<%= text_area_tag 'test', @text %>
+<%= link_to 'do the proof here', induction_index_path %>
