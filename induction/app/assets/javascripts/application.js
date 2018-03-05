@@ -14,7 +14,7 @@
 //= require turbolinks
 //= require_tree .
 
-window.onkeypress = function parse() {
+window.onkeyup = function parse() {
   let text = document.getElementById('plain_text').value;
   try {
     PARSER.parse(text);
