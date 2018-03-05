@@ -6,43 +6,42 @@
 // Example pulled from pegjs.com/online
 // To compile do 'npm run build'
 // To test do 'npm run test'
-//Grammar will be as follows
-//<Proof> ::= <Basis><Induction>
-//<Basis> ::= <LetN><Math>+
-//<LetN> ::= 'let' <Variable> '=' <Number> (subject to change)
-//<Math> ::= <Graph>+
-//<Graph> ::= <Branch> | <Chain>
-//<Branch> ::= <Expression><Comparison><Expression>
-//<Chain> ::= <Expression><Equality><Expression> \n
-//                        (<Equality><Expression> \n)*
-
   
 BaseCase
-  = "\begin{base}" _* (Expressions)* _* "\end{base}"
-  
-Expressions 
-  = Expression _* Equality _* Expression
+  = _* "\\begin{base}" _* BaseValue _* (Graph _*)+ _* "\\end{base}" _*
 
-Equality
-  = "="
+BaseValue
+  = "let" _ Variable _ "=" _ Integer
+
+Graph
+  = Expression __* NonEqOp __* Expression (_* "=" __* Expression)*
+  / Expression __* "=" __* Expression (_* "=" __* Expression)*
+
+  
+
+NonEqOp
+  = "\\leq"
+  / "\\geq"
+  / "<"
+  / ">"
 
 Expression
-  = Term _* "+" _* Expression
-  / Term _* "-" _* Expression
-  / Term _* "%" _* Expression
+  = Term __* "+" __* Expression
+  / Term __* "-" __* Expression
+  / Term __* "%" __* Expression
   / Term
 
 Term
-  = Power _* "*" _* Term
-  / Power _* "/" _* Term
+  = Power __* "*" __* Term
+  / Power __* "/" __* Term
   / Power
 
 Power
-  = Factor _* "^" _* Power
+  = Factor __* "^" __* Power
   / Factor
 
 Factor
-  = "(" _* Expression _* ")" 
+  = "(" __* Expression __* ")" 
   / Integer
   / Variable
 
@@ -55,3 +54,8 @@ Variable "Variable"
 _ "whitespace"
   = [ \t\n\r]
               
+__ "whitespace (no newlines)"
+  = [ \t]
+  
+Newline 
+  = [\n]

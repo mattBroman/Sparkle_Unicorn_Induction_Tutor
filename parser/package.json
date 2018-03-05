@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pegjs -o parser.js --format globals -e PARSER grammar.pegjs",
-    "test": "pegjs --allowed-start-rules 'BaseCase, Expressions, Equality, Expression, Term, Power, Factor, Integer, Variable, _' -o parser.js grammar.pegjs && ava"
+    "test": "pegjs --allowed-start-rules 'BaseCase, Expression, Term, Power, Factor, Integer, Variable, _, BaseValue, Graph' -o parser.js grammar.pegjs && ava"
   },
   "ava": {
     "files":[
