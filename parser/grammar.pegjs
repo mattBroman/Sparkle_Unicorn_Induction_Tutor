@@ -6,19 +6,9 @@
 // Example pulled from pegjs.com/online
 // To compile do 'npm run build'
 // To test do 'npm run test'
-//Grammar will be as follows
-//<Proof> ::= <Basis><Induction>
-//<Basis> ::= <LetN><Math>+
-//<LetN> ::= 'let' <Variable> '=' <Number> (subject to change)
-//<Math> ::= <Graph>+
-//<Graph> ::= <Branch> | <Chain>
-//<Branch> ::= <Expression><Comparison><Expression>
-//<Chain> ::= <Expression><Equality><Expression> \n
-//                        (<Equality><Expression> \n)*
-
   
 BaseCase
-  = _* "\begin{base}" _* BaseValue _* (Graph _*)+ _* "\end{base}" _*
+  = _* "\\begin{base}" _* BaseValue _* (Graph _*)+ _* "\\end{base}" _*
 
 BaseValue
   = "let" _ Variable _ "=" _ Integer
@@ -30,24 +20,24 @@ Graph
   
 
 NonEqOp
-  = "\leq"
-  / "\geq"
+  = "\\leq"
+  / "\\geq"
   / "<"
   / ">"
 
 Expression
-  = Term __ "+" __ Expression
-  / Term __ "-" __ Expression
-  / Term __ "%" __ Expression
+  = Term __* "+" __* Expression
+  / Term __* "-" __* Expression
+  / Term __* "%" __* Expression
   / Term
 
 Term
-  = Power __ "*" __ Term
-  / Power __ "/" __ Term
+  = Power __* "*" __* Term
+  / Power __* "/" __* Term
   / Power
 
 Power
-  = Factor __ "^" __ Power
+  = Factor __* "^" __* Power
   / Factor
 
 Factor

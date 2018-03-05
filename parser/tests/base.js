@@ -8,32 +8,32 @@ const { pass, fail } = util('BaseCase');
 
 
 test('line by line w/ graph', pass, `
-    \begin{base} 
+    \\begin{base} 
     let b = 3
     3 = 3
-    \end{base}
+    \\end{base}
 `);
 
 test('multiple lines w/ graph', pass, `
-    \begin{base} 
+    \\begin{base} 
     
     let b = 3
     3=3
-    \end{base}
+    \\end{base}
 `);
 
 
 test('line by line w/ graphs', pass, `
-    \begin{base} 
+    \\begin{base} 
     let b = 3
     3=3
     4=4
     5=5
-    \end{base}
+    \\end{base}
 `);
 
 test('multiple lines w/ graphs', pass, `
-    \begin{base} 
+    \\begin{base} 
     
     let b = 3
     
@@ -45,31 +45,31 @@ test('multiple lines w/ graphs', pass, `
     
     6=6
     
-    \end{base}
+    \\end{base}
 `);
 
 
 test('line by line w/ graphs, non =', pass, `
 
 
-    \begin{base} 
+    \\begin{base} 
     let b = 3
     3 > 3
     4 = 4
     5 < 5
-    \end{base}
+    \\end{base}
 `);
 
 test('multiple lines w/ graphs, non =', pass, 
 
 `
-    \begin{base} 
+    \\begin{base} 
     
     let y = 3
     
-    3 \leq 3
+    3 \\leq 3
     
-    4 \geq 4
+    4 \\geq 4
     
     5 <5
       = 5
@@ -77,37 +77,37 @@ test('multiple lines w/ graphs, non =', pass,
     6 = 6
     = 7
     
-    \end{base}
+    \\end{base}
 `);
 
 
 test('lengthy variable name', fail, `
-    \begin{base} 
+    \\begin{base} 
     
     let bb = 3
     
-    \end{base}
+    \\end{base}
 `);
 
 
 test('too many spaces with varaible name', fail, `
-    \begin{base} 
+    \\begin{base} 
     
     let bb =3
     
-    \end{base}
+    \\end{base}
 `);
 
 test('multi line but wrong graph structure', fail, 
 
 `
-    \begin{base} 
+    \\begin{base} 
     
     let y = 3
     
-    3 \leq 3
+    3 \\leq 3
     
-    4 \geq 4
+    4 \\geq 4
     
     5 <5
       > 5
@@ -115,7 +115,7 @@ test('multi line but wrong graph structure', fail,
     6 = 6
     = 7
     
-    \end{base}
+    \\end{base}
 `);
 
 test('empty', fail, "\\begin{bas} \\end{base}");
