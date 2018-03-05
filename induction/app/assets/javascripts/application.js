@@ -14,6 +14,8 @@
 //= require turbolinks
 //= require_tree .
 
+
+
 window.onkeyup = function parse() {
   let text = document.getElementById('plain_text').value;
   try {
@@ -22,5 +24,18 @@ window.onkeyup = function parse() {
   }
   catch(error) {
     document.getElementById('pretty_page').value = 'Bad!';
+  }
+}
+
+
+window.onkeydown = function(event) {
+  if (event.keyCode === 9) { //user entered a tab
+    event.preventDefault();
+    
+    let text_area = document.getElementById('plain_text');
+    let cursor_pos_begin = text_area.selectionStart;
+    let cursor_pos_end = text_area.selectionEnd;
+    text_area.value = text_area.value.substr(0, cursor_pos_begin) + '  ' + text_area.value.substr(cursor_pos_begin);
+    text_area.selectionEnd = cursor_pos_end + 2;
   }
 }
