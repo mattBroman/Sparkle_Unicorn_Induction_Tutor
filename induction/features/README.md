@@ -2,6 +2,8 @@
 
 The basics that I could find online from a few examples
 
+To run just type "cucumber -S" or "rake cucumber"
+
 ## Added funcitonality
 
 In addition to having cucumber, Cucumber-Training-Wheels will add actions for us like
