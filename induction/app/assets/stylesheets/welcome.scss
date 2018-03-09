@@ -5,23 +5,33 @@
 #Entry {
     width : 1000px;
     height : 500px;
+    padding : 10px 10px 10px 10px;
 }
 
 #my_form {
     width : 100%;
-    height : 90%;
+    height : 100%;
 }
-
 #plain_text {
-    width : 49%;
+    width : 100%;
     height : 100%;
     float : left;
 }
 
-#pretty_page {
-    width : 49%;
+div#left_side {
+    float : left;
     height : 100%;
+    width : 50%;
+}
+
+div#right_side {
     float : right;
+    height : 100%;
+    width : 50%;
+}
+#pretty_page {
+    width : 100%;
+    height : 100%;
 }
 
 #hidden {
@@ -32,4 +42,8 @@
 
 #submit {
     float : right;
+}
+
+div#bottom {
+    padding : 10px 10px 10px 10px;
 }
