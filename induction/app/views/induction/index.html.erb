@@ -1,10 +1,15 @@
+<div id = 'Entry'
 <div id = 'Entry'>
   
   <%= form_tag induction_index_path, :id => "my_form" do -%>
     <%= text_area_tag "comment", @comment, :id=>'plain_text' %>
-    <%= text_area_tag 'parse_result', nil, :id=>'pretty_page' %>
-    <%= submit_tag "to rails", :id=>'submit' %>
+    <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
+    <%= submit_tag 'to rails', :id=>'submit'%>
   <% end -%>
 </div>
 
-<%= text_area_tag 'test', @text %>
+<div>
+  <%= text_area_tag 'parse_result', nil, :id=>'pretty_page' %>
+</div>
+
+<%=text_field_tag "responce",  @responce, :id=>'responce' %>

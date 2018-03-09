@@ -1,29 +1,13 @@
 class InductionController < ApplicationController
+  
   def index
     unless params[:comment] == nil
       session[:comment] = params[:comment]
     end
-    unless session[:comment] == nil
-      @text = validate(tokenize(session[:comment]))
-      @comment = session[:comment]
-    else 
-      @text = ''
-      @comment = 'text goes here'
-    end
-  end
-end
-
-def tokenize input
-  input.split
-end
-
-def validate input
-  markers = ['<basis>', '</basis>', '<induction>', '</induction>']
-  valid = true
-  
-  for i in markers
-    valid &= input.include?(i)
+    my_hash = (params[:json_data] == nil || params[:json_data] == "") ?
+      nil : JSON.parse(params[:json_data])
+    @responce = (my_hash == nil) ? nil : my_hash['parse']
+    @comment = (session[:comment] == nil) ? 'text goes here' : session[:comment]
   end
   
-  valid ? 'valid' : 'invalid'
-end 
+end

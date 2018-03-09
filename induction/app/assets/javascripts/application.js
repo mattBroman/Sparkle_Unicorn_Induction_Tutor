@@ -10,23 +10,41 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
+//= require jquery3
+//= requrie jquery_ujs
 //= require turbolinks
 //= require_tree .
 
 
+var data = 'default';
 
 window.onkeyup = function parse() {
   let text = document.getElementById('plain_text').value;
   try {
     PARSER.parse(text);
     document.getElementById('pretty_page').value = 'Good!';
+    document.getElementById('hidden').value = '{\"parse\":\"Good!\"}'
+    console.log('here')
   }
   catch(error) {
-    document.getElementById('pretty_page').value = 'Bad!';
+    document.getElementById('pretty_page').value = 'Bad'
+    document.getElementById('hidden').value = '{\"parse\":\"Bad!\"}';
   }
 }
-
+/*
+$('submit').on(onclick, function() {
+  let test = 'working?'
+  $.ajax( {
+    url : 'induction_index_path',
+    method : 'POST',
+    data : {working : test},
+    datatype : "json",
+    success : function(data) {
+      alert('good');
+    }
+  });
+});
+*/
 
 window.onkeydown = function(event) {
   if (event.keyCode === 9) { //user entered a tab
