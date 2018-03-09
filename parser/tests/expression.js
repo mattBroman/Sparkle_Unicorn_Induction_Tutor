@@ -25,3 +25,12 @@ test('vartest22', fail, "g % 5o");
 test('vartest23', fail, "h ^ 6p");
 test('vartest24', fail, "9c + 1h");
 
+test('vartest25', fail, `9c + 
+1h`);
+
+test('vartest25', fail, `9/c + 
+1*h`);
+
+
+
+
