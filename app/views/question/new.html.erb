@@ -1,0 +1,25 @@
+<%= form_for @question, url: question_index_path do |q| %>
+  <p>
+    <%= q.label :title %>
+    <%= q.text_field :title %>
+  </p>
+  <p>
+    <%= q.label :val %>
+    <%= q.text_area :val %>
+  </p>
+  <p>
+    <%= q.label :p_k %>
+    <%= q.text_field :p_k %>
+  </p>
+  <p>
+    <%= q.label :implies %>
+    <%= q.text_field :implies %>
+  </p>
+  <p>
+    <%= q.label :difficulty %>
+    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
+  </p>
+  <p>
+    <%= q.submit 'submit' %>
+  </p>
+<% end %>

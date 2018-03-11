@@ -1,0 +1,23 @@
+<div id = 'Question'>
+  <p><%= @question.val %></p>
+</div>
+
+<div id = 'Entry'>
+  
+  <div id = 'left_side'>
+    <%= form_tag grade_question_path, {:id => 'my_form'} do %>
+      <%= text_area_tag "comment", @comment, :id=>'plain_text' %>
+      <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
+      <%= submit_tag 'to rails', :id=>'submit'%>
+    <% end -%>
+  </div>
+
+  <div id = right_side>
+      <%= text_area_tag 'parse_result', nil, :id=>'pretty_page' %>
+  </div>
+</div>
+<div id = 'bottom'>
+    <%=text_field_tag "responce",  @responce, :id=>'responce' %>
+</div>
+
+<p><%= link_to 'back', question_index_path %></p>

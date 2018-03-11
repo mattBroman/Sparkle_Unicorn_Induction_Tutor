@@ -1,0 +1,18 @@
+<h2>All the questions</h2>
+<h3>makes sure y'all add some becuase rn its blank</h3>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Difficulty</th>
+   </tr>
+   <% @questions.each do |question| %>
+   <tr>
+    <td> <%= question.title %> </td>
+    <td> <%= question.difficulty %> </td>
+    <td> <%= link_to 'proof', question_path(question) %></td>
+  </tr>
+  <% end %>
+</table>
+<p> <%= link_to 'new question', new_question_path %> </p>
+<p> <%= link_to 'home', welcome_index_path %></p>
+    

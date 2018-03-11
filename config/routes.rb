@@ -2,8 +2,11 @@ Rails.application.routes.draw do
   get 'welcome/index'
   post 'welcome/index'
   
-  get 'induction/index'
-  post 'induction/index'
+  resources :question do
+    member do
+      post 'grade'
+    end
+  end
   
   root 'welcome#index'
 end
