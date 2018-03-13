@@ -5,9 +5,15 @@ class QuestionController < ApplicationController
   end
   
   def create
-    @question = Question.create!(question_params)
-    flash[:notice] = '#{@question.title} was successfully created'
-    redirect_to question_index_path
+    begin
+      @question = Question.create!(question_params)
+    rescue 
+      flash[:notice] = 'Feilds may not be blank'
+      redirect_to new_question_path
+    else
+      flash[:notice] = '#{@question.title} was successfully created'
+      redirect_to question_index_path
+    end
   end
   
   def new

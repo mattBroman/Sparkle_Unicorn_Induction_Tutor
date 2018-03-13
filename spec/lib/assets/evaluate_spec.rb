@@ -41,4 +41,19 @@ RSpec.describe Evaluator do
             expect{e.shunting_yard(arg)}.to raise_error(RuntimeError, 'Mismatched Parentheses')
        end
     end
+    context 'postfix solver' do
+        it 'correctly solves equations' do
+            expect(e.solve(['4', '2', '+'])).to eq 6
+            expect(e.solve(['4', '2', '-'])).to eq 2
+            expect(e.solve(['4', '2', '*'])).to eq 8
+            expect(e.solve(['4', '2', '/'])).to eq 2
+            
+            arg = ['4', '2', '^', '5', '3', '/', '+', '2', '4', '*', '-']
+            val = (29.0/3.0 - e.solve(arg)).abs
+            expect(val).to be < 0.0000000000001 
+            
+            arg = ['2', '1', '+', '3', '4', '-', '*']
+            expect(e.solve(arg)).to eq -3
+        end
+    end
 end

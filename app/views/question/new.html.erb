@@ -23,3 +23,7 @@
     <%= q.submit 'submit' %>
   </p>
 <% end %>
+
+<% if flash[:notice] %>
+  <p><%= flash[:notice] %></p>
+<% end %>

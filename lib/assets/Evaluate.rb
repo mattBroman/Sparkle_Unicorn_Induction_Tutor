@@ -8,6 +8,24 @@ class Evaluator
     '-' => 2,
   }
   
+  @@operations = {
+    '^' => lambda { |x, y| x ** y },
+    '*' => lambda { |x, y| x * y },
+    '/' => lambda { |x, y| x / y },
+    '+' => lambda { |x, y| x + y},
+    '-' => lambda { |x, y| x - y}
+  }
+  
+  #def initalize(assumptions, expressions)
+  #  @assumptions = Hash.new
+    #assumption.each do |assumption|
+      
+   # end
+  #  @expressions = expressions
+ # end
+  
+  
+  
   def shunting_yard(tokens)
     postfix = Array.new
     operators = Array.new
@@ -51,5 +69,20 @@ class Evaluator
   
   def pop_stack?(stack, token)
     stack[-1] != '(' and @@precedence[token] <= @@precedence[stack[-1]]
+  end
+  
+  def solve(postfix)
+    stack = Array.new
+    while !postfix.empty?
+      token = postfix.shift
+      if @@operations[token] == nil 
+        stack.push(token)
+      else 
+        left = stack.pop.to_f
+        right = stack.pop.to_f
+        stack.push(@@operations[token].call(right, left))
+      end
+    end
+    stack.pop
   end
 end
