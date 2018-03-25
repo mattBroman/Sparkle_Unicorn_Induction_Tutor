@@ -67,6 +67,7 @@ _Expression
   = _Expression_AS
   / _Expression_MD
   / _Expression_E
+  / _Term
 
 _Expression_E
   = left:_Term " "? "^" " "? 

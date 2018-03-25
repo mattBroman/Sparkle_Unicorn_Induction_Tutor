@@ -1444,6 +1444,9 @@ function peg$parse(input, options) {
       s0 = peg$parse_Expression_MD();
       if (s0 === peg$FAILED) {
         s0 = peg$parse_Expression_E();
+        if (s0 === peg$FAILED) {
+          s0 = peg$parse_Term();
+        }
       }
     }
 

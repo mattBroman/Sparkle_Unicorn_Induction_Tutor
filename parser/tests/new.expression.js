@@ -4,6 +4,8 @@ import util from './common';
 
 const { pass, fail, returns } = util('_Expression');
 
+test('Accepts literal', pass, "7");
+
 test('Accepts e expressions', pass, "4 ^ 9 ^ 3");
 test('Accepts md expressions', pass, "10 * 13 / 18 * 27");
 test('Accepts as expressions', pass, "10 - 13 + 27 - 30");
@@ -14,6 +16,9 @@ test('Accepts das expressions', pass, "3 / 8 - 4 + 6");
 test('Accepts as expressions', pass, "3 + 6 - 4");
 test('Accepts s expressions', pass, "2 - 5 - 8");
 
+test('Literals return proper postfix', returns, "7", ["7"]);
+
+test('E expressions return proper postfix', returns, "4 ^ 9 ^ 3", ["4", "9", "3", "^", "^"]);
 test('MD expressions return proper postfix', returns, "10 * 13 / 18 * 27", ["10", "13", "*", "18", "/", "27", "*"]);
 test('AS expressions return proper postfix', returns, "10 - 13 + 27 - 30", ["10", "13", "-", "27", "+", "30", "-"]);
 
