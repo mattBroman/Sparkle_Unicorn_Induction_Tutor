@@ -1,4 +1,4 @@
-require 'spec_helper'
+#require 'spec_helper'
 require_relative '../../../lib/assets/Evaluate.rb'
 
 RSpec.describe Evaluator do
