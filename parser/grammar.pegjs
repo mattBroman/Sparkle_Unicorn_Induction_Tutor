@@ -66,12 +66,19 @@ Newline
 _Expression
   = _Expression_AS
   / _Expression_MD
+  / _Expression_E
+
+_Expression_E
+  = left:_Term " "? "^" " "? 
+  	right:(_Expression_E/_Term) { 
+    	return left.concat(right).concat("^"); 
+    }
 
 _Expression_MD
-  = left:_Term
+  = left:(_Expression_E/_Term)
     chain:(" "?
       op:("*"/"/") " "?
-      right:_Term {
+      right:(_Expression_E/_Term) {
         return right.concat(op);
       })+
     {
