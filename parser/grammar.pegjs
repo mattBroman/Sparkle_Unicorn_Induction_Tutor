@@ -59,3 +59,54 @@ __ "whitespace (no newlines)"
   
 Newline 
   = [\n]
+
+
+// Expression rules
+
+_Expression
+  = _Expression_AS
+  / _Expression_MD
+
+_Expression_MD
+  = left:_Term
+    chain:(" "?
+      op:("*"/"/") " "?
+      right:_Term {
+        return right.concat(op);
+      })+
+    {
+      return [].concat.apply(left,chain);
+    }
+
+_Expression_AS
+  = left:(_Expression_MD/_Term) 
+  	chain:(" "? 
+    	op:("-"/"+") " "? 
+      right:(_Expression_MD/_Term) { 
+        return right.concat(op); 
+      })+ 
+    { 
+   		return [].concat.apply(left,chain); 
+    }
+
+_Term
+  = neg:"-"? 
+  	prefix:
+    	(first:[1-9] rest:[0-9]* 
+          {
+              return [first].concat(rest).join(""); 
+          } 
+    	/ "0")
+    suffix:
+    	("." rest:[0-9]+ 
+          { 
+              return "."+rest.join(""); 
+          }
+        )?
+    {
+		let result = (neg)
+        	? "-" + prefix
+            : prefix;
+        if (suffix) result += suffix;
+        return [result];
+	}
