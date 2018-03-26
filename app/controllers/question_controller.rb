@@ -37,7 +37,7 @@ class QuestionController < ApplicationController
     responce = (my_hash == nil) ? '' : my_hash['parse']
     #json_ex = {:baseCase => {:assumptions => [{:b=>3}], :equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]}}.to_json
     #g = Grader.new(json_ex)
-    responce = g.evaluate.to_s
+    #responce = g.evaluate.to_s
     comment = (params[:comment] == nil) ? 'text goes here' : params[:comment]
     redirect_to question_path(params[:id], :comment => comment, :responce => responce)
   end
