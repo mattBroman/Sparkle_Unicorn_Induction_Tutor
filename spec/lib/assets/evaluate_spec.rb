@@ -55,5 +55,14 @@ RSpec.describe Evaluator do
             arg = ['2', '1', '+', '3', '4', '-', '*']
             expect(e.solve(arg)).to eq -3
         end
+        
+        it 'fails on wrong number of operator inputs' do
+            expect{e.solve(['2', '+'])} to raise_error
+        end
+        
+        it 'fails on varibles' do 
+            expect{e.solve(['n', '+', 'n']) to raise_error
+        end
+            
     end
 end
