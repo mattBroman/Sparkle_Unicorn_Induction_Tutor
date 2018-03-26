@@ -12,6 +12,13 @@ function util(token) {
             t.throws(function() {
                parser.parse(input, {startRule: token}); 
             });
+        },
+        returns: function(t, input, expected) {
+            let actual;
+            t.notThrows(function() {
+                actual = parser.parse(input, {startRule: token});
+            });
+            t.deepEqual(expected, actual);
         }
     }
 }

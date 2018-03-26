@@ -1,36 +1,64 @@
 import test from 'ava';
 import parser from '../parser';
-import util from './common';
+import util from './_common';
 
-const { pass, fail } = util('Expression');
+const { pass, fail, returns } = util('_Expression');
 
-test('(2+2)', pass, '(2+2)');
-test('(34-5)', pass, '(34-5)');
-test('2+2', pass , '2+2');
-test('34-5', pass, '34-5');
+test('Accepts literal', pass, "7");
+test('Accepts p expressions', pass, "( 3 )");
+test('Accepts e expressions', pass, "4 ^ 9 ^ 3");
+test('Accepts md expressions', pass, "10 * 13 / 18 * 27");
+test('Accepts as expressions', pass, "10 - 13 + 27 - 30");
 
-test('vartest1', pass, "x + x");
-test('vartest2', fail, "x1 + 3");
-test('vartest3', pass, "y + 1");
-test('vartest4', pass, "a * 2");
-test('vartest5', pass, "2*b");
-test('vartest15', pass, "a / 4");
-test('vartest16', pass, "g % 5");
-test('vartest17', pass, "h ^ 6");
-test('vartest18', fail, "c + 1h");
-test('vartest19', fail, "d * 2j");
-test('vartest20', fail, "e - 3l");
-test('vartest21', fail, "a / 4i");
-test('vartest22', fail, "g % 5o");
-test('vartest23', fail, "h ^ 6p");
-test('vartest24', fail, "9c + 1h");
+test('Accepts pemdas expressions (1)', pass, "2 * ( 3 ^ ( 4 + 9 ) - 8 / 2 )");
+test('Accepts pemdas expressions (2)', pass, "2x - y * ( x + y ) ^ 3z / 18");
+test('Accepts emdas expressions', pass, "3 * 4 ^ 2 ^ 2 - 8 / 6 ^ 3 + 18");
+test('Accepts mdas expressions', pass, "2 + 3 * 8 / 4 - 17");
+test('Accepts das expressions', pass, "3 / 8 - 4 + 6");
+test('Accepts as expressions', pass, "3 + 6 - 4");
+test('Accepts s expressions', pass, "2 - 5 - 8");
 
-test('vartest25', fail, `9c + 
-1h`);
+test('Literals return proper postfix', returns, "7", ["7"]);
+test('P expressions return proper postfix', returns, "( 3 )", ["3"]);
+test('E expressions return proper postfix', returns, "4 ^ 9 ^ 3", ["4", "9", "3", "^", "^"]);
+test('MD expressions return proper postfix', returns, "10 * 13 / 18 * 27", ["10", "13", "*", "18", "/", "27", "*"]);
+test('AS expressions return proper postfix', returns, "10 - 13 + 27 - 30", ["10", "13", "-", "27", "+", "30", "-"]);
 
-test('vartest25', fail, `9/c + 
-1*h`);
-
-
-
-
+test('PEMDAS expressions return proper postfix (1)', returns, "2 * ( 3 ^ ( 4 + 9 ) - 8 / 2 )", [
+  "2",
+    "3",
+      "4","9","+",
+    "^",
+      "8","2","/",
+    "-",
+  "*"
+]);
+test('PEMDAS expressions return proper postfix (2)', returns, "2x - y * ( x + y ) ^ 3z / 18", [
+    "2","x","*",
+    "y",
+      "x","y","+",
+        "3","z","*",
+      "^",
+    "*","18","/",
+  "-"
+]);
+test('EMDAS expressions return proper postfix', returns, "3 * 4 ^ 2 ^ 2 - 8 / 6 ^ 3 + 18", [
+    "3",
+      "4","2","2","^","^", 
+    "*",
+    "8", 
+      "6", "3", "^", 
+    "/",
+  "-","18","+"
+]);
+test('MDAS expressions return proper postfix', returns, "2 + 3 * 8 / 4 - 17", [
+  "2",
+    "3","8","*","4","/",
+  "+","17","-"
+]);
+test('DAS expressions return proper postfix', returns, "3 / 8 - 4 + 6", [
+    "3","8","/",
+  "4","-","6","+"
+]);
+test('AS expressions return proper postfix', returns, "3 + 6 - 4", ["3", "6", "+", "4", "-"]);
+test('S expressions return proper postfix', returns, "2 - 5 - 8", ["2", "5", "-", "8", "-"]);
