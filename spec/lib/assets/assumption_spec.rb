@@ -5,7 +5,7 @@ require_relative '../../../lib/assets/Assumption.rb'
 RSpec.describe Assumption do
    
     
-    context "Base.initalize" do
+    context "Assumption.initalize" do
         
         it "handles malformed JSON" do
            json_ex = { :assumpt => []}.to_json
