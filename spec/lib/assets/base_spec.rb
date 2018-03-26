@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative '../../../lib/assets/Assumption.rb'
+require_relative '../../../lib/assets/Base.rb'
 
-RSpec.describe Assumption do
-    a = Assumption.new
+RSpec.describe Base do
+   # a = Base.new
     
     
 end
