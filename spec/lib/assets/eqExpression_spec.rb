@@ -26,9 +26,18 @@ RSpec.describe EqExpression do
             expect{EqExpression.new(json_ex, assumption)}.to raise_error(RuntimeError, "Invalid JSON input")
        end
        
-       it "should handle missing assumptions" do
+       it "should handle no assumptions" do
+           assumption = double('Assumption', :evaluate => [])
            json_ex = {:equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]}.to_json
-           expect{EqExpression.new(json_ex,{}.to_json)}.to raise_error(RuntimeError, "Missing assumption(s)")
+           expect{EqExpression.new(json_ex,assumption)}.to raise_error(RuntimeError, "Missing assumption(s)")
+       end
+       
+       
+       
+       it "should handle missing assumptions" do
+           assumption = double('Assumption', :evaluate => [{"c" => 2}])
+           json_ex = {:equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]}.to_json
+           expect{EqExpression.new(json_ex,assumption)}.to raise_error(RuntimeError, "Missing assumption(s)")
        end
        
         
