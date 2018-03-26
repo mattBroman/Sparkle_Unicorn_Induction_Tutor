@@ -68,18 +68,22 @@ _Expression
   / _Expression_MD
   / _Expression_E
   / _Term
+  / _Expression_P
+
+_Expression_P
+  = "(" " "? content:_Expression " "? ")" { return content; }
 
 _Expression_E
-  = left:_Term " "? "^" " "? 
-  	right:(_Expression_E/_Term) { 
+  = left:(_Term/_Expression_P) " "? "^" " "? 
+  	right:(_Expression_E/_Term/_Expression_P) { 
     	return left.concat(right).concat("^"); 
     }
 
 _Expression_MD
-  = left:(_Expression_E/_Term)
+  = left:(_Expression_E/_Term/_Expression_P)
     chain:(" "?
       op:("*"/"/") " "?
-      right:(_Expression_E/_Term) {
+      right:(_Expression_E/_Term/_Expression_P) {
         return right.concat(op);
       })+
     {
@@ -87,10 +91,10 @@ _Expression_MD
     }
 
 _Expression_AS
-  = left:(_Expression_MD/_Term) 
+  = left:(_Expression_E/_Expression_MD/_Term/_Expression_P) 
   	chain:(" "? 
     	op:("-"/"+") " "? 
-      right:(_Expression_MD/_Term) { 
+      right:(_Expression_E/_Expression_MD/_Term/_Expression_P) { 
         return right.concat(op); 
       })+ 
     { 
@@ -98,6 +102,18 @@ _Expression_AS
     }
 
 _Term
+  = left:_Numeral?
+  	chain:(variable:[a-z] {
+   	  return [variable,"*"]; 
+    })+ 
+  { 
+  	if (left) return [].concat.apply(left,chain);
+    return [].concat.apply([chain[0][0]],chain.slice(1));
+  }
+  / _Numeral
+  / variable:[a-z] { return [variable]; }
+
+_Numeral
   = neg:"-"? 
   	prefix:
     	(first:[1-9] rest:[0-9]* 
