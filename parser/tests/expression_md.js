@@ -23,10 +23,6 @@ test('Accepts nested p expressions (3)', pass, "3 * ( 2 * 2 ) / 4");
 test('Accepts nested p expressions (4)', pass, "3 * ( 2 ^ 2 ) / 4");
 test('Accepts nested p expressions (5)', pass, "3 * ( ( 2 + 4 ) + 4 ) / 4");
 
-// test('Accepts variable chains (1)', pass, "3x");
-// test('Accepts variable chains (2)', pass, "3xy * z");
-// test('Accepts variable chains (3)', pass, "3 + 4z * y / 9xz");
-
 test('Rejects incomplete division expression (1)', fail, "10 /");
 test('Rejects incomplete division expression (2)', fail, "/ 13");
 test('Rejects incomplete division expression (3)', fail, "/");
