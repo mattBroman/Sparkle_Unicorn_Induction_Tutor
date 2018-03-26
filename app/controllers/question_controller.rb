@@ -1,3 +1,5 @@
+require_relative '../../lib/assets/Grader.rb'
+
 class QuestionController < ApplicationController
   
   def index
@@ -31,6 +33,7 @@ class QuestionController < ApplicationController
     my_hash = (params[:json_data] == nil || params[:json_data] == "") ?
       nil : JSON.parse(params[:json_data])
     responce = (my_hash == nil) ? '' : my_hash['parse']
+    #responce = Grader.new(:json_data)
     comment = (params[:comment] == nil) ? 'text goes here' : params[:comment]
     redirect_to question_path(params[:id], :comment => comment, :responce => responce)
   end

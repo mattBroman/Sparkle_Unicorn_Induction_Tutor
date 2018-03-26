@@ -27,6 +27,7 @@ window.onkeyup = function parse() {
     console.log('here')
   }
   catch(error) {
+    console.log(error)
     document.getElementById('pretty_page').value = 'Bad'
     document.getElementById('hidden').value = '{\"parse\":\"Bad!\"}';
   }

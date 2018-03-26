@@ -14,6 +14,7 @@ class EqExpression
         raise RuntimeError, "Invalid JSON input" unless not @eqBlocks.nil?
         
         @assumptions = assumptions
+        raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?
         
         #add assumptions to eq's
         @assumptions.evaluate.each do |assumption|
@@ -29,6 +30,16 @@ class EqExpression
             end
         end
         
+        #variables still left in expressions
+        @eqBlocks.each do |eqLine|
+            eqLine["left"].each do |v|
+                raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+            end
+            eqLine["right"].each do |v|
+                raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+            end
+            
+        end
         
     
 
