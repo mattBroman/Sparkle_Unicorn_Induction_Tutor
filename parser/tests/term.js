@@ -1,14 +1,21 @@
 import test from 'ava';
 import parser from '../parser';
-import util from './common';
+import util from './_common';
 
-const { pass, fail } = util('Term');
+const { pass, fail, returns } = util('_Term');
 
-test('Multiply', pass, "2*2");
-test('Divide', pass, "2/4");
+test('Accepts numerals (1)', pass, "13");
+test('Accepts numerals (2)', pass, "-0.8");
+test('Accepts variables', pass, "x");
+test('Accepts variable chains (1)', pass, "14x");
+test('Accepts variable chains (2)', pass, "-0.8yz");
+test('Accepts variable chains (3)', pass, "xyz");
 
-test('Multiply', fail, "2**2");
-test('Divide', fail, "2/4/");
+test('Rejects capital variables', fail, "M");
 
-test('Multiply spaces', pass, "2  * 2");
-test('Divide spaces', pass, "2/      4");
+test('Returns proper postfix (1)', returns, "13", ["13"]);
+test('Returns proper postfix (2)', returns, "-0.8", ["-0.8"]);
+test('Returns proper postfix (3)', returns, "x", ["x"]);
+test('Returns proper postfix (4)', returns, "14x", ["14", "x", "*"]);
+test('Returns proper postfix (4)', returns, "-0.8yz", ["-0.8", "y", "*", "z", "*"]);
+test('Returns proper postfix (4)', returns, "xyz", ["x", "y", "*", "z", "*"]);
