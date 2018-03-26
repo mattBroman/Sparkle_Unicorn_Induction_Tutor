@@ -31,11 +31,7 @@ class EqExpression
         
         
     
-        
-       
-        #p @eqLine
-        
-        
+
     end
     
     
@@ -44,16 +40,21 @@ class EqExpression
         
         val = eval.solve(@eqBlocks[0]["left"])
         
+       
+        
        @eqBlocks.each do |eqLine|
-            if(not(val == eval.solve(eqLine["left"]))) then
+            if(not(val == eval.solve(eqLine["right"]))) then
+
                 return false
+            
             end
             
-            if not eqLine["right"].empty? then
+            if not eqLine["left"].empty? then
                 
-                if(not(val==eval.solve(eqLine["right"]))) then
+                if(not(val==eval.solve(eqLine["left"]))) then
                     return false
                 end
+            
                 
             end    
            

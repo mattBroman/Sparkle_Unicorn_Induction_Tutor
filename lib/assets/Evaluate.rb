@@ -83,6 +83,6 @@ class Evaluator
         stack.push(@@operations[token].call(right, left))
       end
     end
-    stack.pop
+    stack.pop.to_f
   end
 end

@@ -17,7 +17,7 @@ class Assumption
             end
         end
         
-        puts @assumptions
+      
 
    end
    
