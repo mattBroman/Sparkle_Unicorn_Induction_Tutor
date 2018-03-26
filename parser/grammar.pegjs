@@ -6,62 +6,76 @@
 // Example pulled from pegjs.com/online
 // To compile do 'npm run build'
 // To test do 'npm run test'
-  
-BaseCase
-  = _* "\\begin{base}" _* BaseValue _* (Graph _*)+ _* "\\end{base}" _*
 
-BaseValue
-  = "let" _ Variable _ "=" _ Integer
+_Root
+	= _Assumption
+    / _EquivalenceExpression
+    / _Expression
+    / _Term
+    / _Proof
+    
+_Proof
+  = _*
+    baseCase: _BaseCase?
+    _*
+    {
+      return {
+        baseCase
+      };
+    }
 
-Graph
-  = Expression __* NonEqOp __* Expression (_* "=" __* Expression)*
-  / Expression __* "=" __* Expression (_* "=" __* Expression)*
+_BaseCase
+  = "\begin{base}" _Newline
+    _* 
+    assumptions:(
+      first:_Assumption
+      chain:(_Newline _* assumption:_Assumption {
+          return assumption;
+        })* 
+   	  {
+        const result = chain.reduce((acc,cur) => ({...acc,...cur}), {});
+        return {
+      	  ...first,
+          ...result
+        };
+      }
+    )?
+    _*
+    equivalenceExpressions:(
+      first:_EquivalenceExpression
+      chain:(_Newline _* equivalence:_EquivalenceExpression {
+         return equivalence;
+        })*
+      {
+        return [first].concat(chain);
+      }
+    )?
+    _*
+    "\end{base}"
+    {
+      return {
+      	assumptions,
+        equivalenceExpressions
+      };
+    }
 
-  
+_Assumption
+  = ("L"/"l") "et " 
+  	variable:[a-z] " "? "=" " "? 
+    value:_Expression {
+	  return {
+        [variable]:value
+      };
+	}
 
-NonEqOp
-  = "\\leq"
-  / "\\geq"
-  / "<"
-  / ">"
-
-Expression
-  = Term __* "+" __* Expression
-  / Term __* "-" __* Expression
-  / Term __* "%" __* Expression
-  / Term
-
-Term
-  = Power __* "*" __* Term
-  / Power __* "/" __* Term
-  / Power
-
-Power
-  = Factor __* "^" __* Power
-  / Factor
-
-Factor
-  = "(" __* Expression __* ")" 
-  / Integer
-  / Variable
-
-Integer "integer"
-  = [-]?[0-9]+
-
-Variable "Variable"
-  = [a-zA-Z]
-
-_ "whitespace"
-  = [ \t\n\r]
-              
-__ "whitespace (no newlines)"
-  = [ \t]
-  
-Newline 
-  = [\n]
-
-
-// Expression rules
+_EquivalenceExpression
+  = left:_Expression? " "? "=" " "? 
+    right:_Expression {
+      return {
+        left,
+        right
+      };
+    }
 
 _Expression
   = _Expression_AS
@@ -134,3 +148,9 @@ _Numeral
         if (suffix) result += suffix;
         return [result];
 	}
+
+_ "whitespace"
+  = [ \t\n\r]
+
+_Newline 
+  = [\n\r]

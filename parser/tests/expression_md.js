@@ -1,6 +1,6 @@
 import test from 'ava';
 import parser from '../parser';
-import util from './common';
+import util from './_common';
 
 const { pass, fail, returns } = util('_Expression_MD');
 
