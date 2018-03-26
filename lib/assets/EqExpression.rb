@@ -11,7 +11,7 @@ class EqExpression
         
         @eqBlocks = JSON.parse(args)["equivalenceExpressions"]
         
-        raise RuntimeError, "Invalid JSON input" unless not @eqBlocks.nil?
+        raise RuntimeError, "Invalid EqExpression request" unless not @eqBlocks.nil?
         
         @assumptions = assumptions
         raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?

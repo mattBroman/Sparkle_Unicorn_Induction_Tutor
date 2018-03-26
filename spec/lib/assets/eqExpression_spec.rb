@@ -23,7 +23,7 @@ RSpec.describe EqExpression do
        it "should handle malformed json input" do
            assumption = double('Assumption', :evaluate => [{"b" => 2}])
             json_ex = {:equivdfghjgfdExp => [{:left=>["3", "4", "5", "*","+"], :right=>["3", "20", "+"]}]}.to_json 
-            expect{EqExpression.new(json_ex, assumption)}.to raise_error(RuntimeError, "Invalid JSON input")
+            expect{EqExpression.new(json_ex, assumption)}.to raise_error(RuntimeError, "Invalid EqExpression request")
        end
        
        it "should handle no assumptions" do

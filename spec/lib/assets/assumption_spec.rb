@@ -9,17 +9,17 @@ RSpec.describe Assumption do
         
         it "handles malformed JSON" do
            json_ex = { :assumpt => []}.to_json
-           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid JSON request")
+           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption request")
         end
         
         it "handles empty JSON" do
            json_ex = { :assumptions => []}.to_json
-           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "No base cases provided")
+           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "No Assumption(s) provided")
         end
         
         it "handles incorrect variable names" do
             json_ex = { :assumptions => [:bbb => 4]}.to_json
-            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid base variable")
+            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption variable(s)")
         end
         
         it "accepts correct input on 1 variable" do

@@ -8,7 +8,7 @@ class BaseCase
       
       @baseCase = JSON.parse(args)["baseCase"]
       
-      raise RuntimeError, "Invalid JSON request for baseCase" unless not @baseCase.nil?
+      raise RuntimeError, "Invalid baseCase request" unless not @baseCase.nil?
       
       a = Assumption.new(@baseCase.to_json)
       
