@@ -36,7 +36,7 @@ RSpec.describe EqExpression do
     
     context "EqExpression.evaluate" do
         it "should return true for a valid chain" do
-          assumption = double('Assumption', :evaluate => [{"b" => 2}])
+          assumption = double('Assumption', :evaluate => [{"b" => 3}])
           json_ex = {:equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}, {:left=> [], :right =>["23"]}]}.to_json 
           e = EqExpression.new(json_ex,assumption)
           e.evaluate.should be true
