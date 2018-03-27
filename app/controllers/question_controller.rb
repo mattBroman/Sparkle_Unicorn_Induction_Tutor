@@ -1,4 +1,9 @@
-require_relative '../../lib/assets/Grader'
+#Dir["../../lib/assets/*.rb"].each {|file| require_dependency file }
+require_dependency '../../lib/assets/Grader.rb'
+require_dependency '../../lib/assets/Base.rb'
+require_dependency '../../lib/assets/Assumption.rb'
+require_dependency '../../lib/assets/EqExpression.rb'
+require_dependency '../../lib/assets/Evaluate.rb'
 
 #require "#{Rails.root}/lib/assets/Grader"
 
@@ -37,8 +42,10 @@ class QuestionController < ApplicationController
     #responce = (my_hash == nil) ? '' : my_hash['parse']
     begin
       grader = Grader.new params[:json_data]
-    rescue
-      session[:responce] = 'Bad!'
+      
+    rescue Exception => e
+      p e
+      session[:responce] = e
     else
       session[:responce] = grader.evaluate
     end

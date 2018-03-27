@@ -7,13 +7,9 @@ RSpec.describe Assumption do
     
     context "Assumption.initalize" do
         
-        it "handles malformed JSON" do
-           json_ex = { :assumpt => {}}.to_json
-           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption request")
-        end
-        
+
         it "handles empty JSON" do
-           json_ex = { :assumptions => {}}.to_json
+           json_ex = { :assumptions => nil}.to_json
            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "No Assumption(s) provided")
         end
         

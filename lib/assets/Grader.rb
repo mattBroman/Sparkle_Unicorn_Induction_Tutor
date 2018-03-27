@@ -18,7 +18,8 @@ class Grader
         #add inductive hypothesis and what not here later...
        
        
-    end
+   
+ end
     
     def evaluate
     

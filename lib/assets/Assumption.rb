@@ -6,8 +6,7 @@ class Assumption
         
         #non empty assumption
         @assumptions = JSON.parse(args)["assumptions"]
-        raise RuntimeError, "Invalid Assumption request" unless not @assumptions.nil?
-        raise RuntimeError, "No Assumption(s) provided" unless not @assumptions.empty?
+        raise RuntimeError, "No Assumption(s) provided" unless not @assumptions.nil?
 
 
         #invalid variable names

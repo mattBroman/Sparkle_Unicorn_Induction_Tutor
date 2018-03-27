@@ -11,7 +11,7 @@ class EqExpression
         
         @eqBlocks = JSON.parse(args)["equivalenceExpressions"]
         
-        raise RuntimeError, "Invalid EqExpression request" unless not @eqBlocks.nil?
+        raise RuntimeError, "Missing expression(s)" unless not @eqBlocks.nil?
         
         @assumptions = assumptions
         raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?
@@ -19,13 +19,15 @@ class EqExpression
         #add assumptions to eq's
         @assumptions.evaluate.each do |key,val|
             
+            
+            # index of val[i] is 0 for now because we assume assumptions are raw values and not expressions
             @eqBlocks.each do |eqLine|
                     eqLine["left"].map! { |x|
-                        x==key.to_s ? val.to_s : x
-                    }
+                        x==key.to_s ? val[0] : x
+                    } unless eqLine["left"].nil?
                     eqLine["right"].map! { |x|
-                        x==key.to_s ? val.to_s : x
-                    }
+                        x==key.to_s ? val[0] : x
+                    } unless eqLine["right"].nil?
             end
            
         end
@@ -34,10 +36,10 @@ class EqExpression
         @eqBlocks.each do |eqLine|
             eqLine["left"].each do |v|
                 raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
-            end
+            end unless eqLine["left"].nil?
             eqLine["right"].each do |v|
                 raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
-            end
+            end unless eqLine["right"].nil?
             
         end
         
@@ -48,8 +50,9 @@ class EqExpression
     
     def evaluate
        eval = Evaluator.new
-        
+        p @eqBlocks
         val = eval.solve(@eqBlocks[0]["left"])
+        
         
        
         
@@ -60,7 +63,7 @@ class EqExpression
             
             end
             
-            if not eqLine["left"].empty? then
+            if not eqLine["left"].nil?  and not eqLine["left"].empty? then
                 
                 if(not(val==eval.solve(eqLine["left"]))) then
                     return false
