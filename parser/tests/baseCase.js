@@ -14,7 +14,6 @@ Let x = 4
 test('Accept one equivalence expression', pass, 
 `\\begin{base}
 3 = 4
-
 \\end{base}`);
 test('Accept valid base case (1)', pass, 
 `\\begin{base}
