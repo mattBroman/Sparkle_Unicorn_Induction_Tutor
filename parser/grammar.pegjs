@@ -25,7 +25,7 @@ _Proof
     }
 
 _BaseCase
-  = "\begin{base}" _Newline
+  = "\\begin{base}" _Newline
     _* 
     assumptions:(
       first:_Assumption
@@ -33,11 +33,8 @@ _BaseCase
           return assumption;
         })* 
    	  {
-        const result = chain.reduce((acc,cur) => ({...acc,...cur}), {});
-        return {
-      	  ...first,
-          ...result
-        };
+        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+        return Object.assign({},first,result);
       }
     )?
     _*
@@ -51,7 +48,7 @@ _BaseCase
       }
     )?
     _*
-    "\end{base}"
+    "\\end{base}"
     {
       return {
       	assumptions,

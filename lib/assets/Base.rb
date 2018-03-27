@@ -19,8 +19,7 @@ class BaseCase
     end
 
     def evaluate
-       @exp.evaluate
-    
+        @exp.evaluate
     end
 
 

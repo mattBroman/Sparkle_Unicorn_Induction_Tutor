@@ -16,13 +16,12 @@ class Grader
         end
         
         #add inductive hypothesis and what not here later...
-      
        
        
-   end
+    end
     
     def evaluate
-        
+    
         #return any errors or the correct evaluation
         
         if !@exception.nil? then

@@ -12,7 +12,7 @@ class QuestionController < ApplicationController
     begin
       @question = Question.create!(question_params)
     rescue 
-      flash[:notice] = 'Feilds may not be blank'
+      flash[:notice] = 'Fields may not be blank'
       redirect_to new_question_path
     else
       flash[:notice] = '#{@question.title} was successfully created'
@@ -26,20 +26,24 @@ class QuestionController < ApplicationController
   
   def show
     @question = Question.find(params[:id])
-    @responce = params[:responce]
-    @comment = params[:comment]
+    @responce = session[:responce]
+    @comment = session[:comment]
   end
   
   def grade
     @question = Question.find(params[:id])
-    my_hash = (params[:json_data] == nil || params[:json_data] == "") ?
-      nil : JSON.parse(params[:json_data])
-    responce = (my_hash == nil) ? '' : my_hash['parse']
-    #json_ex = {:baseCase => {:assumptions => [{:b=>3}], :equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]}}.to_json
-    #g = Grader.new(json_ex)
-    #responce = g.evaluate.to_s
-    comment = (params[:comment] == nil) ? 'text goes here' : params[:comment]
-    redirect_to question_path(params[:id], :comment => comment, :responce => responce)
+    #my_hash = (params[:json_data] == nil || params[:json_data] == "") ?
+    #  nil : JSON.parse(params[:json_data])
+    #responce = (my_hash == nil) ? '' : my_hash['parse']
+    begin
+      grader = Grader.new params[:json_data]
+    rescue
+      session[:responce] = 'Bad!'
+    else
+      session[:responce] = grader.evaluate
+    end
+    session[:comment] = (params[:comment] == nil) ? 'text goes here' : params[:comment]
+    redirect_to question_path(params[:id])
   end
   
   private
