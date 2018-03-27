@@ -5,11 +5,7 @@ class Grader
    def initialize(args)
     
        # p args.to_s
-        begin
-            @bc = BaseCase.new(args)
-        rescue
-            @bc = nil
-        end
+        @bc = BaseCase.new(args)
       
       #add inductive hypothesis and what not here later...
        

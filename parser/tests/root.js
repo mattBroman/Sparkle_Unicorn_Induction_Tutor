@@ -10,8 +10,8 @@ test('Accepts one equivalence expression', pass, `3 = 4`);
 test('Accepts one expression', pass, `3+4`);
 test('Accepts one term', pass, `13`);
 test('Accepts one proof', pass, 
-`\begin{base}
-\end{base}`);
+`\\begin{base}
+\\end{base}`);
 
 test('Returns valid schema (1)', returns,
 ``,
@@ -36,8 +36,8 @@ test('Returns valid schema (5)', returns,
 `13`,
 ["13"]);
 test('Returns valid schema (6)', returns,
-`\begin{base}
-\end{base}`,
+`\\begin{base}
+\\end{base}`,
 {
   baseCase: {
     assumptions: null,

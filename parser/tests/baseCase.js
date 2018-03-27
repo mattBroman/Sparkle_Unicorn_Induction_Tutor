@@ -5,60 +5,61 @@ import util from './_common';
 const { pass, fail, returns } = util('_BaseCase');
 
 test('Accept empty environment', pass, 
-`\begin{base}
-\end{base}`);
+`\\begin{base}
+\\end{base}`);
 test('Accept one assumption', pass, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
-\end{base}`);
+\\end{base}`);
 test('Accept one equivalence expression', pass, 
-`\begin{base}
+`\\begin{base}
 3 = 4
-\end{base}`);
+
+\\end{base}`);
 test('Accept valid base case (1)', pass, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 3 = 4
-\end{base}`);
+\\end{base}`);
 test('Accept valid base case (2)', pass, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 Let n = k+1
 3 = 4
-\end{base}`);
+\\end{base}`);
 test('Accept valid base case (3)', pass, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 3 = 4
 = 6
-\end{base}`);
+\\end{base}`);
 test('Accept valid base case (4)', pass, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 Let n = k+1
 3 = 4
 = 6
-\end{base}`);
+\\end{base}`);
 
 test('Reject incomplete environment (1)', fail, 
-`\begin{base}`);
+`\\begin{base}`);
 test('Reject incomplete environment (2)', fail, 
-`\begin{base}
+`\\begin{base}
 `);
 test('Reject incomplete environment (3)', fail, 
-`\end{base}`);
+`\\end{base}`);
 
 test('Returns valid schema (1)', returns, 
-`\begin{base}
-\end{base}`,
+`\\begin{base}
+\\end{base}`,
 {
   assumptions: null,
   equivalenceExpressions: null
 });
 test('Returns valid schema (2)', returns, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
-\end{base}`,
+\\end{base}`,
 {
   assumptions: {
     "x":["4"]
@@ -66,9 +67,9 @@ Let x = 4
   equivalenceExpressions: null
 });
 test('Returns valid schema (3)', returns, 
-`\begin{base}
+`\\begin{base}
 3 = 4
-\end{base}`,
+\\end{base}`,
 {
   assumptions: null,
   equivalenceExpressions: [
@@ -79,10 +80,10 @@ test('Returns valid schema (3)', returns,
   ]
 });
 test('Returns valid schema (4)', returns, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 3 = 4
-\end{base}`,
+\\end{base}`,
 {
   assumptions: {
     "x":["4"]
@@ -95,11 +96,11 @@ Let x = 4
   ]
 });
 test('Returns valid schema (5)', returns, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 Let n = k+1
 3 = 4
-\end{base}`,
+\\end{base}`,
 {
   assumptions: {
     "x":["4"],
@@ -113,11 +114,11 @@ Let n = k+1
   ]
 });
 test('Returns valid schema (6)', returns, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 3 = 4
 = 6
-\end{base}`,
+\\end{base}`,
 {
   assumptions: {
     "x":["4"]
@@ -134,12 +135,12 @@ Let x = 4
   ]
 });
 test('Returns valid schema (7)', returns, 
-`\begin{base}
+`\\begin{base}
 Let x = 4
 Let n = k+1
 3 = 4
 = 6
-\end{base}`,
+\\end{base}`,
 {
   assumptions: {
     "x":["4"],

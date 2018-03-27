@@ -151,47 +151,9 @@ function peg$parse(input, options) {
       peg$c3 = function(first, assumption) {
                 return assumption;
               },
-<<<<<<< HEAD
-      peg$c4 = function(first, chain) {
-              const result = chain.reduce((acc,cur) => ({...acc,...cur}), {});
-=======
-<<<<<<< HEAD
-        peg$c7 = "end{base}",
-        peg$c8 = peg$literalExpectation("end{base}", false),
-        peg$c9 = function(assumptions, equivalenceExpressions) {
-              return {
-              	assumptions,
-                equivalenceExpressions
-              };
-            },
-        peg$c10 = "L",
-        peg$c11 = peg$literalExpectation("L", false),
-        peg$c12 = "l",
-        peg$c13 = peg$literalExpectation("l", false),
-        peg$c14 = "et ",
-        peg$c15 = peg$literalExpectation("et ", false),
-        peg$c16 = /^[a-z]/,
-        peg$c17 = peg$classExpectation([["a", "z"]], false, false),
-        peg$c18 = " ",
-        peg$c19 = peg$literalExpectation(" ", false),
-        peg$c20 = "=",
-        peg$c21 = peg$literalExpectation("=", false),
-        peg$c22 = function(variable, value) {
-        	  return {
-                [variable]:value
-              };
-        	},
-        peg$c23 = function(left, right) {
->>>>>>> master
-              return {
-            	  ...first,
-                ...result
-              };
-=======
       peg$c4 = function(first, chain) {
               const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
               return Object.assign({},first,result);
->>>>>>> mauleb
             },
       peg$c5 = function(assumptions, first, equivalence) {
                return equivalence;
