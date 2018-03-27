@@ -33,11 +33,8 @@ _BaseCase
           return assumption;
         })* 
    	  {
-        const result = chain.reduce((acc,cur) => ({...acc,...cur}), {});
-        return {
-      	  ...first,
-          ...result
-        };
+        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+        return Object.assign({},first,result);
       }
     )?
     _*

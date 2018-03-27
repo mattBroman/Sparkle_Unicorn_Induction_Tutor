@@ -152,11 +152,8 @@ function peg$parse(input, options) {
                 return assumption;
               },
       peg$c4 = function(first, chain) {
-              const result = chain.reduce((acc,cur) => ({...acc,...cur}), {});
-              return {
-            	  ...first,
-                ...result
-              };
+              const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+              return Object.assign({},first,result);
             },
       peg$c5 = function(assumptions, first, equivalence) {
                return equivalence;
