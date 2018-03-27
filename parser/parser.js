@@ -164,6 +164,7 @@
         peg$c6 = function(assumptions, first, chain) {
                 return [first].concat(chain);
               },
+<<<<<<< HEAD
         peg$c7 = "end{base}",
         peg$c8 = peg$literalExpectation("end{base}", false),
         peg$c9 = function(assumptions, equivalenceExpressions) {
@@ -194,6 +195,11 @@
                 left,
                 right
               };
+=======
+      peg$c4 = function(first, chain) {
+              const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+              return Object.assign({},first,result);
+>>>>>>> mauleb
             },
         peg$c24 = "(",
         peg$c25 = peg$literalExpectation("(", false),
