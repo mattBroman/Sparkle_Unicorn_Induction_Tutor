@@ -85,4 +85,8 @@ class Evaluator
     end
     stack.pop.to_f
   end
+  
+  def evaluate tokens
+    solve(shunting_yard(tokens))
+  end
 end
