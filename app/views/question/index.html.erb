@@ -9,7 +9,7 @@
    <tr>
     <td> <%= question.title %> </td>
     <td> <%= question.difficulty %> </td>
-    <td> <%= link_to 'proof', question_path(question) %></td>
+    <td> <%= link_to 'proof', question_path(question), :id => question.title %></td>
   </tr>
   <% end %>
 </table>

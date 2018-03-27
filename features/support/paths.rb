@@ -3,6 +3,8 @@
 # This file is used by web_steps.rb, which you should also delete
 #
 # You have been warned
+
+
 module NavigationHelpers
   # Maps a name to a path. Used by the
   #
@@ -15,6 +17,9 @@ module NavigationHelpers
 
     when /^the home\s?page$/
       '/'
+      
+    when /^the questions page$/
+      question_index_path
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

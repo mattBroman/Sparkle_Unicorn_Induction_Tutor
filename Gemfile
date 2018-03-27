@@ -47,7 +47,6 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'rspec-rails', '~> 3.6'
- 
 end
 
 group :development do
@@ -60,9 +59,10 @@ group :development do
 end
 
 group :test do
-  gem 'cucumber-rails', :require=> false 
+  gem 'cucumber-rails', :require=> false
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
+  
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -16,9 +16,10 @@
 //= require_tree .
 
 
+
 var data = 'default';
 
-window.onkeyup = function parse() {
+function parse() {
   let text = document.getElementById('plain_text').value;
   try {
     let result = JSON.stringify(PARSER.parse(text));
@@ -46,6 +47,11 @@ $('submit').on(onclick, function() {
   });
 });
 */
+window.onkeyup = parse
+
+$(document).on('turbolinks:load',function(){
+  parse();
+})
 
 window.onkeydown = function(event) {
   if (event.keyCode === 9) { //user entered a tab
