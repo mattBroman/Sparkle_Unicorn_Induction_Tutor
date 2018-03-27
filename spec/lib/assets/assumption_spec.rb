@@ -8,28 +8,28 @@ RSpec.describe Assumption do
     context "Assumption.initalize" do
         
         it "handles malformed JSON" do
-           json_ex = { :assumpt => []}.to_json
+           json_ex = { :assumpt => {}}.to_json
            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption request")
         end
         
         it "handles empty JSON" do
-           json_ex = { :assumptions => []}.to_json
+           json_ex = { :assumptions => {}}.to_json
            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "No Assumption(s) provided")
         end
         
         it "handles incorrect variable names" do
-            json_ex = { :assumptions => [:bbb => 4]}.to_json
+            json_ex = { :assumptions => {:bbb => ["4"]}}.to_json
             expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption variable(s)")
         end
         
         it "accepts correct input on 1 variable" do
-            json_ex = {:assumptions => [:b => 2]}.to_json
-            
+            json_ex = {:assumptions => {:b => ["2"]}}.to_json
+           
             expect{Assumption.new(json_ex)}.to_not raise_error
         end
         
         it "accepts correct input on multiple variables" do
-            json_ex = {:assumptions => [{:b => 2}, {:c =>5}]}.to_json
+            json_ex = {:assumptions => {:b => ["2"], :c =>["5"]}}.to_json
             expect{Assumption.new(json_ex)}.to_not raise_error
         end
         
@@ -39,9 +39,9 @@ RSpec.describe Assumption do
     context "Base.evaluate" do
        
         it "returns correctly for all variables" do
-            json_ex = {:assumptions => [{:b => 2}, {:c =>5}]}.to_json
+            json_ex = {:assumptions => {:b => ["2"], :c => ["5"]}}.to_json
             a = Assumption.new(json_ex)
-            a.evaluate.should eq [{"b" => 2},{ "c"=>5}]
+            a.evaluate.should eq({"b" => ["2"], "c" => ["5"]})
         end
   
     end

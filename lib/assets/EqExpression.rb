@@ -17,17 +17,17 @@ class EqExpression
         raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?
         
         #add assumptions to eq's
-        @assumptions.evaluate.each do |assumption|
-            assumption.each do |key,val|
-                @eqBlocks.each do |eqLine|
-                        eqLine["left"].map! { |x|
-                            x==key.to_s ? val.to_s : x
-                        }
-                        eqLine["right"].map! { |x|
-                            x==key.to_s ? val.to_s : x
-                        }
-                end
+        @assumptions.evaluate.each do |key,val|
+            
+            @eqBlocks.each do |eqLine|
+                    eqLine["left"].map! { |x|
+                        x==key.to_s ? val.to_s : x
+                    }
+                    eqLine["right"].map! { |x|
+                        x==key.to_s ? val.to_s : x
+                    }
             end
+           
         end
         
         #variables still left in expressions

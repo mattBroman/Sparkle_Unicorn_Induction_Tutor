@@ -11,10 +11,10 @@ class Assumption
 
 
         #invalid variable names
-        @assumptions.each do |elem|
-            elem.each do |key,value|
-                raise RuntimeError, "Invalid Assumption variable(s)" unless (key.to_s.match(/^[A-Za-z]$/) && key.to_s.length == 1)
-            end
+        @assumptions.each do |key,val|
+            
+            raise RuntimeError, "Invalid Assumption variable(s)" unless (key.to_s.match(/^[A-Za-z]$/) && key.to_s.length == 1)
+            
         end
         
       
