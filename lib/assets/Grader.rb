@@ -7,7 +7,6 @@ class Grader
         @exception = nil
         
         begin
-          
             @bc = BaseCase.new(args)
         
         rescue Exception => exc

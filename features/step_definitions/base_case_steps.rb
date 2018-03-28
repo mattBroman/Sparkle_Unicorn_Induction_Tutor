@@ -1,14 +1,21 @@
 
 
 Then (/^type my correct base case for simple arithmetic$/) do
+    #Capybara.javascript_driver = :selenium
+    #Capybara.current_driver = Capybara.javascript_driver
+    
+    
+    
+    
+    
 
-    fill_in "comment", :with => "\\begin{base}
- let b = 3
-
-b*2 = 6
-
-\\end{base}"
-
+        fill_in "comment", :with => "\\begin{base}
+     let b = 3
+    
+    b*2 = 6
+    
+    \\end{base}"
+    
 
  
 
@@ -17,7 +24,7 @@ b*2 = 6
     p page.find_by_id("pretty_page").value
 
  
-
+    
 
 end
 

@@ -39,10 +39,10 @@ RSpec.describe Grader do
             g.evaluate.should eq({:baseCase => "Missing assumption(s)"})
         end
         
-        it "should raise an error for missing arguments for baseCase" do
+        it "should raise an error for invalid Eqexpression json" do
             json_ex = {:baseCase => {:assumptions => {:b=>["3"]}, :equivalenceExns => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]}}.to_json
             g = Grader.new(json_ex)
-            g.evaluate.should eq({:baseCase => "Invalid EqExpression request"})
+            g.evaluate.should eq({:baseCase => "Missing expression(s)"})
         end
         
     end

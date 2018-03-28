@@ -17,7 +17,7 @@ Background: a db of questions exist
   And I am on the questions page
 
 
-
+#@javascript
 Scenario: I see true when my base case is graded
 
     When I follow "Title1"
