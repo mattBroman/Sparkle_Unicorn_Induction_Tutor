@@ -16,7 +16,7 @@ class QuestionController < ApplicationController
   def create
     begin
       parse = JSON.parse(params[:json_data])
-      if parse["proof"] == "Bad!"
+      if parse['val'] == 'Bad'
         raise RuntimeError
       end
       @question = Question.create!(question_params)
@@ -27,7 +27,7 @@ class QuestionController < ApplicationController
       flash[:notice] = 'Fields may not be blank'
       redirect_to new_question_path
     else
-      flash[:notice] = '#{@question.title} was successfully created'
+      flash[:notice] = "#{@question.title} was successfully created"
       redirect_to question_index_path
     end
   end
@@ -62,9 +62,9 @@ class QuestionController < ApplicationController
 
   def destroy
     question = Question.find(params[:id])
-    title = question.title
+    @title = question.title
     question.destroy
-    flash[:notice] = '#{title} was deleted'
+    flash[:notice] = "#{@title} was deleted"
     redirect_to question_index_path
   end
   
