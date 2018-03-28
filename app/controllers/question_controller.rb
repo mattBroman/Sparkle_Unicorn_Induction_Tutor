@@ -15,8 +15,15 @@ class QuestionController < ApplicationController
   
   def create
     begin
+      parse = JSON.parse(params[:json_data])
+      if parse["proof"] == "Bad!"
+        raise RuntimeError
+      end
       @question = Question.create!(question_params)
-    rescue 
+    rescue RuntimeError
+      flash[:notice] = 'invalid equations'
+      redirect_to new_question_path
+    rescue
       flash[:notice] = 'Fields may not be blank'
       redirect_to new_question_path
     else
@@ -51,6 +58,14 @@ class QuestionController < ApplicationController
     end
     session[:comment] = (params[:comment] == nil) ? 'text goes here' : params[:comment]
     redirect_to question_path(params[:id])
+  end
+
+  def destroy
+    question = Question.find(params[:id])
+    title = question.title
+    question.destroy
+    flash[:notice] = '#{title} was deleted'
+    redirect_to question_index_path
   end
   
   private

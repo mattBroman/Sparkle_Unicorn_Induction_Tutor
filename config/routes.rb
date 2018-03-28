@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     end
   end
   
+  get 'question/(:id)/destroy', to: 'question#destroy', as: 'delete_question' 
+  
   root 'welcome#index'
 end
