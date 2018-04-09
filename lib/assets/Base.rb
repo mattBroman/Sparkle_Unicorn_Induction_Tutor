@@ -14,7 +14,7 @@ class BaseCase
       
       @exp = EqExpression.new(@baseCase.to_json, a)
 
-       
+      
         
     end
 
