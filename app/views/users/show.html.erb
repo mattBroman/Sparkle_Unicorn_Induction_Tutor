@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+<div>
+  <% if session[:role] >= 1000 %>
+    <%= render 'partials/users' %>
+  <% end %>
+  <% if session[:role] >= 100 %>
+    <%= render 'partials/questions' %>
+    <%= render 'partials/tags' %>
+  <% end %>
+  
+  <%= render 'partials/sections' %>
+</div>
+

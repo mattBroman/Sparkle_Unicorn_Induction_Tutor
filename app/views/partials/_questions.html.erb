@@ -1,0 +1,18 @@
+<h2>Questions</h2>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Difficulty</th>
+   </tr>
+   <% @questions.each do |question| %>
+   <tr>
+    <td> <%= question.title %> </td>
+    <td> <%= question.difficulty %> </td>
+    <td> <%= link_to 'proof', question_path(question) %></td>
+    <td> <%#= link_to 'delete', delete_question_path(question)%></td>
+  </tr>
+  <% end %>
+</table>
+
+<%= link_to 'create question', new_question_path %>

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @section.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @section.description %>
+</p>
+
+<div class="index">
+  <%= render 'partials/questions'%>
+</div>
+
+<% if session[:role] > 100 %>
+  <%= link_to 'Edit', edit_section_path(@section) %>
+<% end %>
+<%= link_to 'Back', user_path(session[:user_id]) %>

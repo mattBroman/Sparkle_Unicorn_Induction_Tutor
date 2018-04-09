@@ -12,4 +12,7 @@
   <body>
     <%= yield %>
   </body>
+  <% if session[:user_id] %>
+    <%= link_to 'logout', logout_path %>
+  <% end %>
 </html>

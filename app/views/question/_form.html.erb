@@ -1,0 +1,34 @@
+<%= form_for @question, url: question_index_path do |q| %>
+  <p>
+    <%= q.label :title %>
+    <%= q.text_field :title %>
+  </p>
+  <p>
+    <%= q.label :val %>
+    <%= q.text_area :val %>
+  </p>
+  <p>
+    <%= q.label :p_k %>
+    <%= q.text_field :p_k, :id => 'pk'%>
+  </p>
+  <p>
+    <%= q.label :implies %>
+    <%= q.text_field :implies, :id => 'implies'%>
+  </p>
+  <p>
+    <%= q.label :difficulty %>
+    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
+  </p>
+  <div class="field">
+    <%= q.label :tags %>
+    <%= select_tag "tags", options_from_collection_for_select(Tag.all, 'id', 'name', @question.tags.map{ |j| j.id }), :multiple => true %>
+  </div>
+  
+  <div class="field">
+      <%= q.hidden_field :user_id, value: session[:user_id] %>
+  </div>
+    <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
+  <p>
+    <%= q.submit 'submit' %>
+  </p>
+<% end %>

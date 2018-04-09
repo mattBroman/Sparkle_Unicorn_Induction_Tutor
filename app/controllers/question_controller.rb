@@ -19,21 +19,25 @@ class QuestionController < ApplicationController
       if parse['val'] == 'Bad'
         raise RuntimeError
       end
-      @question = Question.create!(question_params)
+      @question = Question.new(question_params)
+      @tags = Tag.where(id: params[:tags])
+      @question.tags << @tags
+      @question.save
     rescue RuntimeError
       flash[:notice] = 'invalid equations'
       redirect_to new_question_path
-    rescue
-      flash[:notice] = 'Fields may not be blank'
-      redirect_to new_question_path
+    #rescue
+    #  flash[:notice] = 'Fields may not be blank'
+    #  redirect_to new_question_path
     else
       flash[:notice] = "#{@question.title} was successfully created"
-      redirect_to question_index_path
+      redirect_to 
     end
   end
   
   def new
     @question = Question.new
+    @options = User.find(session[:user_id])
   end
   
   def show
@@ -70,7 +74,7 @@ class QuestionController < ApplicationController
   
   private
   def question_params
-    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty)
+    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty, :user_id, :tags => [])
   end
   
 end

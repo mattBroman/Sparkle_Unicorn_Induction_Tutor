@@ -1,0 +1,11 @@
+<h1>Select test user access level</h1>
+<%= form_for :session, url: login_path do |f| %>
+<p>
+    <%= f.label :access %>
+    <%= f.select :access, options_for_select(['admin', 'teacher', 'student']) %>
+</p>
+<p>
+    <%= f.submit 'go' %>
+</p>
+<% end %>
+    
