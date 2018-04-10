@@ -8,8 +8,10 @@ RSpec.describe IHypothesis do
         
 
         it "handles empty JSON" do
-            json_ex = {:pk => {:left=>["n", "n","+"], :right=>["2","n","*"]}, :IHypothesis => {:assumptions => {:n => ["k"]}, :assume => {:left=>["k", "k","+"], :right=>["2","k","*"]}}}.to_json
-           expect{IHypothesis.new(json_ex)}.to_not raise_error
+            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+            json_ex = {:IHypothesis => {:assumptions => {:n => ["k"]}, :assume => {:left=>["k", "k","+"], :right=>["2","k","*"]}}}.to_json
+           expect{IHypothesis.new(json_ex,pk)}.to_not raise_error
         end
         
 
@@ -20,8 +22,10 @@ RSpec.describe IHypothesis do
     context "IHypothesis.evaluate" do
        
         it "returns correctly for all variables" do
-            json_ex = {:pk => {:left=>["n", "n","+"], :right=>["2","n","*"]}, :IHypothesis => {:assumptions => {:n => ["k"]}, :assume => {:left=>["k", "k","+"], :right=>["2","k","*"]}}}.to_json
-            ih = IHypothesis.new(json_ex)
+            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+            json_ex = {:IHypothesis => {:assumptions => {:n => ["k"]}, :assume => {:left=>["k", "k","+"], :right=>["2","k","*"]}}}.to_json
+            ih = IHypothesis.new(json_ex,pk)
             ih.evaluate.should be true
         end
   

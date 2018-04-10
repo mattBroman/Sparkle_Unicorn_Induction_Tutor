@@ -8,10 +8,11 @@ RSpec.describe Proof do
         
 
         it "handles empty JSON" do
-            
-            json_ex = {:pk => {:left=>["n", "n","+"], :right=>["2","n","*"]}, :proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}}.to_json
+            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+            json_ex = {:proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}}.to_json
         
-            expect{Proof.new(json_ex)}.to_not raise_error
+            expect{Proof.new(json_ex,pk)}.to_not raise_error
             
         end
         
@@ -23,14 +24,17 @@ RSpec.describe Proof do
     context "Proof.evaluate" do
        
         it "returns correctly for all variables" do
-            json_ex = {:pk => {:left=>["n", "n","+"], :right=>["2","n","*"]}, :proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}}.to_json
-            p = Proof.new(json_ex)
+            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+            json_ex = {:proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}}.to_json
+            p = Proof.new(json_ex,pk)
             p.evaluate.should be true
         end
         
         it "returns correctly for all variables" do
-            json_ex = {:pk => {:left=>["n", "n","+"], :right=>["2","n","*"]}, :proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","*"]}]}}.to_json
-            p = Proof.new(json_ex)
+            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+            json_ex = { :proof=>{:assumptions => {:n=>["k","1","+"]}, :equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","*"]}]}}.to_json
+            p = Proof.new(json_ex,pk)
             p.evaluate.should be false
         end
                 
