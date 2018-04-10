@@ -33,6 +33,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        log_in @user
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -62,9 +63,10 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    user = User.find(params[:id])
+    user.destroy!
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to user_path(session[:user_id]), notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -78,13 +80,5 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :role, :sections => [])
-    end
-    
-    def admin?
-      session[:role] >= 1000
-    end
-    
-    def teacher?
-      session[:role] >= 100
     end
 end

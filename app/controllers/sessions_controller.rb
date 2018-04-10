@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   end
   
   def create
-    user = User.find_by(name: params[:session][:access].downcase)
+    user = User.find_by(id: params[:session][:id])
     log_in user
     redirect_to user
   end

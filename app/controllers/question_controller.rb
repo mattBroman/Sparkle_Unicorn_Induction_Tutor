@@ -31,7 +31,7 @@ class QuestionController < ApplicationController
     #  redirect_to new_question_path
     else
       flash[:notice] = "#{@question.title} was successfully created"
-      redirect_to 
+      redirect_to user_path(session[:user_id])
     end
   end
   
@@ -69,7 +69,7 @@ class QuestionController < ApplicationController
     @title = question.title
     question.destroy
     flash[:notice] = "#{@title} was deleted"
-    redirect_to question_index_path
+    redirect_to user_path(session[:user_id])
   end
   
   private

@@ -9,10 +9,18 @@
    <tr>
     <td> <%= u.name %> </td>
     <td> <%= u.role %> </td>
-    <td> <%= link_to 'user', user_path(u) %></td>
-    <td> <%#= link_to 'delete', delete_user_path(u)%></td>
+    <% if admin? %>
+      <td> <%= link_to 'user', user_path(u) %></td>
+      <td> <%= link_to 'edit', edit_user_path(u) %></td>
+      <td> <%= link_to 'delete', delete_user_path(u)%></td>
+    <% end %>
+    <% if teacher? and @unenroll%>
+      <td> <%=link_to 'unenroll', unenroll_path(@section, u) %></td>
+    <% end %>
   </tr>
   <% end %>
 </table>
 
-<%= link_to 'new user', new_user_path %>
+<% if admin? %>
+  <%= link_to 'new user', new_user_path %>
+<% end %>

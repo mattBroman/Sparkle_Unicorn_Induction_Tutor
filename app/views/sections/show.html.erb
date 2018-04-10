@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Name:</strong>
   <%= @section.name %>
@@ -10,11 +8,22 @@
   <%= @section.description %>
 </p>
 
+
+<% if teacher? %>
+  <div class="index">
+    <%= render 'partials/users' %>
+  </div>
+  
+  <div class="index">
+    <%= render 'partials/tags' %>
+  </div>
+<% end %>
+
 <div class="index">
   <%= render 'partials/questions'%>
 </div>
 
-<% if session[:role] > 100 %>
+<% if teacher? %>
   <%= link_to 'Edit', edit_section_path(@section) %>
 <% end %>
-<%= link_to 'Back', user_path(session[:user_id]) %>
+

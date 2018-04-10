@@ -9,10 +9,23 @@
    <tr>
     <td> <%= s.name %> </td>
     <td> <%= s.description %> </td>
-    <td> <%= link_to 'class', section_path(s) %></td>
-    <td> <%#= link_to 'delete', delete_section_path(s)%></td>
+    <% if @enroll %>
+      <td><%= link_to 'enroll', enroll_path(s, session[:user_id]) %></td>
+    <% else %>  
+      <td> <%= link_to 'class', section_path(s) %></td>
+    <% end %>
+    <% if teacher? %>
+      <td> <%= link_to 'edit', edit_section_path(s) %></td>
+      <td> <%= link_to 'delete', delete_section_path(s)%></td>
+    <% end %>
   </tr>
   <% end %>
 </table>
 
-<%= link_to 'create section', new_section_path %>
+<% if teacher? %>
+  <%= link_to 'create section', new_section_path %>
+<% end %>
+
+<% if student? and not teacher? and not @enroll%>
+  <%= link_to 'enrollment', sections_path %>
+<% end %>

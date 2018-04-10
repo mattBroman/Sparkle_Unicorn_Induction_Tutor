@@ -5,12 +5,16 @@ class SectionsController < ApplicationController
   # GET /sections.json
   def index
     @sections = Section.all
+    @enroll = true
   end
 
   # GET /sections/1
   # GET /sections/1.json
   def show
+    @users = (teacher?) ? @section.users : nil
     @tags = @section.tags
+    @unenroll = true
+    
     @questions = []
     @tags.each do |t|
       @questions += t.questions
@@ -37,7 +41,7 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.save
-        format.html { redirect_to @section, notice: 'Section was successfully created.' }
+        format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully created.' }
         format.json { render :show, status: :created, location: @section }
       else
         format.html { render :new }
@@ -52,12 +56,12 @@ class SectionsController < ApplicationController
     respond_to do |format|
       if @section.update(section_params)
         @users = User.where(id: params[:users])
-        @tags = Tag.wher(id: params[:tags])
+        @tags = Tag.where(id: params[:tags])
         @section.users.destroy_all
         @section.tags.destroy_all
         @section.users << @users
         @section.tags << @tags
-        format.html { redirect_to @section, notice: 'Section was successfully updated.' }
+        format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully updated.' }
         format.json { render :show, status: :ok, location: @section }
       else
         format.html { render :edit }
@@ -71,9 +75,26 @@ class SectionsController < ApplicationController
   def destroy
     @section.destroy
     respond_to do |format|
-      format.html { redirect_to sections_url, notice: 'Section was successfully destroyed.' }
+      format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def enroll
+    @user = User.where(id: params[:user_id])
+    @section = Section.find(params[:section_id])
+    @section.users << @user
+    flash[:notice] = "Successfully enrolled in #{@section.name}"
+    redirect_to user_path(session[:user_id])
+  end
+  
+  def unenroll
+    @user = User.where(id: params[:user_id])
+    name = @user.name
+    @section = Section.find(params[:section_id])
+    @section.users.delete(@user)
+    flash[:notice] = "Removed #{name} from #{@section.name}"
+    redirect_to section_path(@section)
   end
 
   private

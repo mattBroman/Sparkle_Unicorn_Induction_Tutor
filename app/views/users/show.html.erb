@@ -1,9 +1,8 @@
-<p id="notice"><%= notice %></p>
 <div>
-  <% if session[:role] >= 1000 %>
+  <% if admin? %>
     <%= render 'partials/users' %>
   <% end %>
-  <% if session[:role] >= 100 %>
+  <% if teacher? %>
     <%= render 'partials/questions' %>
     <%= render 'partials/tags' %>
   <% end %>
