@@ -20,8 +20,10 @@ class QuestionController < ApplicationController
         raise RuntimeError
       end
       @question = Question.new(question_params)
-      @tags = Tag.where(id: params[:tags])
-      @question.tags << @tags
+      if params[:tags]
+        @tags = Tag.where(id: params[:tags].keys)
+        @question.tags << @tags
+      end
       @question.save
     rescue RuntimeError
       flash[:notice] = 'invalid equations'
@@ -37,7 +39,22 @@ class QuestionController < ApplicationController
   
   def new
     @question = Question.new
-    @options = User.find(session[:user_id])
+    @new = true
+  end
+  
+  def edit
+    @question = Question.find(params[:id])
+  end
+  
+  def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
+    @question.tags.destroy_all
+    if params[:tags]
+      @tags = Tag.where(id: params[:tags].keys)
+      @question.tags << @tags
+    end
+    redirect_to user_path(session[:user_id])
   end
   
   def show

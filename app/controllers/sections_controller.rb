@@ -56,11 +56,8 @@ class SectionsController < ApplicationController
   def update
     respond_to do |format|
       if @section.update(section_params)
-        @users = User.where(id: params[:users])
-        @tags = Tag.where(id: params[:tags])
-        @section.users.destroy_all
+        @tags = Tag.where(id: params[:tags].keys)
         @section.tags.destroy_all
-        @section.users << @users
         @section.tags << @tags
         format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully updated.' }
         format.json { render :show, status: :ok, location: @section }
@@ -86,7 +83,7 @@ class SectionsController < ApplicationController
     @section = Section.find(params[:section_id])
     @section.users << @user
     flash[:notice] = "Successfully enrolled in #{@section.name}"
-    leave_class @section
+    leave_class
     redirect_to user_path(session[:user_id])
   end
   
@@ -96,6 +93,7 @@ class SectionsController < ApplicationController
     @section = Section.find(params[:section_id])
     @section.users.delete(@user)
     flash[:notice] = "Removed #{name} from #{@section.name}"
+    leave_class
     redirect_to section_path(@section)
   end
 

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     end
   end
   
+  post 'question/create', to: 'question#create', as: 'create_question'
+  patch 'question/(:id)/update', to: 'question#update', as: 'update_question'
   get 'question/(:id)/destroy', to: 'question#destroy', as: 'delete_question'
   get 'users/(:id)/destroy', to: 'users#destroy', as: 'delete_user'
   get 'tags/(:id)/destroy', to: 'tags#destroy', as: 'delete_tag'

@@ -23,7 +23,7 @@
   
   <div class="field">
     <%= form.label :questions %>
-    <%= select_tag "questions", options_from_collection_for_select(Question.all, 'id', 'name', @tag.questions.map{ |j| j.id }), :multiple => true %>
+    <%= select_tag "questions", options_from_collection_for_select(Question.all, 'id', 'title', @tag.questions.map{ |j| j.id }), :multiple => true %>
   </div>
   
   <div class="field">

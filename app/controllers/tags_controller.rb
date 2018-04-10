@@ -33,7 +33,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.save
-        format.html { redirect_to user_path(session[:user_path]), notice: 'Tag was successfully created.' }
+        format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully created.' }
         format.json { render :show, status: :created, location: @tag }
       else
         format.html { render :new }
@@ -53,7 +53,7 @@ class TagsController < ApplicationController
         @tag.questions.destroy_all
         @tag.sections << @sections
         @tag.questions << @questions
-        format.html { redirect_to user_path(session[:user_path]), notice: 'Tag was successfully updated.' }
+        format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully updated.' }
         format.json { render :show, status: :ok, location: @tag }
       else
         format.html { render :edit }

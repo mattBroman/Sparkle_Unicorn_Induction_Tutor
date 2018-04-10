@@ -1,3 +1,3 @@
 <% content_for :include, javascript_include_tag('new-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
 
-<%= render 'form' %>
+<%= render 'form', question: @question%>
