@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    leave_class
     @users = (admin?) ? User.all : nil
     @tags = (teacher?) ? Tag.all : nil
     @sections = (admin?) ? Section.all : @user.sections

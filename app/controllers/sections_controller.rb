@@ -11,6 +11,7 @@ class SectionsController < ApplicationController
   # GET /sections/1
   # GET /sections/1.json
   def show
+    set_class
     @users = (teacher?) ? @section.users : nil
     @tags = @section.tags
     @unenroll = true
@@ -85,6 +86,7 @@ class SectionsController < ApplicationController
     @section = Section.find(params[:section_id])
     @section.users << @user
     flash[:notice] = "Successfully enrolled in #{@section.name}"
+    leave_class @section
     redirect_to user_path(session[:user_id])
   end
   

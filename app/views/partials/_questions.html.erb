@@ -21,3 +21,9 @@
 <% if teacher? %>
   <%= link_to 'create question', new_question_path %>
 <% end %>
+
+<% if session[:section_id] %>
+  <% link_to 'back', section_path(session[:section_id]) %>
+<% else %>
+  <% link_to 'back', user_path(session[:user_id]) %>
+<% end %>
