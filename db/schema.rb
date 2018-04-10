@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310213616) do
+ActiveRecord::Schema.define(version: 20180410150108) do
 
   create_table "questions", force: :cascade do |t|
     t.string "p_k"
@@ -20,6 +20,52 @@ ActiveRecord::Schema.define(version: 20180310213616) do
     t.string "title"
     t.integer "difficulty"
     t.text "val"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_questions_on_user_id"
+  end
+
+  create_table "questions_tags", id: false, force: :cascade do |t|
+    t.integer "tag_id", null: false
+    t.integer "question_id", null: false
+    t.index ["question_id"], name: "index_questions_tags_on_question_id"
+    t.index ["tag_id"], name: "index_questions_tags_on_tag_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sections_tags", id: false, force: :cascade do |t|
+    t.integer "section_id", null: false
+    t.integer "tag_id", null: false
+    t.index ["section_id"], name: "index_sections_tags_on_section_id"
+    t.index ["tag_id"], name: "index_sections_tags_on_tag_id"
+  end
+
+  create_table "sections_users", id: false, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "section_id", null: false
+    t.index ["section_id"], name: "index_sections_users_on_section_id"
+    t.index ["user_id"], name: "index_sections_users_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

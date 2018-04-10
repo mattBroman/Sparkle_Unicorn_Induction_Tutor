@@ -1,0 +1,29 @@
+<p>
+  <strong>Name:</strong>
+  <%= @section.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @section.description %>
+</p>
+
+
+<% if teacher? %>
+  <div class="index">
+    <%= render 'partials/users' %>
+  </div>
+  
+  <div class="index">
+    <%= render 'partials/tags' %>
+  </div>
+<% end %>
+
+<div class="index">
+  <%= render 'partials/questions'%>
+</div>
+
+<% if teacher? %>
+  <%= link_to 'Edit', edit_section_path(@section) %>
+<% end %>
+

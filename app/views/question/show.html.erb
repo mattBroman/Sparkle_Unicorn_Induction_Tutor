@@ -22,4 +22,8 @@
     <%=text_field_tag "responce",  @responce, :id=>'responce' %>
 </div>
 
-<p><%= link_to 'back', question_index_path %></p>
+<% if session[:section_id] %>
+  <p><%= link_to 'back', section_path(session[:section_id]) %></p>
+<% else %>
+ <p><%= link_to 'back', user_path(session[:user_id]) %></p>
+<% end %>

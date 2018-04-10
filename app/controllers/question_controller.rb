@@ -19,21 +19,44 @@ class QuestionController < ApplicationController
       if parse['val'] == 'Bad'
         raise RuntimeError
       end
-      @question = Question.create!(question_params)
+      @question = Question.new(question_params)
+      if params[:tags]
+        @tags = Tag.where(id: params[:tags].keys)
+        @question.tags << @tags
+      end
+      @question.save
     rescue RuntimeError
       flash[:notice] = 'invalid equations'
       redirect_to new_question_path
-    rescue
-      flash[:notice] = 'Fields may not be blank'
-      redirect_to new_question_path
+    #rescue
+    #  flash[:notice] = 'Fields may not be blank'
+    #  redirect_to new_question_path
     else
       flash[:notice] = "#{@question.title} was successfully created"
-      redirect_to question_index_path
+      redirect_to user_path(session[:user_id])
     end
   end
   
   def new
     @question = Question.new
+    @new = true
+    @url = create_question_path
+  end
+  
+  def edit
+    @question = Question.find(params[:id])
+    @url = update_question_path([params[:id]])
+  end
+  
+  def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
+    @question.tags.destroy_all
+    if params[:tags]
+      @tags = Tag.where(id: params[:tags].keys)
+      @question.tags << @tags
+    end
+    redirect_to user_path(session[:user_id])
   end
   
   def show
@@ -65,12 +88,12 @@ class QuestionController < ApplicationController
     @title = question.title
     question.destroy
     flash[:notice] = "#{@title} was deleted"
-    redirect_to question_index_path
+    redirect_to user_path(session[:user_id])
   end
   
   private
   def question_params
-    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty)
+    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty, :user_id, :tags => [])
   end
   
 end

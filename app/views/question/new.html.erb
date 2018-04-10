@@ -1,32 +1,3 @@
 <% content_for :include, javascript_include_tag('new-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
 
-<%= form_for @question, url: question_index_path do |q| %>
-  <p>
-    <%= q.label :title %>
-    <%= q.text_field :title %>
-  </p>
-  <p>
-    <%= q.label :val %>
-    <%= q.text_area :val %>
-  </p>
-  <p>
-    <%= q.label :p_k %>
-    <%= q.text_field :p_k, :id => 'pk'%>
-  </p>
-  <p>
-    <%= q.label :implies %>
-    <%= q.text_field :implies, :id => 'implies'%>
-  </p>
-  <p>
-    <%= q.label :difficulty %>
-    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
-  </p>
-    <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
-  <p>
-    <%= q.submit 'submit' %>
-  </p>
-<% end %>
-
-<% if flash[:notice] %>
-  <p><%= flash[:notice] %></p>
-<% end %>
+<%= render 'form', question: @question%>

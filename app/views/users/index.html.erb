@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<div>
+  <% if @user.role >= 1000 %>
+    <%= render '../partials/users' %>
+  <% if @user.role >= 100 %>
+    <%= render '../partials/tags' %>
+  <% end %>
+  
+  <%= render '../partails/sections' %>
+  <%= render '../partials/questions' %>
+</div>
