@@ -1,81 +1,43 @@
-<% if @new %>
-  <%= form_for @question, url: create_question_path do |q| %>
-    <p>
-      <%= q.label :title %>
-      <%= q.text_field :title %>
-    </p>
-    <p>
-      <%= q.label :val %>
-      <%= q.text_area :val %>
-    </p>
-    <p>
-      <%= q.label :p_k %>
-      <%= q.text_field :p_k, :id => 'pk'%>
-    </p>
-    <p>
-      <%= q.label :implies %>
-      <%= q.text_field :implies, :id => 'implies'%>
-    </p>
-    <p>
-      <%= q.label :difficulty %>
-      <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
-    </p>
-    <div class="field">
-      <%= q.label :tags %>
-      <% Tag.all.each do |t| %>
-        <li>
-        <%= t.name %>
-        <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>
-        </li>
-      <% end %>
-    </div>
-    
-    <div class="field">
-        <%= q.hidden_field :user_id, value: session[:user_id] %>
-    </div>
-      <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
-    <p>
-      <%= q.submit 'submit' %>
-    </p>
-  <% end %>
-<% else %>
-  <%= form_for @question, url: update_question_path(params[:id]) do |q| %>
-    <p>
-      <%= q.label :title %>
-      <%= q.text_field :title %>
-    </p>
-    <p>
-      <%= q.label :val %>
-      <%= q.text_area :val %>
-    </p>
-    <p>
-      <%= q.label :p_k %>
-      <%= q.text_field :p_k, :id => 'pk'%>
-    </p>
-    <p>
-      <%= q.label :implies %>
-      <%= q.text_field :implies, :id => 'implies'%>
-    </p>
-    <p>
-      <%= q.label :difficulty %>
-      <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
-    </p>
-    <div class="field">
-      <%= q.label :tags %>
-      <% Tag.all.each do |t| %>
-        <li>
-        <%= t.name %>
-        <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>
-        </li>
-      <% end %>
-    </div>
-    
+
+<%= form_for @question, url: @url do |q| %>
+  <p>
+    <%= q.label :title %>
+    <%= q.text_field :title %>
+  </p>
+  <p>
+    <%= q.label :val %>
+    <%= q.text_area :val %>
+  </p>
+  <p>
+    <%= q.label :p_k %>
+    <%= q.text_field :p_k, :id => 'pk'%>
+  </p>
+  <p>
+    <%= q.label :implies %>
+    <%= q.text_field :implies, :id => 'implies'%>
+  </p>
+  <p>
+    <%= q.label :difficulty %>
+    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
+  </p>
+  
+  <div class="field">
+    <%= q.label :tags %>
+    <% Tag.where(user_id: session[:user_id]).each do |t| %>
+      <li>
+      <%= t.name %>
+      <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>
+      </li>
+    <% end %>
+  </div>
+  
+  <% if @new %>
     <div class="field">
         <%= q.hidden_field :user_id, value: session[:user_id] %>
     </div>
-      <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
-    <p>
-      <%= q.submit 'submit' %>
-    </p>
   <% end %>
+    <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
+  <p>
+    <%= q.submit 'submit' %>
+  </p>
 <% end %>

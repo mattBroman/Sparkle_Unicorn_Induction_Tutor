@@ -22,13 +22,12 @@
   </div>
   
   <div class="field">
-    <%= form.label :users %>
     <%= hidden_field_tag :users, session[:user_id] %>
   </div>
   
   <div class="field">
     <%= form.label :tags %>
-    <% Tag.all.each do |t| %>
+    <% Tag.where(user_id: session[:user_id]).each do |t| %>
       <li>
       <%= t.name %>
       <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>

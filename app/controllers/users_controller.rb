@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def show
     leave_class
     @users = (admin?) ? User.all : nil
-    @tags = (teacher?) ? Tag.all : nil
+    @tags =  admin? ? Tag.all : ((teacher?) ? Tag.where(user_id: session[:user_id]) : nil)
     @sections = (admin?) ? Section.all : @user.sections
     @questions = (admin?) ? Question.all : ((teacher?) ? Question.where(user_id: session[:user_id]) : nil)
   end

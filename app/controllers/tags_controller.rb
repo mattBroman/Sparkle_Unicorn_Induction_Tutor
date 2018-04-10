@@ -15,6 +15,7 @@ class TagsController < ApplicationController
   # GET /tags/new
   def new
     @tag = Tag.new
+    @new = true
   end
 
   # GET /tags/1/edit
@@ -25,11 +26,6 @@ class TagsController < ApplicationController
   # POST /tags.json
   def create
     @tag = Tag.new(tag_params)
-    @sections = Section.where(id: params[:sections])
-    @questions = Question.where(id: params[:questions])
-    @tag.sections << @sections
-    @tag.questions << @questions
-    
 
     respond_to do |format|
       if @tag.save
@@ -47,12 +43,7 @@ class TagsController < ApplicationController
   def update
     respond_to do |format|
       if @tag.update(tag_params)
-        @sections = Section.where(id: params[:sections])
-        @questions = Question.where(id: params[:questions])
-        @tag.sections.destroy_all
-        @tag.questions.destroy_all
-        @tag.sections << @sections
-        @tag.questions << @questions
+        
         format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully updated.' }
         format.json { render :show, status: :ok, location: @tag }
       else
@@ -80,6 +71,6 @@ class TagsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tag_params
-      params.require(:tag).permit(:name, :description, :sections => [], :questions => [])
+      params.require(:tag).permit(:name, :description, :user_id)
     end
 end

@@ -36,9 +36,11 @@ class SectionsController < ApplicationController
   def create
     @section = Section.new(section_params)
     @users = User.where(id: params[:users])
-    @tags = Tag.where(id: params[:tags])
     @section.users << @users
-    @section.tags << @tags
+    if params[:tags]
+      @tags = Tag.where(id: params[:tags].keys)
+      @section.tags << @tags
+    end
 
     respond_to do |format|
       if @section.save
@@ -56,9 +58,11 @@ class SectionsController < ApplicationController
   def update
     respond_to do |format|
       if @section.update(section_params)
-        @tags = Tag.where(id: params[:tags].keys)
         @section.tags.destroy_all
-        @section.tags << @tags
+        if params[:tags]
+          @tags = Tag.where(id: params[:tags].keys)
+          @section.tags << @tags
+        end
         format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully updated.' }
         format.json { render :show, status: :ok, location: @section }
       else

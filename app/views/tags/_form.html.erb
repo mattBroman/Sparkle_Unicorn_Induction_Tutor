@@ -21,15 +21,11 @@
     <%= form.text_area :description, id: :tag_description %>
   </div>
   
-  <div class="field">
-    <%= form.label :questions %>
-    <%= select_tag "questions", options_from_collection_for_select(Question.all, 'id', 'title', @tag.questions.map{ |j| j.id }), :multiple => true %>
-  </div>
-  
-  <div class="field">
-    <%= form.label :sections %>
-    <%= select_tag "sections", options_from_collection_for_select(Section.all, 'id', 'name', @tag.sections.map{ |j| j.id }), :multiple => true %>
-  </div>
+  <% if @new %>
+    <div class="field">
+        <%= form.hidden_field :user_id, value: session[:user_id] %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>

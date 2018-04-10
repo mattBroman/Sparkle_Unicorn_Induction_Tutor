@@ -40,10 +40,12 @@ class QuestionController < ApplicationController
   def new
     @question = Question.new
     @new = true
+    @url = create_question_path
   end
   
   def edit
     @question = Question.find(params[:id])
+    @url = update_question_path([params[:id]])
   end
   
   def update
