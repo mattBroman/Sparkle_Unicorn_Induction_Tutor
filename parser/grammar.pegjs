@@ -25,7 +25,7 @@ _Proof
     }
 
 _BaseCase
-  = "\begin{base}" _Newline
+  = "\\begin{base}" _Newline
     _* 
     assumptions:(
       first:_Assumption
@@ -48,7 +48,7 @@ _BaseCase
       }
     )?
     _*
-    "\end{base}"
+    "\\end{base}"
     {
       return {
       	assumptions,

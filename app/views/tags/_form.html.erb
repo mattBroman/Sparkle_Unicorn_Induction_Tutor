@@ -1,0 +1,37 @@
+<%= form_with(model: tag, local: true) do |form| %>
+  <% if tag.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tag.errors.count, "error") %> prohibited this tag from being saved:</h2>
+
+      <ul>
+      <% tag.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :tag_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :tag_description %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :questions %>
+    <%= select_tag "questions", options_from_collection_for_select(Question.all, 'id', 'name', @tag.questions.map{ |j| j.id }), :multiple => true %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :sections %>
+    <%= select_tag "sections", options_from_collection_for_select(Section.all, 'id', 'name', @tag.sections.map{ |j| j.id }), :multiple => true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

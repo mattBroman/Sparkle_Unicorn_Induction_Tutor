@@ -1,0 +1,12 @@
+<div>
+  <% if admin? %>
+    <%= render 'partials/users' %>
+  <% end %>
+  <% if teacher? %>
+    <%= render 'partials/questions' %>
+    <%= render 'partials/tags' %>
+  <% end %>
+  
+  <%= render 'partials/sections' %>
+</div>
+

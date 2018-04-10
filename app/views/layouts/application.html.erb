@@ -6,9 +6,20 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= content_for :include %>
   </head>
 
   <body>
+    <%= flash[:notice] %>
     <%= yield %>
   </body>
+  <% if session[:user_id] %>
+    <div class="session_management">
+      <%= link_to 'Logout', logout_path %>
+    </div>
+    <div>
+      <%= link_to 'My User Page', user_path(session[:user_id]) %>
+    </div>
+    
+  <% end %>
 </html>

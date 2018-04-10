@@ -146,8 +146,8 @@ function peg$parse(input, options) {
               baseCase
             };
           },
-      peg$c1 = "\begin{base}",
-      peg$c2 = peg$literalExpectation("\begin{base}", false),
+      peg$c1 = "\\begin{base}",
+      peg$c2 = peg$literalExpectation("\\begin{base}", false),
       peg$c3 = function(first, assumption) {
                 return assumption;
               },
@@ -161,8 +161,8 @@ function peg$parse(input, options) {
       peg$c6 = function(assumptions, first, chain) {
               return [first].concat(chain);
             },
-      peg$c7 = "end{base}",
-      peg$c8 = peg$literalExpectation("end{base}", false),
+      peg$c7 = "\\end{base}",
+      peg$c8 = peg$literalExpectation("\\end{base}", false),
       peg$c9 = function(assumptions, equivalenceExpressions) {
             return {
             	assumptions,
@@ -459,9 +459,9 @@ function peg$parse(input, options) {
     var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12;
 
     s0 = peg$currPos;
-    if (input.substr(peg$currPos, 11) === peg$c1) {
+    if (input.substr(peg$currPos, 12) === peg$c1) {
       s1 = peg$c1;
-      peg$currPos += 11;
+      peg$currPos += 12;
     } else {
       s1 = peg$FAILED;
       if (peg$silentFails === 0) { peg$fail(peg$c2); }
@@ -644,9 +644,9 @@ function peg$parse(input, options) {
                   s8 = peg$parse_();
                 }
                 if (s7 !== peg$FAILED) {
-                  if (input.substr(peg$currPos, 9) === peg$c7) {
+                  if (input.substr(peg$currPos, 10) === peg$c7) {
                     s8 = peg$c7;
-                    peg$currPos += 9;
+                    peg$currPos += 10;
                   } else {
                     s8 = peg$FAILED;
                     if (peg$silentFails === 0) { peg$fail(peg$c8); }

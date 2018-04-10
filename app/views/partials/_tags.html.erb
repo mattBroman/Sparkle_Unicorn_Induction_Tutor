@@ -1,0 +1,22 @@
+<h2>Tags</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+   </tr>
+   <% @tags.each do |t| %>
+   <tr>
+    <td> <%= t.name %> </td>
+    <td> <%= t.description %> </td>
+    <td> <%= link_to 'tag', tag_path(t) %></td>
+    <% if teacher? %>
+      <td> <%= link_to 'edit', edit_tag_path(t) %></td>
+      <td> <%= link_to 'delete', delete_tag_path(t)%></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+<% if teacher? %>
+  <%= link_to 'new tag', new_tag_path %>
+<% end %>
