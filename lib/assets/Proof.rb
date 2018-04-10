@@ -5,11 +5,11 @@ require_relative "EqExpression.rb"
 
 class Proof
     
-    def initialize(args)
+    def initialize(args,pk)
        @proof = JSON.parse(args)["proof"]
        
-       @pk = Pk.new(args)
-       
+       @pk = pk
+      
        @assumptions = Assumption.new(@proof.to_json)
        
        @eqs = EqExpression.new(@proof.to_json,@assumptions,true,@pk)

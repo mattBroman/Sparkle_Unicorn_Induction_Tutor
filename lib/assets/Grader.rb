@@ -1,14 +1,19 @@
 require_relative "Base.rb" 
+require_relative "IHypothesis.rb" 
+require_relative "Proof.rb" 
+
 class Grader
     
     #pass json of problem here
-   def initialize(args)
+   def initialize(args,pk=nil)
+        @pk = pk
         
         @exception = nil
         
         begin
           
             @bc = BaseCase.new(args)
+            @ih = IHypothesis.new(args,@pk)
         
         rescue Exception => exc
             @exception = true
@@ -24,18 +29,14 @@ class Grader
     def evaluate
     
         #return any errors or the correct evaluation
-        
-        if !@exception.nil? then
+        if(not (@exceptiopn)) then
             
-            @bcval = @bc_exception.message unless @bc_exception.nil?
-            
-        else
             @bcval = @bc.evaluate
-            
-            
+            @ihval = @ih.evaluate
         end
+
         
-        {:baseCase => @bcval}
+        {:baseCase => @bcval, :ihypothesis=>@ihval}
         
     end
     

@@ -6,9 +6,9 @@ require_relative "Assume.rb"
 
 class IHypothesis
     
-   def initialize(args)
+   def initialize(args,pk)
        
-        @pk = Pk.new(args)
+        @pk = pk
 
         @ih = JSON.parse(args)["IHypothesis"]
         
