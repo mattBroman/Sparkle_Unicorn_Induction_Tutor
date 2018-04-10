@@ -7,8 +7,9 @@ class EqExpression
     
     
     
-    def initialize(args, assumptions)
-        
+    def initialize(args, assumptions, symbolic=false, pk=nil)
+        @symbolic = symbolic
+        @pk = pk
         @eqBlocks = JSON.parse(args)["equivalenceExpressions"]
         
         raise RuntimeError, "Missing expression(s)" unless not @eqBlocks.nil?
@@ -33,28 +34,33 @@ class EqExpression
         end
         
         #variables still left in expressions
-        @eqBlocks.each do |eqLine|
-            eqLine["left"].each do |v|
-                raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
-            end unless eqLine["left"].nil?
-            eqLine["right"].each do |v|
-                raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
-            end unless eqLine["right"].nil?
-            
+        if(not  @symbolic) then
+            @eqBlocks.each do |eqLine|
+                eqLine["left"].each do |v|
+                    raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+                end unless eqLine["left"].nil?
+                eqLine["right"].each do |v|
+                    raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+                end unless eqLine["right"].nil?
+                
+            end
         end
-        
     
 
     end
     
     
     def evaluate
+        if(@symbolic) then 
+            return sym_evaluate()
+        end
+        
        eval = Evaluator.new
-        p @eqBlocks
+        
         val = eval.solve(@eqBlocks[0]["left"])
         
         
-       
+
         
        @eqBlocks.each do |eqLine|
             if(not(val == eval.solve(eqLine["right"]))) then
@@ -79,8 +85,78 @@ class EqExpression
         
     
     end
+
+
+
+    def sym_evaluate 
+        
+        #check first L with l_line
+        @pk_l = @pk.evaluate["left"].flat_map do |val|
+            val == "n"? ["k","1","+"] : val
+        end
+
+        if (not(@eqBlocks[0]["left"] == @pk_l)) then
+            #left not equal
+            return false
+        end
+        
+        
+        #check last R with r_line
+        
+        @pk_r = @pk.evaluate["right"].flat_map do |val|
+            val == "n"? ["k","1","+"] : val
+        end
+        
+        if(not(@eqBlocks.last["right"] == @pk_r)) then
+            return false
+        end
+        
+        
+        #check all lines are symblically equal
+        
+        base = @eqBlocks[0]["left"]
+        same = true
+        @eqBlocks.each do |eql|
+            same &= sym_eq_equal(base,eql["left"]) unless eql["left"]==[]
+            same &= sym_eq_equal(base,eql["right"])
+        end
+        return same
+        
+    end
+
+
+
+    #stubbed with a simple eqn    
+    def sym_eq_equal(base,eqn)
+        return sym_eq_equal_simple(base,eqn)
+
+    end
+    
+    #simple check
+    def sym_eq_equal_simple(base, eqn)
+        tvals = ["1","2","3","4","5"]
+        same = true
+        
+        eval = Evaluator.new
+
+        
+        tvals.each do |t|
+           z = base.map{|x| x =="k" ? t : x}
+           y = eqn.map{|x| x =="k" ? t : x}
+           same &= (eval.solve(z) == eval.solve(y))
+        end
+        
+        return same
+  
+        
+    end
+    
+
+
     
 end
+
+
 
     
     

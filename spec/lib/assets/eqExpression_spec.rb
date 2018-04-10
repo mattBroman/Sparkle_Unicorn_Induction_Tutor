@@ -12,6 +12,8 @@ RSpec.describe EqExpression do
           expect{EqExpression.new(json_ex, assumption)}.to_not raise_error
        end
        
+
+       
        
        
        it "should handle multiple chains of equations" do
@@ -41,6 +43,16 @@ RSpec.describe EqExpression do
        end
        
         
+       it "should handle a single chain of symbolic equations" do
+          pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+          assumption = double('Assumption', :evaluate => {"n" => ["k","1","+"]})
+          json_ex = {:equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}.to_json
+          
+          expect{EqExpression.new(json_ex, assumption,true,pk)}.to_not raise_error
+       end
+        
+        
     end
     
     context "EqExpression.evaluate" do
@@ -58,10 +70,50 @@ RSpec.describe EqExpression do
             e.evaluate.should be false
         end
         
+
+        
         
         
         
     end
+    
+    
+    context "EqExpression.sym_evaluate" do
+        
+       it "should return true for a valid symbolic chain" do
+          pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+          assumption = double('Assumption', :evaluate => {"n" => ["k","1","+"]})
+          json_ex = {:equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","1","+","*"]}]}.to_json
+          e = EqExpression.new(json_ex,assumption,true,pk)
+
+          e.evaluate.should be true
+       end  
+       
+       it "should return true for a valid symbolic chain (longer)" do
+          pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+          assumption = double('Assumption', :evaluate => {"n" => ["k","1","+"]})
+          json_ex = {:equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","*","2","+"]},{:left=>[],:right=>["2","k","1","+","*"]}]}.to_json
+          e = EqExpression.new(json_ex,assumption,true,pk)
+
+          e.evaluate.should be true
+       end  
+       
+       it "should return false for an invalid symbolic chain" do
+          pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+
+          assumption = double('Assumption', :evaluate => {"n" => ["k","1","+"]})
+          json_ex = {:equivalenceExpressions => [{:left=>["k","1","+","k","1","+","+"], :right=>["2","k","*"]}]}.to_json
+          e = EqExpression.new(json_ex,assumption,true,pk)
+
+          e.evaluate.should be false
+       end           
+        
+    end
+    
+    
+
     
     
 end
