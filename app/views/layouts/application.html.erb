@@ -10,7 +10,7 @@
   </head>
 
   <body>
-    <div class = "jumbotron"><div class="container">
+    <div class = "jumbotron", id="header"><div class="container">
       <h1 class="display-3"> Sparkle Unicorn Induction Tutor</h1>
       <% if @user %>
         <p class = "lead"> Howdy <%= @user.name%>!</p>
@@ -36,7 +36,7 @@
           </ul>
         <% end %>
         </div>
-        <%= flash[:notice] %>
+        <p><%= flash[:notice] %><p>
     </div></div>
     <div class = "container">
       <%= yield %>
