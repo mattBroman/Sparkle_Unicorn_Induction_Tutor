@@ -20,10 +20,13 @@ _Proof
     _*
     inductiveHypothesis: _InductiveHypothesis?
     _*
+    proof: _ProofBlock?
+    _*
     {
       return {
         baseCase,
-        inductiveHypothesis
+        inductiveHypothesis,
+        proof
       };
     }
 
@@ -104,8 +107,7 @@ _ProofBlock
         return equivalence;
       })*
       {
-        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
-        return Object.assign({},first,result);
+        return [first].concat(chain);
       }
     )?
     _*
@@ -117,8 +119,7 @@ _ProofBlock
         return equivalence;
       })*
       {
-        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
-        return Object.assign({},first,result);
+        return [first].concat(chain);
       }
     )?
     _*

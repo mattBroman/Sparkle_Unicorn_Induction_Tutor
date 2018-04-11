@@ -19,7 +19,8 @@ test('Returns valid schema (1)', returns,
 ``,
 {
   baseCase: null,
-  inductiveHypothesis: null
+  inductiveHypothesis: null,
+  proof: null
 });
 test('Returns valid schema (2)', returns,
 `Let x = 4`,
@@ -42,7 +43,9 @@ test('Returns valid schema (6)', returns,
 `\\begin{base}
 \\end{base}
 \\begin{inductiveHypothesis}
-\\end{inductiveHypothesis}`,
+\\end{inductiveHypothesis}
+\\begin{proof}
+\\end{proof}`,
 {
   baseCase: {
     assumptions: null,
@@ -51,5 +54,11 @@ test('Returns valid schema (6)', returns,
   inductiveHypothesis: {
     assumptions: null,
     hypothesis: null
+  },
+  proof: {
+    assumptions: null,
+    pre: null,
+    is: null,
+    post: null
   }
 });
