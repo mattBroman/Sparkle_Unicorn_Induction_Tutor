@@ -11,31 +11,31 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name, id: :section_name %>
+    <%= form.text_field :name, id: :section_name, class: "form-control"%>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :description %>
-    <%= form.text_area :description, id: :section_description %>
+    <%= form.text_area :description, id: :section_description, class: "form-control" %>
   </div>
   
-  <div class="field">
+  <div class="hidden">
     <%= hidden_field_tag :users, session[:user_id] %>
   </div>
   
-  <div class="field">
+  <div class="form-group">
     <%= form.label :tags %>
-    <% Tag.where(user_id: session[:user_id]).each do |t| %>
-      <li>
-      <%= t.name %>
-      <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>
-      </li>
+    <% @tags.each do |t| %>
+      <div class="form-check">
+        <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}", class: "form-check-input" %>
+        <%= t.name %>
+      </div>
     <% end %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="from-group">
+    <%= form.submit 'Submit',class: "btn btn-primary" %>
   </div>
 <% end %>

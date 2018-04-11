@@ -11,14 +11,14 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name, id: :tag_name %>
+    <%= form.text_field :name, id: :tag_name, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :description %>
-    <%= form.text_area :description, id: :tag_description %>
+    <%= form.text_area :description, id: :tag_description, class: "form-control" %>
   </div>
   
   <% if @new %>
@@ -27,7 +27,7 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.submit 'Submit', class: "btn btn-primary" %>
   </div>
 <% end %>

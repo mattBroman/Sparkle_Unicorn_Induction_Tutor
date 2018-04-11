@@ -45,11 +45,13 @@ class QuestionController < ApplicationController
     @question = Question.new
     @new = true
     @url = create_question_path
+    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
   end
   
   def edit
     @question = Question.find(params[:id])
     @url = update_question_path([params[:id]])
+    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
   end
   
   def update
