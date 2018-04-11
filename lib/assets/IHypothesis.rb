@@ -10,7 +10,7 @@ class IHypothesis
        
         @pk = pk
 
-        @ih = JSON.parse(args)["IHypothesis"]
+        @ih = JSON.parse(args)["inductiveHypothesis"]
         
         @assumptions = Assumption.new(@ih.to_json)
 

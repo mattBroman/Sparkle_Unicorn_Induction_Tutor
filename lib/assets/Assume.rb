@@ -15,7 +15,7 @@ class Assume
        
         raise RuntimeError, "Missing assumption(s)" unless not @assumptions.nil?
         
-        @lr_line = JSON.parse(args)["assume"]
+        @lr_line = JSON.parse(args)["hypothesis"]
         
         raise RuntimeError, "Missing assume statement" unless not @lr_line.nil?
 

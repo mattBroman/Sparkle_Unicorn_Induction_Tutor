@@ -31,8 +31,8 @@ RSpec.describe Grader do
             json_ex = {
                 :baseCase => {:assumptions => {:b=>["3"]}, 
                     :equivalenceExpressions => [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}]},
-                :IHypothesis => {:assumptions => {:n => ["k"]},
-                    :assume => {:left=>["k", "k","+"], :right=>["2","k","*"]}}
+                :inductiveHypothesis => {:assumptions => {:n => ["k"]},
+                    :hypothesis => {:left=>["k", "k","+"], :right=>["2","k","*"]}}
                 
             }.to_json
 

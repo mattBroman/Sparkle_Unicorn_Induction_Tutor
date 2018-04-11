@@ -1,9 +1,13 @@
 #Dir["../../lib/assets/*.rb"].each {|file| require_dependency file }
+require_dependency '../../lib/assets/Pk.rb'
 require_dependency '../../lib/assets/Grader.rb'
 require_dependency '../../lib/assets/Base.rb'
 require_dependency '../../lib/assets/Assumption.rb'
 require_dependency '../../lib/assets/EqExpression.rb'
 require_dependency '../../lib/assets/Evaluate.rb'
+require_dependency '../../lib/assets/IHypothesis.rb'
+require_dependency '../../lib/assets/Assume.rb'
+
 
 #require "#{Rails.root}/lib/assets/Grader"
 
@@ -71,7 +75,8 @@ class QuestionController < ApplicationController
     #  nil : JSON.parse(params[:json_data])
     #responce = (my_hash == nil) ? '' : my_hash['parse']
     begin
-      grader = Grader.new params[:json_data]
+      pk = Pk.new(@question.p_k, @question.implies)
+      grader = Grader.new(params[:json_data],pk)
       
     rescue Exception => e
       p e

@@ -134,7 +134,7 @@ _ProofBlock
     }
 
 _InductiveStep
-  = "\inductiveStep{"
+  = "\\inductiveStep{"
     _*
     expression:_EquivalenceExpression
     _*

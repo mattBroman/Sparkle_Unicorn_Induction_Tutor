@@ -14,6 +14,9 @@ class Grader
           
             @bc = BaseCase.new(args)
             @ih = IHypothesis.new(args,@pk)
+            
+            raise RuntimeError("bad ih") unless not @ih.nil?
+            
         
         rescue Exception => exc
             @exception = true
@@ -29,10 +32,17 @@ class Grader
     def evaluate
     
         #return any errors or the correct evaluation
-        if(not (@exceptiopn)) then
+        if(not (@exception)) then
+            
+            raise RuntimeError("bad ih") unless not @ih.nil?
+
             
             @bcval = @bc.evaluate
             @ihval = @ih.evaluate
+            
+        else
+            @bcval = @bc_exception.message
+            
         end
 
         
