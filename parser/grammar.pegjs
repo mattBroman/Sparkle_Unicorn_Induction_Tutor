@@ -18,9 +18,15 @@ _Proof
   = _*
     baseCase: _BaseCase?
     _*
+    inductiveHypothesis: _InductiveHypothesis?
+    _*
+    proof: _ProofBlock?
+    _*
     {
       return {
-        baseCase
+        baseCase,
+        inductiveHypothesis,
+        proof
       };
     }
 
@@ -54,6 +60,87 @@ _BaseCase
       	assumptions,
         equivalenceExpressions
       };
+    }
+
+_InductiveHypothesis
+  = "\\begin{inductiveHypothesis}" _Newline
+    _*
+    assumptions:(
+      first:_Assumption
+      chain:(_Newline _* assumption:_Assumption
+        {
+          return assumption;
+        })*
+      {
+        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+        return Object.assign({},first,result);
+      }
+    )?
+    _*
+    hypothesis:_EquivalenceExpression?
+    _*
+    "\\end{inductiveHypothesis}"
+    {
+      return {
+        assumptions,
+        hypothesis
+      };
+    }
+
+_ProofBlock
+  = "\\begin{proof}" _Newline
+    _*
+    assumptions:(
+      first:_Assumption
+      chain:(_Newline _* assumption:_Assumption {
+        return assumption;
+      })*
+      {
+        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
+        return Object.assign({},first,result);
+      }
+    )?
+    _*
+    pre:(
+      first:_EquivalenceExpression
+      chain:(_Newline _* equivalence:_EquivalenceExpression {
+        return equivalence;
+      })*
+      {
+        return [first].concat(chain);
+      }
+    )?
+    _*
+    is:_InductiveStep?
+    _*
+    post:(
+      first:_EquivalenceExpression
+      chain:(_Newline _* equivalence:_EquivalenceExpression {
+        return equivalence;
+      })*
+      {
+        return [first].concat(chain);
+      }
+    )?
+    _*
+    "\\end{proof}"
+    {
+      return {
+        assumptions,
+        pre,
+        is,
+        post
+      };
+    }
+
+_InductiveStep
+  = "\inductiveStep{"
+    _*
+    expression:_EquivalenceExpression
+    _*
+    "}"
+    {
+      return expression;
     }
 
 _Assumption
