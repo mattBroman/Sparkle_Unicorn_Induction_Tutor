@@ -8,6 +8,13 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class = "jumbotron">
+      <h1 class="display-3"> Sparkle Unicorn Induction Tutor</h1>
+      <% if @user %>
+        <p class = "lead"> Welcome <%= @user.name %></p>
+    </div>
+    <div class = container>
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,33 +1,33 @@
 
 <%= form_for @question, url: @url do |q| %>
-  <p>
+  <div class="form-group">
     <%= q.label :title %>
-    <%= q.text_field :title %>
-  </p>
-  <p>
+    <%= q.text_field :title, class: "form-control" %>
+  </div>
+  <div class="form-group">
     <%= q.label :val %>
-    <%= q.text_area :val %>
-  </p>
-  <p>
+    <%= q.text_area :val , class: "form-control"%>
+  </div>
+  <div class="form-group">
     <%= q.label :p_k %>
-    <%= q.text_field :p_k, :id => 'pk'%>
-  </p>
-  <p>
+    <%= q.text_field :p_k, :id => 'pk', class: "form-control"%>
+  </div>
+  <div class="form-group">
     <%= q.label :implies %>
-    <%= q.text_field :implies, :id => 'implies'%>
-  </p>
-  <p>
+    <%= q.text_field :implies, :id => 'implies', class: "form-control"%>
+  </div>
+  <div class="form-group">
     <%= q.label :difficulty %>
-    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1') %>
-  </p>
+    <%= q.select :difficulty, options_for_select(['1','2','3','4','5'], '1'), class: "form-control" %>
+  </div>
   
-  <div class="field">
+  <div class="form-group">
     <%= q.label :tags %>
-    <% Tag.where(user_id: session[:user_id]).each do |t| %>
-      <li>
+    <% @tags.each do |t| %>
+      <div class = "form-check">
+      <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}", class: "form-check-input" %>
       <%= t.name %>
-      <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}" %>
-      </li>
+      </div>
     <% end %>
   </div>
   
@@ -36,8 +36,8 @@
         <%= q.hidden_field :user_id, value: session[:user_id] %>
     </div>
   <% end %>
-    <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
+    <%= hidden_field_tag 'json_data', nil, :id=>'hidden'%>
   <p>
-    <%= q.submit 'submit' %>
+    <%= q.submit 'submit', class: "btn btn-primary" %>
   </p>
 <% end %>

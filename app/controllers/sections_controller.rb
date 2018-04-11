@@ -25,10 +25,13 @@ class SectionsController < ApplicationController
   # GET /sections/new
   def new
     @section = Section.new
+    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
+    @new = true
   end
 
   # GET /sections/1/edit
   def edit
+    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
   end
 
   # POST /sections
@@ -112,3 +115,4 @@ class SectionsController < ApplicationController
       params.require(:section).permit(:name, :description, :users => [], :tags => [])
     end
 end
+

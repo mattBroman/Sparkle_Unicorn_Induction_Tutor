@@ -3,4 +3,6 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include UsersHelper
   include SectionsHelper
+  include TagsHelper
+  
 end

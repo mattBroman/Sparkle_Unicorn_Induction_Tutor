@@ -1,5 +1,5 @@
 <% content_for :include, javascript_include_tag('question-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
-
+<% content_for :jumbotron, 'Proof Page', flush: true %>
 <div id = 'Question'>
   <p><%= @question.val %></p>
 </div>

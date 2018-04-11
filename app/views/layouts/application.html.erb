@@ -10,16 +10,36 @@
   </head>
 
   <body>
-    <%= flash[:notice] %>
-    <%= yield %>
+    <div class = "jumbotron"><div class="container">
+      <h1 class="display-3"> Sparkle Unicorn Induction Tutor</h1>
+      <% if @user %>
+        <p class = "lead"> Howdy <%= @user.name%>!</p>
+      <% end %>
+      <div class="container">
+        <% if session[:user_id] %>
+          <ul class="nav">
+            <li>
+              <%= link_to 'Logout', logout_path, class: "nav-link active" %>
+            </li>
+            <li>
+              <%= link_to 'My User Page', user_path(session[:user_id]), class: "nav-link active" %>
+            </li>
+          </ul>
+        <% else %>
+          <ul class="nav">
+            <li>
+              <%= link_to 'Login', login_path, class: "nav-link active" %>
+            </li>
+            <li>
+              <%= link_to 'Sign up', new_user_path, class: "nav-link active" %>
+            </li>
+          </ul>
+        <% end %>
+        </div>
+        <%= flash[:notice] %>
+    </div></div>
+    <div class = "container">
+      <%= yield %>
+    </div>
   </body>
-  <% if session[:user_id] %>
-    <div class="session_management">
-      <%= link_to 'Logout', logout_path %>
-    </div>
-    <div>
-      <%= link_to 'My User Page', user_path(session[:user_id]) %>
-    </div>
-    
-  <% end %>
 </html>
