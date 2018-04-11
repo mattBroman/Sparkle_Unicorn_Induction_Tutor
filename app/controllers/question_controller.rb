@@ -82,7 +82,7 @@ class QuestionController < ApplicationController
       
     rescue Exception => e
       p e
-      session[:responce] = e
+      session[:responce] = nil
     else
       session[:responce] = grader.evaluate
     end

@@ -1,25 +1,33 @@
 <% content_for :include, javascript_include_tag('question-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
-<% content_for :jumbotron, 'Proof Page', flush: true %>
 <div id = 'Question'>
   <p><%= @question.val %></p>
 </div>
 
-<div id = 'Entry'>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <%= form_tag grade_question_path, {:id => 'my_form'} do %>
+        <div class ="form-group">
+          <%= text_area_tag "comment", @comment, :id=>'plain_text', class: "form-control", rows: "20" %>
+        </div>
+        <%= hidden_field_tag 'json_data', nil, :id=>'hidden'%>
+        <div class="form-group">
+          <%= submit_tag 'to rails', :id=>'submit', class: "btn btn-primary"%>
+        </div>
+      <% end -%>
+    </div>
+    
+    <div class = "col-sm">
+      <div class="form-group">
+          <%= text_area_tag 'parse_result', nil, :id=>'pretty_page', class: "form-control", rows: "20" %>
+      </div>
+    </div>
   
-  <div id = 'left_side'>
-    <%= form_tag grade_question_path, {:id => 'my_form'} do %>
-      <%= text_area_tag "comment", @comment, :id=>'plain_text' %>
-      <%= text_area_tag 'json_data', nil, :id=>'hidden'%>
-      <%= submit_tag 'to rails', :id=>'submit'%>
-    <% end -%>
   </div>
-
-  <div id = right_side>
-      <%= text_area_tag 'parse_result', nil, :id=>'pretty_page' %>
-  </div>
-</div>
-<div id = 'bottom'>
-    <%=text_field_tag "responce",  @responce, :id=>'responce' %>
+  
+  <% if @responce != nil %> 
+    <p>Basis: <%= @responce["baseCase"]%>, Induction: <%= @responce[:"ihypothesis"] %> </p>
+  <% end %>
 </div>
 
 <% if session[:section_id] %>
