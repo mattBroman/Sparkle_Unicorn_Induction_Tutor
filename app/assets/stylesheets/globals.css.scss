@@ -15,3 +15,7 @@
     background-color : $maroon;
     border-color : black;
 }
+
+textarea[name=set-size] {
+    resize: none;
+}

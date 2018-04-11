@@ -8,7 +8,7 @@
     <div class="col-sm">
       <%= form_tag grade_question_path, {:id => 'my_form'} do %>
         <div class ="form-group">
-          <%= text_area_tag "comment", @comment, :id=>'plain_text', class: "form-control", rows: "20" %>
+          <%= text_area_tag "comment", @comment, :id=>'plain_text', class: "form-control", name: "set-size", rows: "20" %>
         </div>
         <%= hidden_field_tag 'json_data', nil, :id=>'hidden'%>
         <div class="form-group">
@@ -19,7 +19,7 @@
     
     <div class = "col-sm">
       <div class="form-group">
-          <%= text_area_tag 'parse_result', nil, :id=>'pretty_page', class: "form-control", rows: "20" %>
+          <%= text_area_tag 'parse_result', nil, :id=>'pretty_page', class: "form-control", name: "set-size", rows: "20" %>
       </div>
     </div>
   
