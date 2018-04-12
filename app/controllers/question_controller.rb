@@ -14,7 +14,16 @@ require_dependency '../../lib/assets/Assume.rb'
 class QuestionController < ApplicationController
   
   def index
-    @questions = Question.all
+    if params[:admin] and admin?
+      session[:page] = "Questions"
+      session[:back] = admin_questions_path(admin: true)
+      @questions = Question.all
+    elsif teacher?
+      session[:page] = "My Questions"
+      session[:back] = question_index_path
+      @questions = Question.where(user_id: session[:user_id])
+      @my = true
+    end
   end
   
   def create
@@ -37,7 +46,7 @@ class QuestionController < ApplicationController
     #  redirect_to new_question_path
     else
       flash[:notice] = "#{@question.title} was successfully created"
-      redirect_to user_path(session[:user_id])
+      redirect_to session[:back]
     end
   end
   
@@ -45,13 +54,13 @@ class QuestionController < ApplicationController
     @question = Question.new
     @new = true
     @url = create_question_path
-    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
+    @tags = Tag.where(user_id: session[:user_id])
   end
   
   def edit
     @question = Question.find(params[:id])
     @url = update_question_path([params[:id]])
-    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
+    @tags = Tag.where(user_id: session[:user_id])
   end
   
   def update
@@ -62,7 +71,7 @@ class QuestionController < ApplicationController
       @tags = Tag.where(id: params[:tags].keys)
       @question.tags << @tags
     end
-    redirect_to user_path(session[:user_id])
+    redirect_to session[:back]
   end
   
   def show
@@ -95,7 +104,7 @@ class QuestionController < ApplicationController
     @title = question.title
     question.destroy
     flash[:notice] = "#{@title} was deleted"
-    redirect_to user_path(session[:user_id])
+    redirect_to session[:back]
   end
   
   private

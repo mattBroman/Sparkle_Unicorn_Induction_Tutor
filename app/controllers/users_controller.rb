@@ -4,20 +4,25 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
+    session[:page] = 'Users'
+    session[:back] = users_path
+    @users = admin? ? User.all : nil
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    leave_class
-    @users = (admin?) ? User.all : nil
-    @tags =  admin? ? Tag.all : ((teacher?) ? Tag.where(user_id: session[:user_id]) : nil)
-    @sections = (admin?) ? Section.all : @user.sections
-    @questions = (admin?) ? Question.all : ((teacher?) ? Question.where(user_id: session[:user_id]) : nil)
+    if @user.id == session[:user_id]
+      session[:page] = 'User'
+      session[:back] = user_path(session[:user_id])
+    end
+    @sections = @user.sections
+    @sections = @sections.empty? ? nil : @sections
   end
 
   # GET /users/new
   def new
+    session[:page] = "Sign Up"
     @user = User.new
   end
 
@@ -52,7 +57,7 @@ class UsersController < ApplicationController
         @sections = Section.where(id: params[:sections])
         @user.sections.destroy_all
         @user.sections << @sections
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to session[:back], notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -67,7 +72,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     user.destroy!
     respond_to do |format|
-      format.html { redirect_to user_path(session[:user_id]), notice: 'User was successfully destroyed.' }
+      format.html { redirect_to session[:back], notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

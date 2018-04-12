@@ -6,32 +6,34 @@
     <tr>
       <th scope="col">Name</th>
       <th scope="col">Description</th>
+      <% if @enroll %>
+        <th scope="col">Add/Drop</th>
+      <% elsif teacher? %>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      <% end %>
      </tr>
    </thead>
    <tbody>
      <% @sections.each do |s| %>
      <tr>
-      <td> <%= s.name %> </td>
+      <td> <%= link_to "#{s.name}", section_path(s) %> </td>
       <td> <%= s.description %> </td>
-      <% if @enroll %>
-        <td><%= link_to 'enroll', enroll_path(s, session[:user_id]) %></td>
-      <% else %>  
-        <td> <%= link_to 'class', section_path(s) %></td>
-      <% end %>
-      <% if teacher? %>
-        <td> <%= link_to 'edit', edit_section_path(s) %></td>
-        <td> <%= link_to 'delete', delete_section_path(s)%></td>
+      <% if @enroll and s.users.find_by(id: session[:user_id])%>
+        <td><%= link_to 'Drop', unenroll_path(s, session[:user_id]) %></td>
+      <% elsif @enroll %>  
+        <td> <%= link_to 'Add', enroll_path(s, session[:user_id]) %></td>
+      <% else %>
+        <td> <%= link_to 'Edit', edit_section_path(s) %></td>
+        <td> <%= link_to 'Delete', delete_section_path(s)%></td>
       <% end %>
     </tr>
   </tbody>
   <% end %>
 </table>
 
-<% if teacher? %>
+<% if teacher? and @enroll%>
   <%= link_to 'create section', new_section_path, class: "btn btn-primary" %>
 <% end %>
 
-<% if student? and not teacher? and not @enroll%>
-  <%= link_to 'enrollment', sections_path, class: "btn btn-primary" %>
-<% end %>
 </div>

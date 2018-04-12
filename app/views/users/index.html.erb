@@ -1,12 +1,2 @@
-<p id="notice"><%= notice %></p>
-
-<div>
-  <% if @user.role >= 1000 %>
-    <%= render '../partials/users' %>
-  <% if @user.role >= 100 %>
-    <%= render '../partials/tags' %>
-  <% end %>
-  
-  <%= render '../partails/sections' %>
-  <%= render '../partials/questions' %>
-</div>
+<div class="text-center"><strong>As an admin, this is where you manage all user accounts.</strong></div>
+<%= render 'partials/users' %>

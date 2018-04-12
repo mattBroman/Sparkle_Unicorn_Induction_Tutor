@@ -2,10 +2,12 @@ module SessionsHelper
     def log_in(user)
         session[:user_id] = user.id
         session[:role] = user.role
+        session[:user_name] = user.name
     end
     
     def log_out
-        session[:user_id] = nil
-        session[:role] = nil
+        session.keys.each do |k|
+            session[k] = nil
+        end
     end
 end

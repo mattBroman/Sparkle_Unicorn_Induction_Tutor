@@ -4,14 +4,22 @@ class SectionsController < ApplicationController
   # GET /sections
   # GET /sections.json
   def index
-    @sections = Section.all
-    @enroll = true
+    if params[:enroll]
+      session[:page] = 'Enroll'
+      session[:back] = view_enroll_path(true)
+      @sections = Section.all
+      @enroll = true
+    else
+      session[:page] = 'Sections'
+      session[:back] = sections_path
+      @sections = admin? ? Section.all : User.find(session[:user_id]).sections
+    end
   end
 
   # GET /sections/1
   # GET /sections/1.json
   def show
-    set_class
+    session[:back] = section_path(@section)
     @users = (teacher?) ? @section.users : nil
     @tags = @section.tags
     @unenroll = true
@@ -25,13 +33,13 @@ class SectionsController < ApplicationController
   # GET /sections/new
   def new
     @section = Section.new
-    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
+    @tags = Tag.where(user_id: session[:user_id])
     @new = true
   end
 
   # GET /sections/1/edit
   def edit
-    @tags = admin? ? Tag.all : Tag.where(user_id: session[:user_id])
+    @tags = Tag.where(user_id: session[:user_id])
   end
 
   # POST /sections
@@ -47,7 +55,7 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.save
-        format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully created.' }
+        format.html { redirect_to session[:back], notice: 'Section was successfully created.' }
         format.json { render :show, status: :created, location: @section }
       else
         format.html { render :new }
@@ -66,7 +74,7 @@ class SectionsController < ApplicationController
           @tags = Tag.where(id: params[:tags].keys)
           @section.tags << @tags
         end
-        format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully updated.' }
+        format.html { redirect_to session[:back], notice: 'Section was successfully updated.' }
         format.json { render :show, status: :ok, location: @section }
       else
         format.html { render :edit }
@@ -80,7 +88,7 @@ class SectionsController < ApplicationController
   def destroy
     @section.destroy
     respond_to do |format|
-      format.html { redirect_to user_path(session[:user_id]), notice: 'Section was successfully destroyed.' }
+      format.html { redirect_to session[:back], notice: 'Section was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -90,8 +98,7 @@ class SectionsController < ApplicationController
     @section = Section.find(params[:section_id])
     @section.users << @user
     flash[:notice] = "Successfully enrolled in #{@section.name}"
-    leave_class
-    redirect_to user_path(session[:user_id])
+    redirect_to session[:back]
   end
   
   def unenroll
@@ -100,8 +107,7 @@ class SectionsController < ApplicationController
     @section = Section.find(params[:section_id])
     @section.users.delete(@user)
     flash[:notice] = "Removed #{name} from #{@section.name}"
-    leave_class
-    redirect_to section_path(@section)
+    redirect_to session[:back]
   end
 
   private
