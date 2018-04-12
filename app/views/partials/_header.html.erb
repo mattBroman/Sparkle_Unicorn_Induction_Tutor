@@ -1,0 +1,12 @@
+<div class = "jumbotron", id="header">
+  <div class="container">
+      <div class="text-center">
+        <h1 class="display-3"> Sparkle Unicorn Induction Tutor </h1>
+    </div>
+  </div>
+</div>
+<% if session[:user_id] %>
+  <%= render 'partials/reg_nav' %>
+<% else %>
+  <%= render 'partials/anon_nav' %>
+<% end %>

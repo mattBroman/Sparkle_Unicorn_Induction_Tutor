@@ -2,8 +2,4 @@
 
 <%= render 'form', question: @question %>
 
-<% if session[:section_id] %>
-    <%= link_to 'Back', section_path(session[:section_id]) %>
-<% else %>
-    <%= link_to 'Back', user_path(session[:user_id]) %>
-<% end %>
+<%= link_to 'Back', session[:back] %>

@@ -1,7 +1,15 @@
 <% content_for :include, javascript_include_tag('none-bundle', 'data-turbolinks-track': 'reload'), :flush => true%>
 
-<%= render 'partials/questions' %>
-
-<p> <%= link_to 'home', welcome_index_path %></p>
+<% if @my %>
+  <% if not @questions.empty?%>
+    <%= render 'partials/questions' %>
+  <% else %>
+    <p>You don't have any Questions! make some.</p>
+  <% end %>
+  <%= link_to 'New Question', new_question_path, class: "btn btn-primary"%>
+<% else %>
+  <div class="text-center"><strong>As an admin, this is where you manage all Questions.</strong></div>
+  <%= render 'partials/questions' %>
+<% end %>
 
     

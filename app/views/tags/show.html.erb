@@ -8,5 +8,22 @@
   <%= @tag.description %>
 </p>
 
+<div class="row">
+  <div class="col-sm">
+    <% if @questions %>
+      <div class = "container">
+        <% render 'partials/questions' %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-sm">
+    <% if @sections %>
+      <div class = "container">
+        <% render 'partials/sections' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <%= link_to 'Edit', edit_tag_path(@tag) %> |
-<%= link_to 'Back', user_path(session[:user_id]) %>
+<%= link_to 'Back', session[:back] %>

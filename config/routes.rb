@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     end
   end
   
+  get 'admin/users/(:admin)', to: 'users#index', as: 'admin_users'
+  get 'admin/sections/(:admin)', to: 'sections#index', as: 'admin_sections'
+  get 'admin/tags/(:admin)', to: 'tags#index', as: 'admin_tags'
+  get 'admin/questions/(:admin)', to: 'question#index', as: 'admin_questions'
+  get 'sections/(:enroll)/enroll', to: 'sections#index', as: 'view_enroll'
   post 'question/create', to: 'question#create', as: 'create_question'
   patch 'question/(:id)/update', to: 'question#update', as: 'update_question'
   get 'question/(:id)/destroy', to: 'question#destroy', as: 'delete_question'

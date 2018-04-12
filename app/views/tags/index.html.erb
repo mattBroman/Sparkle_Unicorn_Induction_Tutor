@@ -1,27 +1,12 @@
-<h1>Tags</h1>
+<% if @my %>
+  <% if not @tags.empty? %>
+    <%= render 'partials/tags' %>
+  <% else %>
+    <p>You don't have any tags! make some.</p>
+  <% end %>
+  <%= link_to 'New Tag', new_tag_path, class: "btn btn-primary"%>
+<% else %>
+  <div class="text-center"><strong>As an admin, this is where you manage all tags.</strong></div>
+  <%= render 'partials/tags' %>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tags.each do |tag| %>
-      <tr>
-        <td><%= tag.name %></td>
-        <td><%= tag.description %></td>
-        <td><%= link_to 'Show', tag %></td>
-        <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
-        <td><%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Tag', new_tag_path %>

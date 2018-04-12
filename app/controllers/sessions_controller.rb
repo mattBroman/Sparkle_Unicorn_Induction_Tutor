@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   def new
+    session[:page] = "Login"
   end
   
   def create

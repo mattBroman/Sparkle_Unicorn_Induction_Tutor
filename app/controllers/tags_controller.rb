@@ -4,12 +4,23 @@ class TagsController < ApplicationController
   # GET /tags
   # GET /tags.json
   def index
-    @tags = Tag.all
+    if params[:admin] and admin?
+      session[:page] = 'Tags'
+      session[:back] = admin_tags_path(admin: true)
+      @tags =  Tag.all
+    else
+      session[:page] = "My Tags"
+      session[:back] = tags_path
+      @tags = Tag.where(user_id: session[:user_id])
+      @my = true
+    end
   end
 
   # GET /tags/1
   # GET /tags/1.json
   def show
+    @questions = @tag.questions
+    @sections = @tag.sections
   end
 
   # GET /tags/new
@@ -29,7 +40,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.save
-        format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully created.' }
+        format.html { redirect_to session[:back], notice: 'Tag was successfully created.' }
         format.json { render :show, status: :created, location: @tag }
       else
         format.html { render :new }
@@ -44,7 +55,7 @@ class TagsController < ApplicationController
     respond_to do |format|
       if @tag.update(tag_params)
         
-        format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully updated.' }
+        format.html { redirect_to session[:back], notice: 'Tag was successfully updated.' }
         format.json { render :show, status: :ok, location: @tag }
       else
         format.html { render :edit }
@@ -58,7 +69,7 @@ class TagsController < ApplicationController
   def destroy
     @tag.destroy
     respond_to do |format|
-      format.html { redirect_to user_path(session[:user_id]), notice: 'Tag was successfully destroyed.' }
+      format.html { redirect_to session[:back], notice: 'Tag was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

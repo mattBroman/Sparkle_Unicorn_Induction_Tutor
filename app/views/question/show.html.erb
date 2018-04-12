@@ -1,6 +1,6 @@
 <% content_for :include, javascript_include_tag('question-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
-<div id = 'Question'>
-  <p><%= @question.val %></p>
+<div id = 'container'>
+  <h5><%= @question.val %></h5>
 </div>
 
 <div class="container">
@@ -12,7 +12,7 @@
         </div>
         <%= hidden_field_tag 'json_data', nil, :id=>'hidden'%>
         <div class="form-group">
-          <%= submit_tag 'to rails', :id=>'submit', class: "btn btn-primary"%>
+          <%= submit_tag 'Submit', :id=>'submit', class: "btn btn-primary"%>
         </div>
       <% end -%>
     </div>
@@ -30,8 +30,4 @@
   <% end %>
 </div>
 
-<% if session[:section_id] %>
-  <p><%= link_to 'back', section_path(session[:section_id]) %></p>
-<% else %>
- <p><%= link_to 'back', user_path(session[:user_id]) %></p>
-<% end %>
+<%= link_to 'Back', session[:back] %>
