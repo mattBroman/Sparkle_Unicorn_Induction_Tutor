@@ -45,7 +45,7 @@ class EqExpression
                 
             end
         end
-    
+        
 
     end
     
@@ -56,13 +56,14 @@ class EqExpression
         end
         
        eval = Evaluator.new
-        
+         
         val = eval.solve(@eqBlocks[0]["left"])
         
         
-
+        
         
        @eqBlocks.each do |eqLine|
+           
             if(not(val == eval.solve(eqLine["right"]))) then
 
                 return false
@@ -85,32 +86,74 @@ class EqExpression
         
     
     end
-
-
-
-    def sym_evaluate 
+    
+    
+    def getHead
+       
+       x = @eqBlocks[0]["left"] 
+       
+       return x
+    end
+    
+    
+    def headValid
+        h = @eqBlocks.first.clone
         
-        #check first L with l_line
         @pk_l = @pk.evaluate["left"].flat_map do |val|
             val == "n"? ["k","1","+"] : val
         end
-
-        if (not(@eqBlocks[0]["left"] == @pk_l)) then
+        
+        if (not(h["left"] == @pk_l)) then
             #left not equal
             return false
         end
         
+        return true
+    end
+    
+    def tailValid
         
-        #check last R with r_line
+        t = @eqBlocks.last.clone
         
         @pk_r = @pk.evaluate["right"].flat_map do |val|
             val == "n"? ["k","1","+"] : val
         end
         
-        if(not(@eqBlocks.last["right"] == @pk_r)) then
+        if(not(t["right"] == @pk_r)) then
             return false
-        end
+        end        
+        return true
         
+    end
+
+
+
+    def sym_evaluate 
+        
+        # #check first L with l_line
+        # @pk_l = @pk.evaluate["left"].flat_map do |val|
+        #     val == "n"? ["k","1","+"] : val
+        # end
+
+        # if (not(@eqBlocks[0]["left"] == @pk_l)) then
+        #     #left not equal
+        #     return false
+        # end
+        
+        
+        # #check last R with r_line
+        
+        # @pk_r = @pk.evaluate["right"].flat_map do |val|
+        #     val == "n"? ["k","1","+"] : val
+        # end
+        
+        # if(not(@eqBlocks.last["right"] == @pk_r)) then
+        #     return false
+        # end
+        
+        return false unless headValid==true
+        return false unless tailValid==true
+
         
         #check all lines are symblically equal
         
@@ -131,6 +174,8 @@ class EqExpression
         return sym_eq_equal_simple(base,eqn)
 
     end
+    
+    
     
     #simple check
     def sym_eq_equal_simple(base, eqn)
