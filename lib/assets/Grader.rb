@@ -12,7 +12,7 @@ class Grader
         
         begin
           
-            @bc = BaseCase.new(args)
+            @bc = BaseCase.new(args,@pk)
             @ih = IHypothesis.new(args,@pk)
             
             raise RuntimeError("bad ih") unless not @ih.nil?
