@@ -1,3 +1,7 @@
 <% content_for :include, javascript_include_tag('new-parser-bundle', 'data-turbolinks-track': 'reload'), :flush => true %>
 
-<%= render 'form', question: @question%>
+<h1>New Question</h1>
+<%= render 'partials/forms/question', question: @question%>
+<div class ="text-center">
+    <%= link_to 'Back', session[:back] %>
+</div>

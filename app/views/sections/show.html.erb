@@ -1,25 +1,29 @@
-<p>
-  <strong>Name:</strong>
-  <%= @section.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @section.description %>
-</p>
+<div class="container name">
+  <div class="text-center">
+    <h2><%= @section.name %><h2>
+  </div>
+</div>
 
 
 <% if teacher? %>
-  <div class="index">
-    <%= render 'partials/users' %>
-  </div>
+  <div class = "row">
+    <div class="col">
+      <%= render 'partials/tables/users/teacher' %>
+    </div>
   
-  <div class="index">
-    <%= render 'partials/tags' %>
+    <div class="col">
+      <%= render 'partials/tables/tags/teacher' %>
+    </div>
   </div>
+    
+    <div class="row">
+      <%= render 'partials/tables/questions/teacher'%>
+    </div>
+<% else %>
+  <%= render 'partials/tables/questions/student' %>
 <% end %>
 
-<div class="index">
-  <%= render 'partials/questions'%>
-</div>
+  
+
+
 

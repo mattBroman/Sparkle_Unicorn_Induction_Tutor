@@ -3,16 +3,22 @@ class TagsController < ApplicationController
 
   # GET /tags
   # GET /tags.json
-  def index
-    if params[:admin] and admin?
+  
+  def admin_index
+    if admin?
+      @tags = Tag.all
       session[:page] = 'Tags'
-      session[:back] = admin_tags_path(admin: true)
-      @tags =  Tag.all
+      session[:back] = admin_tags_path
     else
+      redirect_to welcome_fail_path
+    end
+  end
+  
+  def index
+    if teacher?
       session[:page] = "My Tags"
       session[:back] = tags_path
       @tags = Tag.where(user_id: session[:user_id])
-      @my = true
     end
   end
 

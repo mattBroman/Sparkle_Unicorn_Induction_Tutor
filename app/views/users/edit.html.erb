@@ -1,6 +1,7 @@
 <h1>Editing <%="#{@user.name}"%></h1>
 
-<%= render 'form', user: @user %>
+<%= render 'partials/forms/user', user: @user %>
 
-<%= link_to 'Back', session[:back] %>
-
+<div class="text-center">
+    <%= link_to 'Back', session[:back] %>
+</div>

@@ -4,14 +4,14 @@
     <h5>This is your home page. Your classes show up here</h5>
     <% if teacher? %>
       <% if @sections %>
-        <%= render 'partials/sections' %>
+        <%= render 'partials/tables/sections/crud' %>
       <% else %>
         <p> Your not teaching any classes! create some with the New Section Button </p>
       <% end %>
       <%= link_to 'New Section', new_section_path, class: "btn btn-primary" %>
     <% else %>
       <% if @sections %>
-        <%= render 'partials/sections' %>
+        <%= render 'partials/tables/sections/list' %>
       <% else %>
         <p> Your not enrolled in any classes! Regester in the Enrollment tab.</p>
       <% end %>
@@ -19,6 +19,8 @@
   <% else %>
     <h3>This is <%="#{@user.name}"%>'s page</h3>
     <h5>This is where their stats will go!</h5>
-    <%= link_to 'Back', session[:back] %>
+    <div class ="text-center">
+      <%= link_to 'Back', session[:back] %>
+    </div>
   <% end %>
 </div>

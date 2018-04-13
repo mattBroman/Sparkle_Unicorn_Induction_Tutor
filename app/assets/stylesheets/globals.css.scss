@@ -1,22 +1,25 @@
 .jumbotron {
     h1 {
-        color :white;
+        color : $secondary;
     }
     a {
-        color :white;
+        color : $secondary;
     }
     p {
-        color :white;
+        color : $secondary;
     }
-    background-color : $maroon;
+    background-color : $primary;
     border-radius : 0px;
     margin-bottom: 0rem;
     padding-bottom: 25px;
 }
 
 .btn-primary {
-    background-color : $maroon;
-    border-color : black;
+    background : $primary;
+    background: -moz-linear-gradient(top, #600000 0%, $maroon 100%);
+    background: -webkit-linear-gradient(top, #600000 0%, $maroon 100%);
+    background: linear-gradient(top, #600000 0%, $maroon 100%);
+    border-color : $tertiary;
 }
 
 textarea[name=set-size] {
@@ -24,7 +27,7 @@ textarea[name=set-size] {
 }
 
 a {
-    color : $maroon;
+    color : $primary;
 }
 
 .container#main{
@@ -34,18 +37,25 @@ a {
 
 nav {
     a {
-        color: white;
+        color: $secondary;
     }
     background-color: transparent;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #500000;
-    background-color: #ffffff;
+    color: $tertiary;
+    background-color: $secondary;
+    border-radius: 25px;
+}
+
+.nav-pills .nav-link:hover, .nav-pills .show > .nav-link{
+    color: $tertiary;
+    background-color: $secondary;
+    border-radius: 25px;
 }
 
 .nav-cont {
-    background-color: $maroon;
+    background-color: $primary;
     .container {
         padding: 0px 0px 0px 0px;
     }
@@ -62,10 +72,14 @@ nav {
     width: 100%;
     height: 60px;
     line-height: 60px;
-    background-color: black;
+    background-color: $tertiary;
     
     p{
-        color: white;
+        color: $secondary;
         size: .5rem;
     }
+}
+
+.name {
+    padding-bottom: 1.5rem;
 }

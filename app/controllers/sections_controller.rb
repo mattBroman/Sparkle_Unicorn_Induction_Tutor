@@ -1,19 +1,28 @@
 class SectionsController < ApplicationController
   before_action :set_section, only: [:show, :edit, :update, :destroy]
 
-  # GET /sections
-  # GET /sections.json
-  def index
-    if params[:enroll]
-      session[:page] = 'Enroll'
-      session[:back] = view_enroll_path(true)
+  def admin_index
+    if admin?
       @sections = Section.all
-      @enroll = true
-    else
       session[:page] = 'Sections'
-      session[:back] = sections_path
-      @sections = admin? ? Section.all : User.find(session[:user_id]).sections
+      session[:back] = admin_sections_path
+    else
+      redirect_to welcome_fail_path
     end
+  end
+  
+  def enroll_index
+    if is_student?
+      @sections = Section.all
+      session[:page] = 'Enroll'
+      session[:back] = view_enroll_path
+    else
+      redirect_to welcome_fail_path
+    end
+  end
+
+  def index
+    @sections = Section.where(user_id: session[:user_id])
   end
 
   # GET /sections/1
@@ -106,7 +115,7 @@ class SectionsController < ApplicationController
     name = @user.name
     @section = Section.find(params[:section_id])
     @section.users.delete(@user)
-    flash[:notice] = "Removed #{name} from #{@section.name}"
+    flash[:notice] = "Droped #{@user.name} from #{@section.name}"
     redirect_to session[:back]
   end
 

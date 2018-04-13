@@ -1,12 +1,9 @@
-<% if @my %>
-  <% if not @tags.empty? %>
-    <%= render 'partials/tags' %>
-  <% else %>
-    <p>You don't have any tags! make some.</p>
-  <% end %>
-  <%= link_to 'New Tag', new_tag_path, class: "btn btn-primary"%>
-<% else %>
-  <div class="text-center"><strong>As an admin, this is where you manage all tags.</strong></div>
-  <%= render 'partials/tags' %>
-<% end %>
 
+<% if not @tags.empty? %>
+  <%= render 'partials/tables/tags/teacher' %>
+<% else %>
+    <p>You don't have any tags! make some.</p>
+<% end %>
+<div class="container">
+  <%= link_to 'New Tag', new_tag_path, class: "btn btn-primary"%>
+</div>
