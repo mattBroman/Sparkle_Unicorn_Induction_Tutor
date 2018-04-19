@@ -12,7 +12,10 @@ class BaseCase
       
       @a = Assumption.new(@baseCase.to_json)
       
-      @exp = EqExpression.new(@baseCase.to_json, @a)
+      
+      @eq_json = @baseCase["equivalenceExpressions"].to_json
+      
+      @exp = EqExpression.new(@eq_json, @a)
 
       
         
@@ -20,23 +23,27 @@ class BaseCase
 
     def evaluate
         
-        #evaluate pk with the assumption
-         @pk_l = @pk.evaluate["left"].flat_map do |val|
-            val == "n"? @a.evaluate.values[0] : val
-         end
+        #obtain p(b) equation
+         @pk_l = @pk.evaluate(@a.evaluate.values[0])["left"]
+         
          
          e = Evaluator.new
         
-        exp_s = @exp.getHead.clone
+        #first expression
+        exp_s = @exp.getTail.clone
         
         
+        #all expressions in base case are equal
         ret = @exp.evaluate
 
+        
+        
+        #the first expression and p(b) should be equal
         ret &= e.solve(exp_s) == e.solve(@pk_l)
-       
-
-        
-        
+      
+      
+      
+      
         return ret
         
     end

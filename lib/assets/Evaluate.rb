@@ -89,4 +89,37 @@ class Evaluator
   def evaluate tokens
     solve(shunting_yard(tokens))
   end
+  
+  
+  
+  
+  #stubbed with a simple eqn    
+  def sym_eq_equal(base,eqn)
+      return sym_eq_equal_simple(base,eqn)
+
+  end
+  
+  
+  
+  #simple check
+  def sym_eq_equal_simple(base, eqn)
+      tvals = ["1","2","3","4","5"]
+      same = true
+      
+
+      
+      tvals.each do |t|
+         z = base.map{|x| x =="k" ? t : x}
+         y = eqn.map{|x| x =="k" ? t : x}
+         same &= (solve(z) == solve(y))
+      end
+      
+      return same
+
+      
+  end
+  
+  
+  
+  
 end

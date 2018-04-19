@@ -28,7 +28,7 @@ RSpec.describe BaseCase do
         it "should return true for valid baseCase" do
             pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
 
-            json_ex = {:baseCase => {:assumptions => {:b=>"1"}, :equivalenceExpressions => [{:left=>["1", "1","+"], :right=>["2"]}]}}.to_json
+            json_ex = {:baseCase => {:assumptions => {:b=>["1"]}, :equivalenceExpressions => [{:left=>["1", "1","+"], :right=>["2"]}]}}.to_json
             b = BaseCase.new(json_ex,pk)
             b.evaluate.should be true
         end

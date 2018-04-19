@@ -1,52 +1,61 @@
 require_relative "Base.rb" 
-require_relative "IHypothesis.rb" 
-require_relative "Proof.rb" 
+require_relative "IStep.rb" 
 
 class Grader
     
     #pass json of problem here
    def initialize(args,pk=nil)
+        
         @pk = pk
         
-        @exception = nil
         
+        #check the base case
         begin
           
             @bc = BaseCase.new(args,@pk)
-            @ih = IHypothesis.new(args,@pk)
-            
-            raise RuntimeError("bad ih") unless not @ih.nil?
-            
         
         rescue Exception => exc
-            @exception = true
             @bc_exception = exc
         end
         
-        #add inductive hypothesis and what not here later...
-       
+        
+        #check the inductive step
+        begin
+            
+            @istep = IStep.new(args,@pk)
+            
+        rescue Exception => exc
+            @is_exception = exc
+        end
+        
+
        
    
  end
     
     def evaluate
     
-        #return any errors or the correct evaluation
-        if(not (@exception)) then
-            
-            raise RuntimeError("bad ih") unless not @ih.nil?
-
+        if(@bc_exception.nil?) then
             
             @bcval = @bc.evaluate
-            @ihval = @ih.evaluate
             
         else
             @bcval = @bc_exception.message
             
         end
-
         
-        {:baseCase => @bcval, :ihypothesis=>@ihval}
+        
+        if(@is_exception.nil?) then
+            
+            @istepval = @istep.evaluate
+            
+        else
+            @istepval = @is_exception.message
+            
+        end
+        
+    
+        {:baseCase => @bcval, :ihypothesis=>@istepval}
         
     end
     

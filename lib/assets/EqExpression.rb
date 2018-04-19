@@ -10,31 +10,34 @@ class EqExpression
     def initialize(args, assumptions, symbolic=false, pk=nil)
         @symbolic = symbolic
         @pk = pk
-        @eqBlocks = JSON.parse(args)["equivalenceExpressions"]
+        @eqBlocks = JSON.parse(args)
         
         raise RuntimeError, "Missing expression(s)" unless not @eqBlocks.nil?
         
         @assumptions = assumptions
-        raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?
+        #raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?
         
-        #add assumptions to eq's
-        @assumptions.evaluate.each do |key,val|
-            
-            
-            # index of val[i] is 0 for now because we assume assumptions are raw values and not expressions
-            @eqBlocks.each do |eqLine|
-                    eqLine["left"].map! { |x|
-                        x==key.to_s ? val[0] : x
-                    } unless eqLine["left"].nil?
-                    eqLine["right"].map! { |x|
-                        x==key.to_s ? val[0] : x
-                    } unless eqLine["right"].nil?
+        #if no assumptions and not symbolic throw error
+        
+        if(not symbolic) then
+        
+            #add assumptions to eq's
+            @assumptions.evaluate.each do |key,val|
+                
+                
+                # index of val[i] is 0 for now because we assume assumptions are raw values and not expressions
+                @eqBlocks.each do |eqLine|
+                        eqLine["left"].map! { |x|
+                            x==key.to_s ? val[0] : x
+                        } unless eqLine["left"].nil?
+                        eqLine["right"].map! { |x|
+                            x==key.to_s ? val[0] : x
+                        } unless eqLine["right"].nil?
+                end
+               
             end
-           
-        end
         
-        #variables still left in expressions
-        if(not  @symbolic) then
+        
             @eqBlocks.each do |eqLine|
                 eqLine["left"].each do |v|
                     raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
@@ -44,6 +47,11 @@ class EqExpression
                 end unless eqLine["right"].nil?
                 
             end
+        else
+            #check if only k is used if symbolic
+           
+            
+        
         end
         
 
@@ -51,6 +59,9 @@ class EqExpression
     
     
     def evaluate
+        
+        tmp = @eqBlocks.clone
+        
         if(@symbolic) then 
             return sym_evaluate()
         end
@@ -81,30 +92,29 @@ class EqExpression
            
        end
         
-        
+        @eqBlocks = tmp
         return true
         
     
     end
     
     
-    def getHead
+    def getTail
+       # p "last---"
+       #p @eqBlocks.last.clone["right"]
+       #p "---"
+       x = @eqBlocks.last.clone
+       return x["right"] 
        
-       x = @eqBlocks[0]["left"] 
-       
-       return x
     end
     
     
     def headValid
         h = @eqBlocks.first.clone
         
-        @pk_l = @pk.evaluate["left"].flat_map do |val|
-            val == "n"? ["k","1","+"] : val
-        end
+        @pk_l = @pk.evaluate(["k","1","+"])["left"]
         
         if (not(h["left"] == @pk_l)) then
-            #left not equal
             return false
         end
         
@@ -115,53 +125,29 @@ class EqExpression
         
         t = @eqBlocks.last.clone
         
-        @pk_r = @pk.evaluate["right"].flat_map do |val|
-            val == "n"? ["k","1","+"] : val
-        end
+        @pk_r = @pk.evaluate(["k","1","+"])["right"]
+        
+#        p t["right"]
+ #       p @pk_r
+        
         
         if(not(t["right"] == @pk_r)) then
             return false
-        end        
+        end       
+        
         return true
         
     end
 
 
 
-    def sym_evaluate 
-        
-        # #check first L with l_line
-        # @pk_l = @pk.evaluate["left"].flat_map do |val|
-        #     val == "n"? ["k","1","+"] : val
-        # end
-
-        # if (not(@eqBlocks[0]["left"] == @pk_l)) then
-        #     #left not equal
-        #     return false
-        # end
-        
-        
-        # #check last R with r_line
-        
-        # @pk_r = @pk.evaluate["right"].flat_map do |val|
-        #     val == "n"? ["k","1","+"] : val
-        # end
-        
-        # if(not(@eqBlocks.last["right"] == @pk_r)) then
-        #     return false
-        # end
-        
-        return false unless headValid==true
-        return false unless tailValid==true
-
-        
+    def sym_evaluate(base)
+        e = Evaluator.new
         #check all lines are symblically equal
-        
-        base = @eqBlocks[0]["left"]
         same = true
         @eqBlocks.each do |eql|
-            same &= sym_eq_equal(base,eql["left"]) unless eql["left"]==[]
-            same &= sym_eq_equal(base,eql["right"])
+            same &= e.sym_eq_equal(base,eql["left"]) unless eql["left"]==[] or eql["left"].nil?
+            same &= e.sym_eq_equal(base,eql["right"])
         end
         return same
         
@@ -169,32 +155,7 @@ class EqExpression
 
 
 
-    #stubbed with a simple eqn    
-    def sym_eq_equal(base,eqn)
-        return sym_eq_equal_simple(base,eqn)
 
-    end
-    
-    
-    
-    #simple check
-    def sym_eq_equal_simple(base, eqn)
-        tvals = ["1","2","3","4","5"]
-        same = true
-        
-        eval = Evaluator.new
-
-        
-        tvals.each do |t|
-           z = base.map{|x| x =="k" ? t : x}
-           y = eqn.map{|x| x =="k" ? t : x}
-           same &= (eval.solve(z) == eval.solve(y))
-        end
-        
-        return same
-  
-        
-    end
     
 
 
