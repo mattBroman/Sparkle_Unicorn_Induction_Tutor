@@ -1,5 +1,6 @@
 require "json"
 require_relative "Pk.rb"
+require_relative "MyErrors.rb"
 
 
 class Hypothesis
@@ -9,7 +10,7 @@ class Hypothesis
         @pk = pk
         
         @hypothesis = JSON.parse(args)["hypothesis"]
-
+        raise MissingError, "Hypothesis" unless not @hypothesis.nil?
         
         @left = @hypothesis["left"]
         
@@ -23,8 +24,9 @@ class Hypothesis
         @pk_k = @pk.evaluate("k")
         
         #check p(k) w/ left and right side
-        @pk_k["left"] == @left and @pk_k["right"] == @right
-        
+        ret = (@pk_k["left"] == @left and @pk_k["right"] == @right)
+        raise IncorrectError, "Hypothesis does not match p(n)" unless ret
+        return ret
 
     end
     

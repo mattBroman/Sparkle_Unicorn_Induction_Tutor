@@ -10,12 +10,12 @@ RSpec.describe Assumption do
 
         it "handles empty JSON" do
            json_ex = { :assumptions => nil}.to_json
-           expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "No Assumption(s) provided")
+           expect{Assumption.new(json_ex)}.to raise_error(MissingError)
         end
         
         it "handles incorrect variable names" do
             json_ex = { :assumptions => {:bbb => ["4"]}}.to_json
-            expect{Assumption.new(json_ex)}.to raise_error(RuntimeError, "Invalid Assumption variable(s)")
+            expect{Assumption.new(json_ex)}.to raise_error(IncorrectError)
         end
         
         it "accepts correct input on 1 variable" do

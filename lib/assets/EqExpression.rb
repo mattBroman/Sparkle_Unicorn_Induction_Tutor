@@ -12,7 +12,7 @@ class EqExpression
         @pk = pk
         @eqBlocks = JSON.parse(args)
         
-        raise RuntimeError, "Missing expression(s)" unless not @eqBlocks.nil?
+        raise MissingError, "expression(s)" unless not @eqBlocks.nil?
         
         @assumptions = assumptions
         #raise RuntimeError, "Missing assumption(s)" unless not @assumptions.evaluate.empty?

@@ -1,6 +1,7 @@
 require_relative "Base.rb" 
 require_relative "IStep.rb" 
 
+
 class Grader
     
     #pass json of problem here
@@ -13,9 +14,11 @@ class Grader
         begin
           
             @bc = BaseCase.new(args,@pk)
+            @bcval = @bc.evaluate
+
         
-        rescue Exception => exc
-            @bc_exception = exc
+        rescue => exc
+            @bc_exception = exc.message
         end
         
         
@@ -23,41 +26,67 @@ class Grader
         begin
             
             @istep = IStep.new(args,@pk)
-            
-        rescue Exception => exc
-            @is_exception = exc
-        end
-        
-
-       
-   
- end
-    
-    def evaluate
-    
-        if(@bc_exception.nil?) then
-            
-            @bcval = @bc.evaluate
-            
-        else
-            @bcval = @bc_exception.message
-            
-        end
-        
-        
-        if(@is_exception.nil?) then
-            
             @istepval = @istep.evaluate
             
-        else
-            @istepval = @is_exception.message
-            
+        rescue => exc
+            @is_exception = exc.message
         end
         
+        
+       
+        begin
+            @hypothesisval = Hypothesis.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+
+            #@hypothesisval = @istep.evaluate_hypothesis    
+        rescue => exc
+            @hypothesis_exception = exc.message
+        end
+        
+        begin
+            @toshowval = Show.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+
+            #@toshowval = @istep.evaluate_show    
+        rescue => exc
+            @toshow_exception = exc.message
+        end
+        
+        
+        @bcval = false unless not @bc_exception
+        @istepval = false unless not @is_exception
+        @hypothesisval = false unless not @hypothesis_exception
+        @toshowval = false unless not @toshow_exception
+        
+        
+
+       @correct = @bcval & @istepval & @hypothesisval & @toshowval
+   
+   end
     
-        {:baseCase => @bcval, :ihypothesis=>@istepval}
+    def evaluate
+
+    
+        {
+            :correct => @correct,
+            :baseCase => {
+                :result=>@bcval,
+                :error=>@bc_exception
+            },
+            :inductiveStep=>{
+                :result=>@istepval,
+                :error=>@is_exception,
+                :hypothesis=>{
+                    :result=>@hypothesisval,
+                    :error=>@hypothesis_exception
+                },
+                :toShow=>{
+                    :result=>@toshowval,
+                    :error=>@toshow_exception
+                }
+            }
+        }
         
     end
+    
     
     
 end

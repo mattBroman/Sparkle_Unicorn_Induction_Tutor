@@ -11,7 +11,7 @@ class Uih
         @pk = pk
         
         @uih = JSON.parse(args)["uih"]
-
+        raise MissingError, "Use of IH" unless not @uih.nil?
         
         @left = @uih["left"]
         
@@ -35,12 +35,12 @@ class Uih
     
         
         if not (@left.join.include? @pk_l.join) then
-            return false
+            raise IncorrectError, "Use of IH"
         end
         
         
         if not (@right.join.include? @pk_r.join) then
-            return false
+            raise IncorrectError, "Use of IH"
         end
         
         

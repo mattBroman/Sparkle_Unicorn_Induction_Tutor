@@ -38,7 +38,7 @@ RSpec.describe Show do
             pk = Pk.new("n+n","2*n")
             json_ex = {:show => {:left=>["k","k","+","+"], :right=>["3","k","1","+","*"]}}.to_json
             s= Show.new(json_ex,pk)
-            s.evaluate.should be false
+            expect{s.evaluate}.to raise_error(IncorrectError) 
         end
   
   
