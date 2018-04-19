@@ -1,3 +1,4 @@
+require_relative "MyErrors.rb"
 class Evaluator
   
     @@precedence = {
@@ -48,7 +49,7 @@ class Evaluator
           while operators[-1] != '(' and !operators.empty?
             postfix.push(operators.pop)
           end
-          raise RuntimeError, "Mismatched Parentheses" unless not operators.empty?
+          raise IncorrectError, "Mismatched Parentheses" unless not operators.empty?
           operators.pop
         else  
           postfix.push(token)
@@ -60,7 +61,7 @@ class Evaluator
       unless operators[-1] == '(' or operators[-1] == ')'
         postfix.push(operators.pop)
       else
-        raise RuntimeError, "Mismatched Parentheses"
+        raise IncorrectError, "Mismatched Parentheses"
       end
     end
     
@@ -78,8 +79,15 @@ class Evaluator
       if @@operations[token] == nil 
         stack.push(token)
       else 
-        left = stack.pop.to_f
-        right = stack.pop.to_f
+        left = stack.pop
+        right = stack.pop
+        
+        raise IncorrectError, "operator mismatch " unless left
+        raise IncorrectError, "operator mismatch" unless right
+        
+        left = left.to_f
+        right = right.to_f
+        
         stack.push(@@operations[token].call(right, left))
       end
     end

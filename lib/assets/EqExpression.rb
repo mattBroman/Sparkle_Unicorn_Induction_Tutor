@@ -1,5 +1,7 @@
 require "json"
 require_relative 'Evaluate.rb'
+require_relative 'MyErrors.rb'
+
 
 class EqExpression 
     
@@ -40,10 +42,10 @@ class EqExpression
         
             @eqBlocks.each do |eqLine|
                 eqLine["left"].each do |v|
-                    raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+                    raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
                 end unless eqLine["left"].nil?
                 eqLine["right"].each do |v|
-                    raise RuntimeError, "Missing assumption(s)" unless not v =~ /[a-zA-Z]/
+                    raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
                 end unless eqLine["right"].nil?
                 
             end
@@ -63,7 +65,7 @@ class EqExpression
         tmp = @eqBlocks.clone
         
         if(@symbolic) then 
-            return sym_evaluate()
+            return sym_evaluate(getTail)
         end
         
        eval = Evaluator.new
@@ -112,6 +114,8 @@ class EqExpression
     def headValid
         h = @eqBlocks.first.clone
         
+        raise MissingError, "p(k)" unless @pk
+        
         @pk_l = @pk.evaluate(["k","1","+"])["left"]
         
         if (not(h["left"] == @pk_l)) then
@@ -124,6 +128,9 @@ class EqExpression
     def tailValid
         
         t = @eqBlocks.last.clone
+        
+        raise MissingError, "p(k)" unless @pk
+
         
         @pk_r = @pk.evaluate(["k","1","+"])["right"]
         

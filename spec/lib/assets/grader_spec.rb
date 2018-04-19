@@ -202,7 +202,7 @@ RSpec.describe Grader do
             })
         end      
         
-        it "should evaluate an inductive step without a IH or toShow" do
+        it "should evaluate an inductive step without an IH or toShow" do
             pk = Pk.new("n+n","2*n")
             
             json_ex = {:baseCase => nil,

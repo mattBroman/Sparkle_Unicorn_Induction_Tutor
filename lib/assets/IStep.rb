@@ -47,14 +47,14 @@ class IStep
        
     end
     
-    
+    '''
     def evaluate_hypothesis
        @hypothesis.evaluate 
     end
     
     def evaluate_show
         @show.evaluate    
-    end
+    end'''
     
     
     def evaluate
