@@ -1,10 +1,11 @@
 class SessionsController < ApplicationController
+
   def new
     session[:page] = "Login"
   end
   
   def create
-    user = User.find_by(id: params[:session][:id])
+    user = User.from_omniauth(request.env["omniauth.auth"])
     log_in user
     redirect_to user
   end
