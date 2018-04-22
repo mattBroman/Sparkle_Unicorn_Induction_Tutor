@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  get '/login', to: 'sessions#new', as: 'ok'
-  post '/login', to: 'sessions#create', as: 'login'
+  root 'welcome#index'
+  get 'auth/:provider/callback', to: 'sessions#create', as: 'login'
+  get 'auth/google_oauth2', as: 'google'
+  get 'auth/failure', to: 'welcome#index'
   get '/logout', to: 'sessions#destroy', as: 'logout'
 
   resources :tags
@@ -28,18 +30,7 @@ Rails.application.routes.draw do
   get 'sections/(:id)/destroy', to: 'sections#destroy', as: 'delete_section'
   get 'sections/(:section_id)/enroll/(:user_id)', to: 'sections#enroll', as: 'enroll'
   get 'sections/(:section_id)/unenroll/(:user_id)', to: 'sections#unenroll', as: 'unenroll'
+  get 'users/student/new', to: 'users#new_student', as: 'new_student'
+  get 'users/teacher/new', to: 'users#new_teacher', as: 'new_teacher'
   get '404', to: 'welcome#fail', as: 'welcome_fail' 
-  root 'welcome#index'
-end
-
-Rails.application.routes.draw do
-  get 'auth/:provider/callback', to: 'sessions#create'
-  get 'auth/failure', to: redirect('/')
-  get 'signout', to: 'sessions#destroy', as: 'signout'
-  
-  resources :sessions, only: [:create, :destroy]
-  resource :home, only: [:show]
-  
-  root to: "home#show"
-  
 end

@@ -21,9 +21,24 @@ class UsersController < ApplicationController
   end
 
   # GET /users/new
-  def new
-    session[:page] = "Sign Up"
+  def new_teacher
+    session[:page] = "Sign Up Teach"
     @user = User.new
+    @user.role = 100
+    @user.save
+    session[:user_id] = @user.id
+    session[:new_user] = true
+    redirect_to google_path
+  end
+  
+  def new_student
+    session[:page] = "Sign Up Student"
+    @user = User.new
+    @user.role = 10
+    @user.save
+    session[:user_id] = @user.id
+    session[:new_user] = true
+    redirect_to google_path
   end
 
   # GET /users/1/edit
