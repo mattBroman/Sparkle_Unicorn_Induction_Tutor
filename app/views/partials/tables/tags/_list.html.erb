@@ -6,10 +6,8 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Description</th>
-        <% if teacher? %>
-          <th scope = "col">Edit</th>
-          <th scope = "col">Delete</th>
-        <% end %>
+        <th scope = "col">Edit</th>
+        <th scope = "col">Delete</th>
        </tr>
      </thead>
      <tbody>
@@ -17,10 +15,8 @@
        <tr>
         <td> <%= link_to "#{t.name}", tag_path(t) %> </td>
         <td> <%= t.description %> </td>
-        <% if admin? or(teacher? and t.user_id == session[:user_id]) %>
-          <td> <%= link_to 'edit', edit_tag_path(t) %></td>
-          <td> <%= link_to 'delete', delete_tag_path(t)%></td>
-        <% end %>
+        <td> <%= link_to 'edit', edit_tag_path(t) %></td>
+        <td> <%= link_to 'delete', delete_tag_path(t)%></td>
       </tr>
       <% end %>
     </tbody>

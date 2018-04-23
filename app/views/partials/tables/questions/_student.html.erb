@@ -1,0 +1,20 @@
+<div class="container">
+  <h2>Questions</h2>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><%= link_to 'Title', question_index_path(sort_by: 'title')%></th>
+        <th scope="col"><%= link_to 'Difficulty', question_index_path(sort_by: 'difficulty') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @questions.each do |question| %>
+        <tr>
+          <td> <%= link_to "#{question.title}", question_path(question) %> </td>
+          <td> <%= question.difficulty %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

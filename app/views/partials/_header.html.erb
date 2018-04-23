@@ -5,8 +5,12 @@
     </div>
   </div>
 </div>
-<% if session[:user_id] %>
-  <%= render 'partials/reg_nav' %>
+<% if is_admin? %>
+  <%= render 'partials/menus/admin' %>
+<% elsif is_teacher?  %>
+  <%= render 'partials/menus/teacher' %>
+<% elsif is_student? %>
+  <%= render 'partials/menus/student' %>
 <% else %>
-  <%= render 'partials/anon_nav' %>
+  <%= render 'partials/menus/anon' %>
 <% end %>

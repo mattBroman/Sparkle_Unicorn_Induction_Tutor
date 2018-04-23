@@ -1,5 +1,7 @@
-<h1>Editing Ta\</h1>
+<h1>Editing <%="#{@tag.name}"%></h1>
 
-<%= render 'form', tag: @tag %>
+<%= render 'partials/forms/tag', tag: @tag %>
 
-<%= link_to 'Back', session[:back] %>
+<div class = "text-center">
+    <%= link_to 'Back', session[:back] %>
+</div>

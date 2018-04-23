@@ -1,5 +1,7 @@
-<h1>Editing Question</h1>
+<h1>Editing <%="#{@question.title}"%></h1>
 
-<%= render 'form', question: @question %>
+<%= render 'partials/forms/question', question: @question %>
 
-<%= link_to 'Back', session[:back] %>
+<div class = "text-center">
+    <%= link_to 'Back', session[:back] %>
+</div>

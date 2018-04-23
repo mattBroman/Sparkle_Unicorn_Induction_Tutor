@@ -13,17 +13,18 @@ require_dependency '../../lib/assets/Assume.rb'
 
 class QuestionController < ApplicationController
   
-  def index
-    if params[:admin] and admin?
+  def admin_index
+    if admin?
       session[:page] = "Questions"
       session[:back] = admin_questions_path(admin: true)
       @questions = Question.all
-    elsif teacher?
-      session[:page] = "My Questions"
-      session[:back] = question_index_path
-      @questions = Question.where(user_id: session[:user_id])
-      @my = true
     end
+  end
+  
+  def index
+    session[:page] = "My Questions"
+    session[:back] = question_index_path
+    @questions = Question.where(user_id: session[:user_id])
   end
   
   def create
@@ -60,7 +61,7 @@ class QuestionController < ApplicationController
   def edit
     @question = Question.find(params[:id])
     @url = update_question_path([params[:id]])
-    @tags = Tag.where(user_id: session[:user_id])
+    @tags = Tag.where(user_id: @question.user_id)
   end
   
   def update

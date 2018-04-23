@@ -1,0 +1,30 @@
+<div class="container">
+  <h3>Tags</h3>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope = "col">Owner</th>
+        <th scope = "col">Edit</th>
+        <th scope = "col">Delete</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @tags.each do |t| %>
+       <tr>
+        <td> <%= link_to "#{t.name}", tag_path(t) %> </td>
+        <td> <%= t.description %> </td>
+        <% if User.find_by_id(t.user_id) %>
+          <td> <%= link_to "#{User.find(t.user_id).name}", user_path(t.user_id)%></td>
+        <% else %>
+          <td>Deleted</td>
+        <% end %>
+        <td> <%= link_to 'Edit', edit_tag_path(t) %></td>
+        <td> <%= link_to 'Delete', delete_tag_path(t)%></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

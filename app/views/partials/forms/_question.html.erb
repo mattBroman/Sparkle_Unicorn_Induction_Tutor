@@ -5,15 +5,15 @@
     <%= q.text_field :title, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= q.label :val %>
+    <%= q.label :question %>
     <%= q.text_area :val , class: "form-control"%>
   </div>
   <div class="form-group">
-    <%= q.label :p_k %>
+    <%= q.label :rhs %>
     <%= q.text_field :p_k, :id => 'pk', class: "form-control"%>
   </div>
   <div class="form-group">
-    <%= q.label :implies %>
+    <%= q.label :lhs %>
     <%= q.text_field :implies, :id => 'implies', class: "form-control"%>
   </div>
   <div class="form-group">
@@ -25,7 +25,7 @@
     <%= q.label :tags %>
     <% @tags.each do |t| %>
       <div class = "form-check">
-      <%= check_box_tag "tags[#{t.id}]", "tag", :false, id: "tags_#{t}", class: "form-check-input" %>
+      <%= check_box_tag "tags[#{t.id}]", "tag", false, id: "tags_#{t}", class: "form-check-input" %>
       <%= t.name %>
       </div>
     <% end %>

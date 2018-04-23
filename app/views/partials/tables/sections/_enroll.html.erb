@@ -1,0 +1,26 @@
+<div class = "container">
+<h3>Sections</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><%= link_to 'Name', sections_path(sort_by: 'name') %></th>
+        <th scope="col">Description</th>
+        <th scope="col">Add/Drop</th>
+       </tr>
+     </thead>
+     <tbody>
+      <% @sections.each do |s| %>
+        <tr>
+          <td> <%= s.name %> </td>
+          <td> <%= s.description %> </td>
+          <% if s.users.find_by(id: session[:user_id])%>
+            <td><%= link_to 'Drop', unenroll_path(s, session[:user_id]) %></td>
+          <% else %>  
+            <td> <%= link_to 'Add', enroll_path(s, session[:user_id]) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,10 @@
+<div class="nav-cont">
+  <div class="container">
+    <nav class="nav nav-pills nav-justified">
+      <%= link_to "#{session[:user_name]}", user_path(session[:user_id]), class: session[:page] == 'User' ? "nav-item nav-link active" : "nav-item nav-link" %>
+      <%= link_to 'My Tags', tags_path, class: session[:page] == 'My Tags' ? "nav-item nav-link active" : "nav-item nav-link" %>
+      <%= link_to 'My Questions', question_index_path, class: session[:page] == 'My Questions' ? "nav-item nav-link active" : "nav-item nav-link" %>
+      <%= link_to 'Logout', logout_path, class: session[:page] == 'Logout' ? "nav-item nav-link active" : "nav-item nav-link" %>
+    </nav>
+  </div>
+</div>
