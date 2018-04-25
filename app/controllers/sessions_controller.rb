@@ -7,7 +7,13 @@ class SessionsController < ApplicationController
   def create
     unless session[:new_user]
       @user = User.find_by(uid: request.env["omniauth.auth"][:uid])
-      log_in @user
+      if @user
+        log_in @user
+        redirect_to @user
+      else
+        flash[:notice] = 'failed to login.'
+        redirect_to welcome_index_path
+      end
     else
       session[:new_user] = nil
       @user = User.find(session[:user_id])
@@ -15,8 +21,8 @@ class SessionsController < ApplicationController
       @user.uid = request.env["omniauth.auth"][:uid]
       @user.save!
       log_in @user
+      redirect_to @user
     end
-    redirect_to @user
   end
   
   def destroy

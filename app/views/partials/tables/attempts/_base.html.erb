@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Attempts</h2>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Question</th>
+        <th scope="col">User</th>
+        <th scope="col">Correct</th>
+        <th scope="col">More</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @attempts.each do |a| %>
+        <tr>
+          <td> <%= link_to "#{Question.find_by_id(a.question_id).title}", question_path(Question.find_by_id(a.question_id)) %></td>
+          <td> <%= link_to "#{User.find_by_id(a.user_id).name}", user_path(User.find_by_id(a.user_id))%> </td>
+          <td> <%= a.correct %> </td>
+          <td> <%= link_to 'More', attempt_path(a.id) %> </td>
+          <td> <%= button_to 'Delete', delete_attempt_path, params: {id: a.id} , class: "btn btn-primary"%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<!--
+\begin{base}
+      let n = 0
+            = 2n
+\end{base}
+\begin{inductiveHypothesis}
+  n+n = 2n
+\end{inductiveHypothesis
+\begin{proof}
+
+
+\end{proof}
+-->

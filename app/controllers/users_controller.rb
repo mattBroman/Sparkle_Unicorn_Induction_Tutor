@@ -16,6 +16,7 @@ class UsersController < ApplicationController
       session[:page] = 'User'
       session[:back] = user_path(session[:user_id])
     end
+    @attempts = Attempt.where(user_id: session[:user_id])
     @sections = @user.sections
     @sections = @sections.empty? ? nil : @sections
   end

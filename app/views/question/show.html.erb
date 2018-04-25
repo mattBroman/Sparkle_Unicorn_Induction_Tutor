@@ -27,7 +27,30 @@
   
   <% if @responce != nil %> 
 
-    <p>Basis: <%= @responce["baseCase"]%>, Induction: <%= @responce["ihypothesis"] %> </p>
+    <p>
+      Basis: <%= @responce["baseCase"]["result"] %>
+      <% if @responce["baseCase"]["error"] %>
+        , Error <%= @responce["baseCase"]["error"] %>
+      <% end %>
+    </p>
+    <p>
+      InductiveStep: <%= @responce["inductiveStep"]["result"] %>
+      <% if @responce["inductiveStep"]["error"] %>
+        , Error <%= @responce["inductiveStep"]["error"] %>
+      <% end %>
+    </p>
+    <p>
+      Hypothesis: <%= @responce["inductiveStep"]["hypothesis"]["result"] %>
+      <% if @responce["inductiveStep"]["hypothesis"]["error"] %>
+        , Error <%= @responce["inductiveStep"]["hypothesis"]["error"] %>
+      <% end %>
+    </p>
+    <p>
+      To Show : <%= @responce["inductiveStep"]["toShow"]["result"] %>
+      <% if @responce["inductiveStep"]["toShow"]["error"] %>
+        , Error <%= @responce["inductiveStep"]["toShow"]["error"] %>
+      <% end %>
+    </p>
   <% end %>
 </div>
 

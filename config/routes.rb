@@ -32,5 +32,7 @@ Rails.application.routes.draw do
   get 'sections/(:section_id)/unenroll/(:user_id)', to: 'sections#unenroll', as: 'unenroll'
   get 'users/student/new', to: 'users#new_student', as: 'new_student'
   get 'users/teacher/new', to: 'users#new_teacher', as: 'new_teacher'
+  post 'attempts/destroy', to: 'attempts#destroy', as: 'delete_attempt'
+  get 'attempt/(:id)', to: 'attempts#show', as: 'attempt'
   get '404', to: 'welcome#fail', as: 'welcome_fail' 
 end
