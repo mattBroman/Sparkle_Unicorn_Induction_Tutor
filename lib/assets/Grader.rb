@@ -1,54 +1,92 @@
 require_relative "Base.rb" 
-require_relative "IHypothesis.rb" 
-require_relative "Proof.rb" 
+require_relative "IStep.rb" 
+
 
 class Grader
     
     #pass json of problem here
    def initialize(args,pk=nil)
+        
         @pk = pk
         
-        @exception = nil
         
+        #check the base case
         begin
           
             @bc = BaseCase.new(args,@pk)
-            @ih = IHypothesis.new(args,@pk)
-            
-            raise RuntimeError("bad ih") unless not @ih.nil?
-            
+            @bcval = @bc.evaluate
+
         
-        rescue Exception => exc
-            @exception = true
-            @bc_exception = exc
+        rescue => exc
+            @bc_exception = exc.message
         end
         
-        #add inductive hypothesis and what not here later...
+        
+        #check the inductive step
+        begin
+            
+            @istep = IStep.new(args,@pk)
+            @istepval = @istep.evaluate
+            
+        rescue => exc
+            @is_exception = exc.message
+        end
+        
+        
        
-       
+        begin
+            @hypothesisval = Hypothesis.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+
+            #@hypothesisval = @istep.evaluate_hypothesis    
+        rescue => exc
+            @hypothesis_exception = exc.message
+        end
+        
+        begin
+            @toshowval = Show.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+
+            #@toshowval = @istep.evaluate_show    
+        rescue => exc
+            @toshow_exception = exc.message
+        end
+        
+        
+        @bcval = false unless not @bc_exception
+        @istepval = false unless not @is_exception
+        @hypothesisval = false unless not @hypothesis_exception
+        @toshowval = false unless not @toshow_exception
+        
+        
+
+       @correct = @bcval & @istepval & @hypothesisval & @toshowval
    
- end
+   end
     
     def evaluate
+
     
-        #return any errors or the correct evaluation
-        if(not (@exception)) then
-            
-            raise RuntimeError("bad ih") unless not @ih.nil?
-
-            
-            @bcval = @bc.evaluate
-            @ihval = @ih.evaluate
-            
-        else
-            @bcval = @bc_exception.message
-            
-        end
-
-        
-        {:baseCase => @bcval, :ihypothesis=>@ihval}
+        {
+            :correct => @correct,
+            :baseCase => {
+                :result=>@bcval,
+                :error=>@bc_exception
+            },
+            :inductiveStep=>{
+                :result=>@istepval,
+                :error=>@is_exception,
+                :hypothesis=>{
+                    :result=>@hypothesisval,
+                    :error=>@hypothesis_exception
+                },
+                :toShow=>{
+                    :result=>@toshowval,
+                    :error=>@toshow_exception
+                }
+            }
+        }
         
     end
+    
     
     
 end

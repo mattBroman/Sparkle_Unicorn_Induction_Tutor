@@ -35,10 +35,10 @@ RSpec.describe Evaluator do
         end
         it 'throws on mismatched parentheses' do
             arg = ['(', '2', '+', '2']
-            expect{e.shunting_yard(arg)}.to raise_error(RuntimeError, 'Mismatched Parentheses')
+            expect{e.shunting_yard(arg)}.to raise_error(IncorrectError)
             
             arg = ['2', '+', '2', ')']
-            expect{e.shunting_yard(arg)}.to raise_error(RuntimeError, 'Mismatched Parentheses')
+            expect{e.shunting_yard(arg)}.to raise_error(IncorrectError)
        end
     end
     context 'postfix solver' do
