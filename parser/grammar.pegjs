@@ -18,15 +18,12 @@ _Proof
   = _*
     baseCase: _BaseCase?
     _*
-    inductiveHypothesis: _InductiveHypothesis?
-    _*
-    proof: _ProofBlock?
+    inductiveStep: _InductiveStep?
     _*
     {
       return {
         baseCase,
-        inductiveHypothesis,
-        proof
+        inductiveStep
       };
     }
 
@@ -62,44 +59,12 @@ _BaseCase
       };
     }
 
-_InductiveHypothesis
-  = "\\begin{inductiveHypothesis}" _Newline
+_InductiveStep
+  = "\\begin{inductiveStep}" _Newline
     _*
-    assumptions:(
-      first:_Assumption
-      chain:(_Newline _* assumption:_Assumption
-        {
-          return assumption;
-        })*
-      {
-        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
-        return Object.assign({},first,result);
-      }
-    )?
+    hypothesis:_AssumeBlock?
     _*
-    hypothesis:_EquivalenceExpression?
-    _*
-    "\\end{inductiveHypothesis}"
-    {
-      return {
-        assumptions,
-        hypothesis
-      };
-    }
-
-_ProofBlock
-  = "\\begin{proof}" _Newline
-    _*
-    assumptions:(
-      first:_Assumption
-      chain:(_Newline _* assumption:_Assumption {
-        return assumption;
-      })*
-      {
-        const result = chain.reduce((acc,cur) => Object.assign({},acc,cur), {});
-        return Object.assign({},first,result);
-      }
-    )?
+    show:_ShowBlock?
     _*
     pre:(
       first:_EquivalenceExpression
@@ -111,7 +76,7 @@ _ProofBlock
       }
     )?
     _*
-    is:_InductiveStep?
+    uih:_UseIHBlock?
     _*
     post:(
       first:_EquivalenceExpression
@@ -123,18 +88,39 @@ _ProofBlock
       }
     )?
     _*
-    "\\end{proof}"
+    "\\end{inductiveStep}"
     {
       return {
-        assumptions,
+        hypothesis,
+        show,
         pre,
-        is,
+        uih,
         post
       };
     }
 
-_InductiveStep
-  = "\\inductiveStep{"
+_AssumeBlock
+  = "\\assume{"
+    _*
+    expression:_EquivalenceExpression
+    _*
+    "}"
+    {
+      return expression;
+    }
+
+_ShowBlock
+  = "\\show{"
+    _*
+    expression:_EquivalenceExpression
+    _*
+    "}"
+    {
+      return expression;
+    }
+
+_UseIHBlock
+  = "\\useIH{"
     _*
     expression:_EquivalenceExpression
     _*

@@ -12,15 +12,14 @@ test('Accepts one term', pass, `13`);
 test('Accepts one proof', pass, 
 `\\begin{base}
 \\end{base}
-\\begin{inductiveHypothesis}
-\\end{inductiveHypothesis}`);
+\\begin{inductiveStep}
+\\end{inductiveStep}`);
 
 test('Returns valid schema (1)', returns,
 ``,
 {
   baseCase: null,
-  inductiveHypothesis: null,
-  proof: null
+  inductiveStep: null
 });
 test('Returns valid schema (2)', returns,
 `Let x = 4`,
@@ -42,23 +41,18 @@ test('Returns valid schema (5)', returns,
 test('Returns valid schema (6)', returns,
 `\\begin{base}
 \\end{base}
-\\begin{inductiveHypothesis}
-\\end{inductiveHypothesis}
-\\begin{proof}
-\\end{proof}`,
+\\begin{inductiveStep}
+\\end{inductiveStep}`,
 {
   baseCase: {
     assumptions: null,
     equivalenceExpressions: null
   },
-  inductiveHypothesis: {
-    assumptions: null,
-    hypothesis: null
-  },
-  proof: {
-    assumptions: null,
+  inductiveStep: {
+    hypothesis: null,
+    show: null,
     pre: null,
-    is: null,
+    uih: null,
     post: null
-  }
+  },
 });
