@@ -1,0 +1,123 @@
+[1mdiff --git a/app/controllers/question_controller.rb b/app/controllers/question_controller.rb[m
+[1mindex 3569fe3..449432e 100644[m
+[1m--- a/app/controllers/question_controller.rb[m
+[1m+++ b/app/controllers/question_controller.rb[m
+[36m@@ -94,11 +94,21 @@[m [mclass QuestionController < ApplicationController[m
+       p e[m
+       session[:responce] = nil[m
+     else[m
+[31m-      session[:responce] = grader.evaluate[m
+[32m+[m[32m      @responce = grader.evaluate[m
+[32m+[m[32m      session[:responce] = @responce[m
+     end[m
+     session[:comment] = (params[:comment] == nil) ? 'text goes here' : params[:comment][m
+[32m+[m[32m    @attempt = Attempt.new[m
+[32m+[m[32m    @attempt.basis = @responce["baseCase"][m
+[32m+[m[32m    @attempt.ih = @responce["ihypothesis"][m
+[32m+[m[32m    @attempt.proof = @responce["proof"][m
+[32m+[m[32m    @attempt.rawVal = params[:json_data][m
+[32m+[m[32m    @attempt.user_id = session[:user_id][m
+[32m+[m[32m    @attempt.question_id = @question.id[m
+[32m+[m[32m    @attempt.save[m
+     redirect_to question_path(params[:id])[m
+   end[m
+[32m+[m[32m  = @responce["baseCase"]%>, Induction: <%= @responce["ihypothesis"][m[41m [m
+ [m
+   def destroy[m
+     question = Question.find(params[:id])[m
+[1mdiff --git a/app/controllers/users_controller.rb b/app/controllers/users_controller.rb[m
+[1mindex f89b076..47be2f9 100644[m
+[1m--- a/app/controllers/users_controller.rb[m
+[1m+++ b/app/controllers/users_controller.rb[m
+[36m@@ -16,6 +16,7 @@[m [mclass UsersController < ApplicationController[m
+       session[:page] = 'User'[m
+       session[:back] = user_path(session[:user_id])[m
+     end[m
+[32m+[m[32m    @attempts = Attempt.where(user_id: session[:user_id])[m
+     @sections = @user.sections[m
+     @sections = @sections.empty? ? nil : @sections[m
+   end[m
+[1mdiff --git a/app/models/question.rb b/app/models/question.rb[m
+[1mindex 08ba918..4771e28 100644[m
+[1m--- a/app/models/question.rb[m
+[1m+++ b/app/models/question.rb[m
+[36m@@ -2,6 +2,7 @@[m
+ [m
+ class Question < ApplicationRecord[m
+     validates_presence_of :title, :p_k, :implies, :val, :difficulty[m
+[32m+[m[32m    has_many :attempts[m
+     has_and_belongs_to_many :tags[m
+     belongs_to :user[m
+ end[m
+[1mdiff --git a/app/models/user.rb b/app/models/user.rb[m
+[1mindex cdf0673..0003ba3 100644[m
+[1m--- a/app/models/user.rb[m
+[1m+++ b/app/models/user.rb[m
+[36m@@ -1,6 +1,7 @@[m
+ class User < ApplicationRecord[m
+     has_many :questions[m
+     has_many :tags[m
+[32m+[m[32m    has_many :attempts[m
+     has_and_belongs_to_many :sections[m
+     [m
+     def self.from_omniauth(auth)[m
+[1mdiff --git a/app/views/question/show.html.erb b/app/views/question/show.html.erb[m
+[1mindex 5a62e35..46d0bfd 100644[m
+[1m--- a/app/views/question/show.html.erb[m
+[1m+++ b/app/views/question/show.html.erb[m
+[36m@@ -27,7 +27,7 @@[m
+   [m
+   <% if @responce != nil %> [m
+ [m
+[31m-    <p>Basis: <%= @responce["baseCase"]%>, Induction: <%= @responce["ihypothesis"] %> </p>[m
+[32m+[m[32m    <p>Basis: <%= @responce["baseCase"]%>, Induction: <%= @responce["ihypothesis"] %>, Proof: <%= @responce["proof"] %> </p>[m
+   <% end %>[m
+ </div>[m
+ [m
+[1mdiff --git a/app/views/users/show.html.erb b/app/views/users/show.html.erb[m
+[1mindex 20175d5..738a7d0 100644[m
+[1m--- a/app/views/users/show.html.erb[m
+[1m+++ b/app/views/users/show.html.erb[m
+[36m@@ -16,6 +16,7 @@[m
+         <p> Your not enrolled in any classes! Regester in the Enrollment tab.</p>[m
+       <% end %>[m
+     <% end %>[m
+[32m+[m[32m    <%= render 'partials/tables/attempts/base' %>[m
+   <% else %>[m
+     <h3>This is <%="#{@user.name}"%>'s page</h3>[m
+     <h5>This is where their stats will go!</h5>[m
+[1mdiff --git a/db/schema.rb b/db/schema.rb[m
+[1mindex 70e9389..ddce351 100644[m
+[1m--- a/db/schema.rb[m
+[1m+++ b/db/schema.rb[m
+[36m@@ -10,7 +10,20 @@[m
+ #[m
+ # It's strongly recommended that you check this file into your version control system.[m
+ [m
+[31m-ActiveRecord::Schema.define(version: 20180422182050) do[m
+[32m+[m[32mActiveRecord::Schema.define(version: 20180422192659) do[m
+[32m+[m
+[32m+[m[32m  create_table "attempts", force: :cascade do |t|[m
+[32m+[m[32m    t.string "basis"[m
+[32m+[m[32m    t.string "ih"[m
+[32m+[m[32m    t.string "proof"[m
+[32m+[m[32m    t.datetime "created_at", null: false[m
+[32m+[m[32m    t.datetime "updated_at", null: false[m
+[32m+[m[32m    t.integer "user_id"[m
+[32m+[m[32m    t.string "rawVal"[m
+[32m+[m[32m    t.integer "question_id"[m
+[32m+[m[32m    t.index ["question_id"], name: "index_attempts_on_question_id"[m
+[32m+[m[32m    t.index ["user_id"], name: "index_attempts_on_user_id"[m
+[32m+[m[32m  end[m
+ [m
+   create_table "questions", force: :cascade do |t|[m
+     t.string "p_k"[m
+[36m@@ -21,6 +34,8 @@[m [mActiveRecord::Schema.define(version: 20180422182050) do[m
+     t.integer "difficulty"[m
+     t.text "val"[m
+     t.integer "user_id"[m
+[32m+[m[32m    t.integer "question_id"[m
+[32m+[m[32m    t.index ["question_id"], name: "index_questions_on_question_id"[m
+     t.index ["user_id"], name: "index_questions_on_user_id"[m
+   end[m
+ [m

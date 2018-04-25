@@ -5,8 +5,11 @@ require_dependency '../../lib/assets/Base.rb'
 require_dependency '../../lib/assets/Assumption.rb'
 require_dependency '../../lib/assets/EqExpression.rb'
 require_dependency '../../lib/assets/Evaluate.rb'
-require_dependency '../../lib/assets/IHypothesis.rb'
-require_dependency '../../lib/assets/Assume.rb'
+require_dependency '../../lib/assets/Hypothesis.rb'
+require_dependency '../../lib/assets/Assumption.rb'
+require_dependency '../../lib/assets/MyErrors.rb'
+require_dependency '../../lib/assets/Show.rb'
+require_dependency '../../lib/assets/Uih.rb'
 
 
 #require "#{Rails.root}/lib/assets/Grader"
@@ -94,11 +97,43 @@ class QuestionController < ApplicationController
       p e
       session[:responce] = nil
     else
-      session[:responce] = grader.evaluate
+      @responce = grader.evaluate
+      session[:responce] = @responce
     end
-    session[:comment] = (params[:comment] == nil) ? 'text goes here' : params[:comment]
+    session[:comment] = (params["set-size"] == nil) ? 'text goes here' : params["set-size"]
+    @attempt = Attempt.new
+    @attempt.correct = @responce[:correct]
+    @attempt.basis = @responce[:baseCase][:result]
+    @attempt.inductiveStep = @responce[:inductiveStep][:result]
+    @attempt.ih = @responce[:inductiveStep][:hypothesis][:result]
+    @attempt.toShow = @responce[:inductiveStep][:toShow][:result]
+    @attempt.rawVal = params["set-size"]
+    @attempt.user_id = session[:user_id]
+    @attempt.question_id = @question.id
+    @attempt.save
     redirect_to question_path(params[:id])
   end
+  
+  ####   
+  #      {
+  #          :correct => @correct,
+  #          :baseCase => {
+  #              :result=>@bcval,
+  #              :error=>@bc_exception
+  #          },
+  #          :inductiveStep=>{
+  #              :result=>@istepval,
+  #              :error=>@is_exception,
+  #              :hypothesis=>{
+  #                  :result=>@hypothesisval,
+  #                  :error=>@hypothesis_exception
+  #              },
+  #              :toShow=>{
+  #                  :result=>@toshowval,
+  #                  :error=>@toshow_exception
+  #              }
+  #          }
+  #      }
 
   def destroy
     question = Question.find(params[:id])

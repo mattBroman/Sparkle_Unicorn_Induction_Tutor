@@ -16,14 +16,30 @@ class UsersController < ApplicationController
       session[:page] = 'User'
       session[:back] = user_path(session[:user_id])
     end
+    @attempts = Attempt.where(user_id: session[:user_id])
     @sections = @user.sections
     @sections = @sections.empty? ? nil : @sections
   end
 
   # GET /users/new
-  def new
-    session[:page] = "Sign Up"
+  def new_teacher
+    session[:page] = "Sign Up Teach"
     @user = User.new
+    @user.role = 100
+    @user.save
+    session[:user_id] = @user.id
+    session[:new_user] = true
+    redirect_to google_path
+  end
+  
+  def new_student
+    session[:page] = "Sign Up Student"
+    @user = User.new
+    @user.role = 10
+    @user.save
+    session[:user_id] = @user.id
+    session[:new_user] = true
+    redirect_to google_path
   end
 
   # GET /users/1/edit

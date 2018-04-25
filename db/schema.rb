@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410150108) do
+ActiveRecord::Schema.define(version: 20180425014150) do
+
+  create_table "attempts", force: :cascade do |t|
+    t.string "basis"
+    t.string "ih"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "rawVal"
+    t.integer "question_id"
+    t.string "correct"
+    t.string "inductiveStep"
+    t.string "toShow"
+    t.index ["question_id"], name: "index_attempts_on_question_id"
+    t.index ["user_id"], name: "index_attempts_on_user_id"
+  end
 
   create_table "questions", force: :cascade do |t|
     t.string "p_k"
@@ -21,6 +36,8 @@ ActiveRecord::Schema.define(version: 20180410150108) do
     t.integer "difficulty"
     t.text "val"
     t.integer "user_id"
+    t.integer "question_id"
+    t.index ["question_id"], name: "index_questions_on_question_id"
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
@@ -66,6 +83,7 @@ ActiveRecord::Schema.define(version: 20180410150108) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uid"
   end
 
 end
