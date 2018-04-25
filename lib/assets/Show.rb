@@ -30,7 +30,7 @@ class Show
         raise IncorrectError, "toShow does not match p(k+1)" unless ret
         return ret
         
-
+ 
     end
     
     
