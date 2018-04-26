@@ -1,11 +1,15 @@
 require_relative "MyErrors.rb"
 class Evaluator
   
+  
+    @@base = 0
+  
     @@precedence = {
     '^' => 4,
     '*' => 3,
     '/' => 3,
     'sum' =>3,
+    'product' =>3,
     '+' => 2,
     '-' => 2,
   }
@@ -16,6 +20,11 @@ class Evaluator
     '/' => lambda { |x, y| x / y },
     '+' => lambda { |x, y| x + y},
     '-' => lambda { |x, y| x - y}
+  }
+  
+  @@nestable_operations={
+    "sum" => :summation,
+    "product" => :product
   }
   
 
@@ -71,10 +80,8 @@ class Evaluator
     stack = Array.new
     while !postfix.empty?
       token = postfix.shift
-      if token == "sum"
-        sum_prod_parse(postfix,stack,method(:summation))
-      elsif token == "product"
-        sum_prod_parse(postfix,stack,method(:product))
+      if @@nestable_operations.include? token
+        sum_prod_parse(postfix,stack,method(@@nestable_operations[token]))
         
       elsif @@operations[token] == nil 
         stack.push(token)
@@ -97,6 +104,17 @@ class Evaluator
   
   def evaluate tokens
     solve(shunting_yard(tokens))
+  end
+  
+  
+  
+  
+  def summation(lower_bound,upper_bound,eq)
+    sum_prod_eval(lower_bound,upper_bound,eq,:+)
+  end
+    
+  def product(lower_bound,upper_bound,eq)
+    sum_prod_eval(lower_bound,upper_bound,eq,:*)
   end
   
   
@@ -140,20 +158,20 @@ class Evaluator
     eq = []
     top = postfix.shift
     
-    #innersum so avoid 3 | chars
-    if(top=="sum" or top == "product") 
-      innersum = 3
+    #inner operation so avoid 3 | chars
+    if(@@nestable_operations.include? top) 
+      inner = 3
     end
     
-    innersum = 0
+    inner = 0
     
-    while(top != "|" or innersum!=0) do
+    while(top != "|" or inner!=0) do
       eq << top
       if top=="|" then
-        innersum-=1
+        inner-=1
       
-      elsif top=="sum" or top == "product"
-        innersum +=3
+      elsif @@nestable_operations.include? top
+        inner +=3
       end
       
       top = postfix.shift
@@ -166,13 +184,7 @@ class Evaluator
     
   end
   
-  def summation(lower_bound,upper_bound,eq)
-    sum_prod_eval(lower_bound,upper_bound,eq,:+)
-  end
-    
-  def product(lower_bound,upper_bound,eq)
-    sum_prod_eval(lower_bound,upper_bound,eq,:*)
-  end
+
   
   def sum_prod_eval(lower_bound, upper_bound, eq,method)
    
@@ -185,6 +197,7 @@ class Evaluator
       sum << solve(eqt)
       
     end
+    
     return sum.inject(method)
     
     
