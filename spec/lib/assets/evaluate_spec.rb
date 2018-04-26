@@ -65,4 +65,69 @@ RSpec.describe Evaluator do
         end
             
     end
+    
+    
+    context 'symbolic eval' do
+        it "compares simple expressions (1)" do
+            eq1 = ['k','k','+']
+            eq2 = ['2','k','*']
+            e.sym_eq_equal(eq1,eq2).should be true 
+        end
+        
+        it "compares simple expressions (2)" do
+            eq1 = ['k','k','+']
+            eq2 = ['2','k','+']
+            e.sym_eq_equal(eq1,eq2).should be false 
+        end
+        
+        it "compares summation expressions (1)" do
+            eq1 = ["sum","i","k","4","-","|","k","1","+","|","2","i","*","2","+","|"]
+            eq2 = ["sum","i","k","4","-","|","k","|","2","i","*","2","+","|","2","k","*","+","4","+"]
+            e.sym_eq_equal(eq1,eq2).should be true 
+        end
+        
+        it "compares summation expressions (2)" do
+            eq1 = ["sum","i","k","4","-","|","k","1","+","|","2","i","*","2","+","|"]
+            eq2 = ["sum","i","k","4","-","|","k","|","2","i","*","2","+","|","2","k","+","+","2","+"]
+            e.sym_eq_equal(eq1,eq2).should be false
+        end
+        
+        
+    end
+    
+    context "summation given params" do
+       it "summates correctly" do
+          lower = {:var => 'i', :value => 0}
+          upper = 4
+          eq = ['i']
+          e.summation(lower,upper,eq).should be 10.0
+           
+       end
+        
+    end
+    
+    context "solve summation" do
+        it "solves summation expressions (1)" do
+            eq1 = ["sum","i","0","|","4","|","i","|"]
+            e.solve(eq1).should be 10.0
+        end
+        
+        it "solves summation expressions (2)" do
+            eq1 = ["sum","i","4","4","-","|","4","1","+","|","2","i","*","2","+","|"]
+            e.solve(eq1).should be 42.0
+        end   
+        
+        it "solves nested summation expressions (1)" do
+            eq1 = ["sum","i","0","|","4","|","sum","j","0","|","2","|","i","j","*","|","|"]
+            e.solve(eq1).should be 30.0
+        end            
+    end
+    context "solve product" do
+        it "solves product expressions (1)" do
+            eq1 = ["product","i","1","|","4","|","i","|"]
+            e.solve(eq1).should be 24.0
+        end
+                    
+    end    
+    
 end

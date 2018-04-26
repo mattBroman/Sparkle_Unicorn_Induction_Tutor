@@ -231,6 +231,41 @@ RSpec.describe Grader do
             })
         end 
         
+        
+        it "should evaluate a summation proof corectly" do
+            pk = Pk.new("n+n","2*n")
+            
+            json_ex = {:baseCase => {:assumptions => {:b=>["1"]}, :equivalenceExpressions => [{:left=>["1", "1","+"], :right=>["2"]}]},
+                :inductiveStep=>{
+                :hypothesis => {:left=>["k","k","+"],:right=>["2","k","*"]},
+                :show =>{:left=>["k","1","+", "k","1","+","+"], :right=>["2","k","1","+","*"]},
+                :pre => [{:left=>["k","1","+", "k","1","+","+"], :right=>["k","k","+","2","+"]},{:left =>nil, :right =>["sum","i","1","|","2","|","k","1","+","|"]}],
+                :post => [{:left=>nil, :right=>["2","k","1","+","*"]}],
+                :uih => {:left=>["k","k","+","2","+"], :right=>["2","k","*","2","+"]}}}.to_json
+
+            g = Grader.new(json_ex,pk)
+            g.evaluate.should eq({
+                :correct=>true,
+                :baseCase => {
+                    :result=>true,
+                    :error=>nil
+                },
+                :inductiveStep=>{
+                    :result=>true,
+                    :error=>nil,
+                    :hypothesis=>{
+                        :result=>true,
+                        :error=>nil
+                    },
+                    :toShow=>{
+                        :result=>true,
+                        :error=>nil
+                    }
+                }
+            })
+        end
+        
+        
     end
     
 end

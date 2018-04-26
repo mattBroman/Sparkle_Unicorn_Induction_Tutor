@@ -35,6 +35,7 @@ class Uih
     
         
         if not (@left.join.include? @pk_l.join) then
+           
             raise IncorrectError, "Use of IH"
         end
         

@@ -5,6 +5,7 @@ class Evaluator
     '^' => 4,
     '*' => 3,
     '/' => 3,
+    'sum' =>3,
     '+' => 2,
     '-' => 2,
   }
@@ -17,13 +18,7 @@ class Evaluator
     '-' => lambda { |x, y| x - y}
   }
   
-  #def initalize(assumptions, expressions)
-  #  @assumptions = Hash.new
-    #assumption.each do |assumption|
-      
-   # end
-  #  @expressions = expressions
- # end
+
   
   
   
@@ -76,9 +71,15 @@ class Evaluator
     stack = Array.new
     while !postfix.empty?
       token = postfix.shift
-      if @@operations[token] == nil 
+      if token == "sum"
+        sum_prod_parse(postfix,stack,method(:summation))
+      elsif token == "product"
+        sum_prod_parse(postfix,stack,method(:product))
+        
+      elsif @@operations[token] == nil 
         stack.push(token)
-      else 
+
+      else  
         left = stack.pop
         right = stack.pop
         
@@ -96,6 +97,97 @@ class Evaluator
   
   def evaluate tokens
     solve(shunting_yard(tokens))
+  end
+  
+  
+  def sum_prod_parse(postfix,stack,func)
+    #lower
+    #evaluate and store variable globally with value
+   
+    lower = []
+    
+    var_l = postfix.shift
+    top = postfix.shift
+    
+ 
+    
+    while(top != "|") do
+      lower << top
+      top = postfix.shift
+    end
+    
+    lower = solve(lower)
+    
+    lower_v = {:var => var_l, :value => lower}
+    
+    #upper
+    #evaluate using possibly globals
+    upper = []
+    
+    
+    top = postfix.shift
+    while(top != "|") do
+      upper << top
+      top = postfix.shift
+    end
+    
+    upper = solve(upper)
+    
+            
+   
+    #equation
+    #parse out
+    eq = []
+    top = postfix.shift
+    
+    #innersum so avoid 3 | chars
+    if(top=="sum" or top == "product") 
+      innersum = 3
+    end
+    
+    innersum = 0
+    
+    while(top != "|" or innersum!=0) do
+      eq << top
+      if top=="|" then
+        innersum-=1
+      
+      elsif top=="sum" or top == "product"
+        innersum +=3
+      end
+      
+      top = postfix.shift
+    end
+    
+   
+    stack.push(func.call(lower_v,upper,eq))
+  
+    
+    
+  end
+  
+  def summation(lower_bound,upper_bound,eq)
+    sum_prod_eval(lower_bound,upper_bound,eq,:+)
+  end
+    
+  def product(lower_bound,upper_bound,eq)
+    sum_prod_eval(lower_bound,upper_bound,eq,:*)
+  end
+  
+  def sum_prod_eval(lower_bound, upper_bound, eq,method)
+   
+    sum = []
+    (lower_bound[:value].to_i..upper_bound.to_i).each do |i| 
+      eqt = eq.clone
+      eqt.map! { |x| x == lower_bound[:var] ? i.to_s : x }
+      
+     
+      sum << solve(eqt)
+      
+    end
+    return sum.inject(method)
+    
+    
   end
   
   
@@ -119,7 +211,8 @@ class Evaluator
       tvals.each do |t|
          z = base.map{|x| x =="k" ? t : x}
          y = eqn.map{|x| x =="k" ? t : x}
-         same &= (solve(z) == solve(y))
+         same &= (solve(z.clone) == solve(y.clone))
+         
       end
       
       return same

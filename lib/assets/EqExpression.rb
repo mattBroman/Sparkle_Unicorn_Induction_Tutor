@@ -106,6 +106,7 @@ class EqExpression
        #p @eqBlocks.last.clone["right"]
        #p "---"
        x = @eqBlocks.last.clone
+       
        return x["right"] 
        
     end
