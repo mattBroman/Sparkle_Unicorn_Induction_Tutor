@@ -8,7 +8,7 @@ RSpec.describe IStep do
     context "IStep.initalize" do
         
 
-        it "handles empty JSON" do
+        it "handles empty JSON (1)" do
             #pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
             pk = Pk.new("n+n","2*n")
             json_ex = {:inductiveStep=>{
@@ -21,7 +21,14 @@ RSpec.describe IStep do
             expect{IStep.new(json_ex,pk)}.to_not raise_error
             
         end
+        it "handles empty JSON (2)" do
+            #pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
+            pk = Pk.new("n+n","2*n")
+            json_ex = {:inductiveStep=>nil}.to_json
         
+            expect{IStep.new(json_ex,pk)}.to raise_error MissingError
+            
+        end       
 
         
         

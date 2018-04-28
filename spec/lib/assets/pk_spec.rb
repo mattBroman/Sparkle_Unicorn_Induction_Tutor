@@ -13,7 +13,18 @@ RSpec.describe Pk do
     end
     
     context "Pk.evaluate" do
-        
+  
+  
+  
+        it "should evaluate a valid input" do
+            lv = "\\sum_{i=1}^{n}{i}"
+            rv = "n"
+            
+            
+            
+            pk = Pk.new(lv,rv)
+            pk.evaluate.should be == {"left"=>["sum","i","1","|","n","|","i","|"],"right"=>["n"] }
+        end      
         
         it "should evaluate a valid input" do
             lv = "n+n"
@@ -44,5 +55,6 @@ RSpec.describe Pk do
 
         
     end
+    
     
 end

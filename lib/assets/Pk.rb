@@ -4,15 +4,18 @@ require_relative "Evaluate.rb"
 class Pk
     
     def initialize(pkl,pkr)
+        p pkl
         e = Evaluator.new
-        
-        lv = e.shunting_yard(pkl.chars)
-        rv = e.shunting_yard(pkr.chars)
+        pkl=e.tokenize(pkl)
+        pkr=e.tokenize(pkr)
+        lv = e.shunting_yard(pkl)
+        rv = e.shunting_yard(pkr)
         @pk = {"left"=>lv, "right"=>rv}
     end
     
     
     def evaluate(vars=nil)
+        p vars
         if(vars.nil?) then
             @pk
         else

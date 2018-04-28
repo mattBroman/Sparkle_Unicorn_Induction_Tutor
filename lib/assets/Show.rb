@@ -9,7 +9,8 @@ class Show
    def initialize(args,pk)
        
         @pk = pk
-        
+        raise MissingError, "toShow" unless not args=="null" 
+
         @show = JSON.parse(args)["show"]
         raise MissingError, "toShow" unless not @show.nil?
 

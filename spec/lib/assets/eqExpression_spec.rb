@@ -29,7 +29,8 @@ RSpec.describe EqExpression do
        it "should handle no assumptions" do
            assumption = double('Assumption', :evaluate => {})
            json_ex = [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}].to_json
-           expect{EqExpression.new(json_ex,assumption)}.to raise_error MissingError
+           eq = EqExpression.new(json_ex,assumption)
+           expect{eq.evaluate}.to raise_error MissingError
        end
        
        
@@ -37,7 +38,8 @@ RSpec.describe EqExpression do
        it "should handle missing assumptions" do
            assumption = double('Assumption', :evaluate => {"c" => ["2"]})
            json_ex = [{:left=>["b", "4", "5", "*","+"], :right=>["b", "20", "+"]}].to_json
-           expect{EqExpression.new(json_ex,assumption)}.to raise_error MissingError
+           eq = EqExpression.new(json_ex,assumption)
+           expect{eq.evaluate}.to raise_error MissingError
        end
        
         

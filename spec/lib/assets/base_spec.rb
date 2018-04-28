@@ -37,9 +37,8 @@ RSpec.describe BaseCase do
         end
         
         it "should return false for invalid baseCase" do
-            pk = double('Pk', :evaluate => {"left"=>["n", "n","+"], "right"=>["2","n","*"]})
-
-            json_ex = {:baseCase => {:assumptions => {:b=>3}, :equivalenceExpressions => [{:left=>["b", "5", "5", "*","+"], :right=>["b", "20", "+"]}]}}.to_json
+            pk = Pk.new("n+n","2*n")
+            json_ex = {:baseCase => {:assumptions => {:b=>["3"]}, :equivalenceExpressions => [{:left=>["b", "5", "5", "*","+"], :right=>["b", "20", "+"]}]}}.to_json
             b = BaseCase.new(json_ex,pk)
             expect{b.evaluate}.to raise_error(IncorrectError)
         end

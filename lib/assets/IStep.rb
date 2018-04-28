@@ -1,10 +1,13 @@
 require "json"
+require_relative "MyErrors.rb"
+
+
+
 require_relative "Pk.rb"
 require_relative "EqExpression.rb"
 require_relative "Hypothesis.rb"
 require_relative "Show.rb"
 require_relative "Uih.rb"
-require_relative "MyErrors.rb"
 
 
 
@@ -12,23 +15,17 @@ require_relative "MyErrors.rb"
 class IStep
     
     def initialize(args,pk)
+        
+       raise MissingError,"inductive step" unless not args=="null"
+
+
        @istep = JSON.parse(args)["inductiveStep"]
-       raise MissingError("inductive step") unless not @istep.nil?
+       raise MissingError, "inductive step" unless not @istep.nil?
 
        
        @pk = pk
       
-       
-     '''  #hypothesis
-       
-       @hypothesis = Hypothesis.new(@istep.to_json,@pk)
-       
-       
-       
-       #show
-       
-       @show = Show.new(@istep.to_json, @pk)
-       '''
+
        
        
        #pre uih

@@ -38,14 +38,14 @@ class EqExpression
                 end
                
             end
-        
+            #TODO fix for sum and product
         
             @eqBlocks.each do |eqLine|
                 eqLine["left"].each do |v|
-                    raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
+                    #raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
                 end unless eqLine["left"].nil?
                 eqLine["right"].each do |v|
-                    raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
+                    #raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
                 end unless eqLine["right"].nil?
                 
             end
@@ -55,7 +55,7 @@ class EqExpression
             
         
         end
-        
+        p @eqBlocks
 
     end
     
@@ -72,7 +72,7 @@ class EqExpression
          
         val = eval.solve(@eqBlocks[0]["left"])
         
-        
+        p val
         
         
        @eqBlocks.each do |eqLine|

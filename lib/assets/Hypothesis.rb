@@ -8,8 +8,10 @@ class Hypothesis
    def initialize(args,pk)
        
         @pk = pk
+        raise MissingError, "Hypothesis" unless not args=="null" 
         
         @hypothesis = JSON.parse(args)["hypothesis"]
+        
         raise MissingError, "Hypothesis" unless not @hypothesis.nil?
         
         @left = @hypothesis["left"]

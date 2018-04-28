@@ -62,15 +62,17 @@ RSpec.describe Grader do
             })
         end
         it "should evaluate a valid proof corectly" do
-            pk = Pk.new("n+n","2*n")
+            pk = Pk.new("\\sum_{i=1}^{n}{i}","n*(n+1)/2")
             
-            json_ex = {:baseCase => {:assumptions => {:b=>["1"]}, :equivalenceExpressions => [{:left=>["1", "1","+"], :right=>["2"]}]},
+            json_ex = {:baseCase => {:assumptions => {:b=>["1"]}, :equivalenceExpressions => [{:left=>["sum","i","1","|","1","|","i","|"], :right=>["1","1","1","+","*","2","/"]}]},
                 :inductiveStep=>{
-                :hypothesis => {:left=>["k","k","+"],:right=>["2","k","*"]},
-                :show =>{:left=>["k","1","+", "k","1","+","+"], :right=>["2","k","1","+","*"]},
-                :pre => [{:left=>["k","1","+", "k","1","+","+"], :right=>["k","k","+","2","+"]}],
-                :post => [{:left=>nil, :right=>["2","k","1","+","*"]}],
-                :uih => {:left=>["k","k","+","2","+"], :right=>["2","k","*","2","+"]}}}.to_json
+                :hypothesis => {:left=>["sum","i","1","|","k","|","i","|"],:right=>["k","k","1","+","*","2","/"]},
+                :show =>{:left=>["sum","i","1","|","k","1","+","|","i","|"], :right=>["k","1","+","k","1","+","1","+","*","2","/"]},
+                :pre => [{:left =>["sum","i","1","|","k","1","+","|","i","|"],:right=>["sum","i","1","|","k","|","i","|","k","+","1","+"]}],
+                :post =>[{:left=>nil,:right=>["k","1","+","k","1","+","1","+","*","2","/"]}],
+                :uih =>{:left=>nil,:right=>["k","k","1","+","*","2","/","k","+","1","+"]} 
+                    
+                }}.to_json
 
             g = Grader.new(json_ex,pk)
             g.evaluate.should eq({
@@ -93,6 +95,8 @@ RSpec.describe Grader do
                 }
             })
         end
+        
+
         
         
         it "should evaluate a base case even when the others elements are missing" do
@@ -144,7 +148,31 @@ RSpec.describe Grader do
                 }
             })
         end        
-        
+        it "should evaluate an inductive hypothesis without other elements" do
+            pk = Pk.new("n+n","2*n")
+            
+            json_ex = {
+                :baseCase => nil,
+                :inductiveStep=>nil
+            }.to_json
+
+            g = Grader.new(json_ex,pk)
+            g.evaluate.should include({
+                :correct=>false,
+                :inductiveStep=>{
+                    :result=>false,
+                    :error=>"Missing: inductive step",
+                    :hypothesis=>{
+                        :result=>false,
+                        :error=>"Missing: Hypothesis"
+                    },
+                    :toShow=>{
+                        :result=>false,
+                        :error=>"Missing: toShow"
+                    }
+                }
+            })
+        end         
         it "should evaluate an inductive hypothesis without other elements" do
             pk = Pk.new("n+n","2*n")
             

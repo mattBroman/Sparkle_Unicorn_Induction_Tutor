@@ -24,18 +24,23 @@ class Grader
         
         #check the inductive step
         begin
-            
+            @istep_json = JSON.parse(args)["inductiveStep"].to_json
+
             @istep = IStep.new(args,@pk)
-            @istepval = @istep.evaluate
-            
+           
+            if not @istep.nil? 
+                @istepval = @istep.evaluate
+            end
         rescue => exc
+            p exc
             @is_exception = exc.message
         end
         
         
        
         begin
-            @hypothesisval = Hypothesis.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+            
+            @hypothesisval = Hypothesis.new(@istep_json, @pk).evaluate
 
             #@hypothesisval = @istep.evaluate_hypothesis    
         rescue => exc
@@ -43,7 +48,7 @@ class Grader
         end
         
         begin
-            @toshowval = Show.new(JSON.parse(args)["inductiveStep"].to_json, @pk).evaluate
+            @toshowval = Show.new(@istep_json, @pk).evaluate
 
             #@toshowval = @istep.evaluate_show    
         rescue => exc

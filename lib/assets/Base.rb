@@ -6,10 +6,12 @@ require_relative "MyErrors.rb"
 class BaseCase
 
 
+    @@basevalue = 1
+
     def initialize(args,pk)
       @pk = pk
       
-      raise MissingError("problem statement") unless not @pk.nil?
+      raise MissingError,"problem statement" unless not @pk.nil?
 
       
       @baseCase = JSON.parse(args)["baseCase"]
@@ -23,6 +25,7 @@ class BaseCase
       raise MissingError, "base case expression(s)" unless not @eq_json.nil?
       @exp = EqExpression.new(@eq_json, @a)
 
+      @@basevalue = @a.evaluate.values[0]
       
         
     end
@@ -30,16 +33,19 @@ class BaseCase
     def evaluate
         
         #obtain p(b) equation
+         p @pk.evaluate(@a.evaluate.values[0])
+
          @pk_l = @pk.evaluate(@a.evaluate.values[0])["left"]
          raise IncorrectError, "base variable" unless not @pk_l.nil?
-
+         p @pk_l
+         p @pk.evaluate(@a.evaluate.values[0])
          
          e = Evaluator.new
         
         #first expression
         exp_s = @exp.getTail.clone
         raise MissingError, "base case expression(s)" unless not exp_s.empty? or not exp_s.nil?
-
+        
         
         
         #all expressions in base case are equal
@@ -54,6 +60,13 @@ class BaseCase
       
       
         return ret
+        
+    end
+    
+    
+    def self.getbasevalue
+        
+        return @@basevalue
         
     end
 

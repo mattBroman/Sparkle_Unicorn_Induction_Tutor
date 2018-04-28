@@ -1,5 +1,7 @@
 #require 'spec_helper'
 require_relative '../../../lib/assets/Evaluate.rb'
+require_relative '../../../lib/assets/MyErrors.rb'
+
 
 RSpec.describe Evaluator do
     e = Evaluator.new
@@ -40,7 +42,27 @@ RSpec.describe Evaluator do
             arg = ['2', '+', '2', ')']
             expect{e.shunting_yard(arg)}.to raise_error(IncorrectError)
        end
+       
+       it "handles summations" do
+          arg = ["\\","sum","_","{","i","=","0","}","^","{","k","}","{","i","}"] 
+          expect e.shunting_yard(arg).should == ['sum','i','0','|','k','|','i','|']
+           
+           
+       end
+       
+       
+       it "tokenizes" do
+            arg = "\\sum_{i=0}^{k}{i}" 
+
+
+           e.tokenize(arg).should == ["\\","sum","_","{","i","=","0","}","^","{","k","}","{","i","}"] 
+           
+       end
+       
     end
+    
+    
+    
     context 'postfix solver' do
         it 'correctly solves equations' do
             expect(e.solve(['4', '2', '+'])).to eq 6
@@ -63,6 +85,12 @@ RSpec.describe Evaluator do
         it 'fails on varibles' do 
             expect{e.solve(['n', '+', 'n'])}.to raise_error
         end
+        
+        it 'fails on missing variables' do
+           arg = ['b','1','+'] 
+            expect{e.solve(arg)}.to raise_error MissingError
+        end
+        
             
     end
     
@@ -96,11 +124,11 @@ RSpec.describe Evaluator do
     end
     
     context "summation given params" do
-       it "summates correctly" do
+       it "summates correctly (1)" do
           lower = {:var => 'i', :value => 0}
           upper = 4
-          eq = ['i']
-          e.summation(lower,upper,eq).should be 10.0
+          eq = ['2','i','*']
+          e.summation(lower,upper,eq).should be 20.0
            
        end
         
@@ -120,7 +148,15 @@ RSpec.describe Evaluator do
         it "solves nested summation expressions (1)" do
             eq1 = ["sum","i","0","|","4","|","sum","j","0","|","2","|","i","j","*","|","|"]
             e.solve(eq1).should be 30.0
-        end            
+        end        
+        it "solves nested summation expressions (2)" do
+            eq1 = ["sum","i","0","|","4","|","sum","j","0","|","i","|","i","j","*","|","|"]
+            e.solve(eq1).should be 65.0
+        end
+        it "solves nested summation expressions (3)" do
+            eq1 = ["sum","i","0","|","4","|","sum","j","i","|","i","|","i","j","*","|","|"]
+            e.solve(eq1).should be 30.0
+        end 
     end
     context "solve product" do
         it "solves product expressions (1)" do
