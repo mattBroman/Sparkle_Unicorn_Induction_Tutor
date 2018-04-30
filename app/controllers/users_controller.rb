@@ -24,22 +24,28 @@ class UsersController < ApplicationController
   # GET /users/new
   def new_teacher
     session[:page] = "Sign Up Teach"
-    @user = User.new
-    @user.role = 100
-    @user.save
-    session[:user_id] = @user.id
+    if [:new_user]
+      @user = User.new
+      @user.role = 100
+      @user.save
+      session[:user_id] = @user.id
+    end
     session[:new_user] = true
-    redirect_to google_path
+    session[:google] = true 
+    redirect_to session_create_path
   end
   
   def new_student
     session[:page] = "Sign Up Student"
-    @user = User.new
-    @user.role = 10
-    @user.save
-    session[:user_id] = @user.id
+    if [:new_user]
+      @user = User.new
+      @user.role = 10
+      @user.save
+      session[:user_id] = @user.id
+    end
     session[:new_user] = true
-    redirect_to google_path
+    session[:google] = true
+    redirect_to session_create_path
   end
 
   # GET /users/1/edit
@@ -48,22 +54,6 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.json
-  def create
-    @user = User.new(user_params)
-    @sections = Section.where(id: params[:sections])
-    @user.sections << @sections
-
-    respond_to do |format|
-      if @user.save
-        log_in @user
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
