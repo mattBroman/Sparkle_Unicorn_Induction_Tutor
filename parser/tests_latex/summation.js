@@ -1,4 +1,5 @@
- import test from 'ava';
+import test from 'ava';
+import {jsontolatex} from '../json-latex.js'
 
  
  var json_ex = {"baseCase" : {"assumptions" : {"b":["1"]}, "equivalenceExpressions" : [{"left":["sum","i","1","|","1","|","i","|"], "right":["1","1","1","+","*","2","/"]}]},
@@ -12,24 +13,8 @@
                 }}
                 
                 
-test(
-    "summation proof",
-    returns,
-    json_ex,
-
-`
-
-
-
-
-
-
-
-
-
-
-`
-
-
-
-);
+test("summation proof (1)", t => {
+    const expected = ``;
+    const actual = jsontolatex(json_ex);
+    t.is(actual, expected);
+});

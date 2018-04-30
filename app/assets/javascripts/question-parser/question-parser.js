@@ -4,9 +4,9 @@ document.onkeyup = function parse() {
   let text = document.getElementById('plain_text').value;
   try {
     let result = JSON.stringify(PARSER.parse(text));
-    document.getElementById('pretty_page').value = result;
+    console.log(result);
+    document.getElementById('pretty_page').value = jsontolatex(JSON.parse(result));
     document.getElementById('hidden').value = result;
-    console.log('here')
   }
   catch(error) {
     console.log(error)
