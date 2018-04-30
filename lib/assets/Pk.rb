@@ -4,7 +4,6 @@ require_relative "Evaluate.rb"
 class Pk
     
     def initialize(pkl,pkr)
-        p pkl
         e = Evaluator.new
         pkl=e.tokenize(pkl)
         pkr=e.tokenize(pkr)
@@ -15,7 +14,6 @@ class Pk
     
     
     def evaluate(vars=nil)
-        p vars
         if(vars.nil?) then
             @pk
         else

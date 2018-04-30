@@ -4,8 +4,6 @@ require_relative "Base.rb"
 class Evaluator
   
   
-    @@base = 0
-  
     @@precedence = {
     '^' => 4,
     '*' => 3,
@@ -22,22 +20,34 @@ class Evaluator
     '-' => lambda { |x, y| x - y}
   }
   
-  @@nestable_operations={
-    "sum" => :summation,
-    "product" => :product
+  
+  #new operations should contain these functions
+  @@complex_operations={
+    "sum" => {
+      :eval=>:summation,
+      :parse=> :sum_prod_parse,
+      :post=>:sum_prod_postfix
+    },
+    "product" => {
+      :eval=>:product,
+      :parse=> :sum_prod_parse,
+      :post=>:sum_prod_postfix
+
+    }
   }
   
 
   def tokenize(inp)
-    p inp
-    tokens = []
+
     kw = []
     inpt = []
     bkw=nil
-    @@nestable_operations.each do |e,v| 
+    @@complex_operations.each do |e,v| 
       
+      #index of first keyword
       ind= inp.index(e)
       
+      #set bkw lowest index keyword
       if(ind) then
          kw = [ind,e]
 
@@ -45,32 +55,20 @@ class Evaluator
           bkw = kw
         end
       end
-     
-      
 
     end
     
+    #split at best keyword
     if(bkw) then
-      p "bsdjkfjkg"
-      p bkw
       inpt << inp[0..bkw[0]-1].chars
       inpt << bkw[1]
       inpt << tokenize(inp[(bkw[0]+bkw[1].size)..-1])
-      
     else
       inpt << inp.chars
       
     end
-    
-   
-      
-      
+  
     return inpt.flatten
-    
-    
-   
-   
- 
     
   end
   
@@ -78,9 +76,7 @@ class Evaluator
   def shunting_yard(tokens)
     postfix = Array.new
     operators = Array.new
-    
-    complex_op = 0
-    
+  
     #tokens.each do |token|
     while(not tokens.empty?) do
       token = tokens.shift
@@ -95,74 +91,11 @@ class Evaluator
           operators.push(token)
         end
         
-      elsif @@nestable_operations.include? token 
-        #push sum
-        postfix.pop
-        postfix.push(token)
-        
-        
-        #push lower
-        
-        #_
-        token = tokens.shift
-        #{
-        token = tokens.shift
+      elsif @@complex_operations.include? token 
+      
+      
+        method(@@complex_operations[token][:post]).call(token,tokens, postfix)
 
-        #push var name
-        postfix.push(tokens.shift)
-        
-        #=
-        token = tokens.shift
-        
-        lower = []
-        token = tokens.shift
-        while(token != "}") do
-          lower << token
-          token = tokens.shift
-        end
-        lower_post = shunting_yard(lower)
-        while not lower_post.empty? do
-          postfix.push(lower_post.pop)
-        end
-        postfix.push("|")
-        #push upper
-       
-         #^
-        token = tokens.shift
-        #{
-        token = tokens.shift
-
-        upper = []
-        token = tokens.shift
-        while(token != "}") do
-          upper << token
-          token = tokens.shift
-        end
-        upper_post = shunting_yard(upper)
-
-        while not upper_post.empty? do
-          postfix.push(upper_post.pop)
-        end
-        
-        postfix.push("|")
-        #push eq
-
-        #{
-        token = tokens.shift
-
-        
-        eq = []
-        token = tokens.shift
-        while(token != "}") do
-          eq << token
-          token = tokens.shift
-        end
-        eq_post = shunting_yard(eq)
-
-        while not eq_post.empty? do
-          postfix.push(eq_post.pop)
-        end
-        postfix.push("|")
         
         
       else #number or parentheses
@@ -199,9 +132,9 @@ class Evaluator
     stack = Array.new
     while !postfix.empty?
       token = postfix.shift
-      if @@nestable_operations.include? token
-        sum_prod_parse(postfix,stack,method(@@nestable_operations[token]))
-        
+      if @@complex_operations.include? token
+        method(@@complex_operations[token][:parse]).call(postfix,stack,method(@@complex_operations[token][:eval]))
+
       elsif @@operations[token] == nil 
         stack.push(token)
 
@@ -230,9 +163,39 @@ class Evaluator
     solve(shunting_yard(tokens))
   end
   
+
+  #stubbed with a simple eqn    
+  def sym_eq_equal(base,eqn)
+      return sym_eq_equal_simple(base,eqn)
+
+  end
   
   
   
+  #simple check
+  def sym_eq_equal_simple(base, eqn)
+    
+      s = BaseCase.getbasevalue[0].to_i
+      
+      #base -> base+5 to check symbolically      
+      tvals = (s..(s+5)).to_a.map(&:to_s)
+      same = true
+      
+      tvals.each do |t|
+         z = base.map{|x| x =="k" ? t : x}
+         y = eqn.map{|x| x =="k" ? t : x}
+         same &= (solve(z.clone) == solve(y.clone))
+         
+      end
+      
+      return same
+
+  end
+  
+  
+  #complex operations here
+  
+  #sum/product
   def summation(lower_bound,upper_bound,eq)
     sum_prod_eval(lower_bound,upper_bound,eq,:+)
   end
@@ -242,54 +205,122 @@ class Evaluator
   end
   
   
-  def sum_prod_parse(postfix,stack,func)
-    #lower
-    #evaluate and store variable globally with value
+  def sum_prod_postfix(token, tokens, postfix)
+          
+    #pop '\' and push sum
+    postfix.pop
+    postfix.push(token)
+    
+    
+    #push lower
+    
+    #_
+    tokens.shift
+    #{
+    tokens.shift
+
+    #push var name
+    postfix.push(tokens.shift)
+    
+    #=
+    tokens.shift
+    
+    lower = []
+    token = tokens.shift
+    while(token != "}" and not tokens.empty?) do
+      lower << token
+      token = tokens.shift
+    end
+    lower_post = shunting_yard(lower)
+    while not lower_post.empty? do
+      postfix.push(lower_post.pop)
+    end
+    postfix.push("|")
+    #push upper
    
+     #^
+    tokens.shift
+    #{
+    tokens.shift
+
+    upper = []
+    token = tokens.shift
+    while(token != "}" and not tokens.empty?) do
+      upper << token
+      token = tokens.shift
+    end
+    upper_post = shunting_yard(upper)
+
+    while not upper_post.empty? do
+      postfix.push(upper_post.pop)
+    end
+    
+    postfix.push("|")
+    #push eq
+
+    #{
+    tokens.shift
+
+    
+    eq = []
+    token = tokens.shift
+    while(token != "}" and not tokens.empty?) do
+      eq << token
+      token = tokens.shift
+    end
+    eq_post = shunting_yard(eq)
+
+    while not eq_post.empty? do
+      postfix.push(eq_post.pop)
+    end
+    postfix.push("|")
+    
+    
+  end
+  
+  
+  def sum_prod_parse(postfix,stack,func)
+    #lower bound
     lower = []
     
     var_l = postfix.shift
     top = postfix.shift
     
- 
-    
-    while(top != "|") do
+    while(top != "|" and not postfix.empty?) do
       lower << top
       top = postfix.shift
     end
     
+    #lower can be an equation or numeric value so solve for both cases
     lower = solve(lower)
     
+    #map to use iterating varibale for later
     lower_v = {:var => var_l, :value => lower}
     
-    #upper
-    #evaluate using possibly globals
+    #upper bound
     upper = []
     
-    
     top = postfix.shift
-    while(top != "|") do
+    while(top != "|" and not postfix.empty?) do
       upper << top
       top = postfix.shift
     end
     
     upper = solve(upper)
     
-            
-   
     #equation
-    #parse out
     eq = []
     top = postfix.shift
-    
+
+    #incase there are nestable operations in the equation    
     inner = 0
   
-    while(top != "|" or inner!=0) do
+    while(top != "|" or inner!=0 and not postfix.empty?) do
       eq << top
       if top=="|" then
         inner-=1
       
-      elsif @@nestable_operations.include? top
+      elsif @@complex_operations.include? top
         inner += 3
       end
       
@@ -311,53 +342,11 @@ class Evaluator
     (lower_bound[:value].to_i..upper_bound.to_i).each do |i| 
       eqt = eq.clone
       eqt.map! { |x| x == lower_bound[:var] ? i.to_s : x }
-      
-     
       sum << solve(eqt)
-      
     end
     
     return sum.inject(method)
-    
-    
-  end
-  
-  
-  
-  
-  #stubbed with a simple eqn    
-  def sym_eq_equal(base,eqn)
-      return sym_eq_equal_simple(base,eqn)
-
-  end
-  
-  
-  
-  #simple check
-  def sym_eq_equal_simple(base, eqn)
-    
-      s = BaseCase.getbasevalue[0].to_i
-      
-      
-      tvals = (s..(s+5)).to_a.map(&:to_s)
-      #tvals = ["1","2","3","4","5"]
-      same = true
-      
-
-      
-      tvals.each do |t|
-         z = base.map{|x| x =="k" ? t : x}
-         y = eqn.map{|x| x =="k" ? t : x}
-         same &= (solve(z.clone) == solve(y.clone))
-         
-      end
-      
-      return same
-
-      
-  end
-  
-  
+  end  
   
   
 end

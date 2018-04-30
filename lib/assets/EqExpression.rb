@@ -26,7 +26,6 @@ class EqExpression
             #add assumptions to eq's
             @assumptions.evaluate.each do |key,val|
                 
-                
                 # index of val[i] is 0 for now because we assume assumptions are raw values and not expressions
                 @eqBlocks.each do |eqLine|
                         eqLine["left"].map! { |x|
@@ -38,24 +37,9 @@ class EqExpression
                 end
                
             end
-            #TODO fix for sum and product
-        
-            @eqBlocks.each do |eqLine|
-                eqLine["left"].each do |v|
-                    #raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
-                end unless eqLine["left"].nil?
-                eqLine["right"].each do |v|
-                    #raise MissingError, "assumption(s) '#{v}'" unless not v =~ /[a-zA-Z]/
-                end unless eqLine["right"].nil?
-                
-            end
-        else
-            #check if only k is used if symbolic
-           
             
         
         end
-        p @eqBlocks
 
     end
     
@@ -68,12 +52,11 @@ class EqExpression
             return sym_evaluate(getTail)
         end
         
-       eval = Evaluator.new
+        eval = Evaluator.new
          
         val = eval.solve(@eqBlocks[0]["left"])
         
-        p val
-        
+
         
        @eqBlocks.each do |eqLine|
            
@@ -102,13 +85,8 @@ class EqExpression
     
     
     def getTail
-       # p "last---"
-       #p @eqBlocks.last.clone["right"]
-       #p "---"
        x = @eqBlocks.last.clone
-       
        return x["right"] 
-       
     end
     
     
@@ -131,14 +109,9 @@ class EqExpression
         t = @eqBlocks.last.clone
         
         raise MissingError, "p(k)" unless @pk
-
         
         @pk_r = @pk.evaluate(["k","1","+"])["right"]
-        
-#        p t["right"]
- #       p @pk_r
-        
-        
+
         if(not(t["right"] == @pk_r)) then
             return false
         end       
@@ -151,6 +124,7 @@ class EqExpression
 
     def sym_evaluate(base)
         e = Evaluator.new
+        
         #check all lines are symblically equal
         same = true
         @eqBlocks.each do |eql|
@@ -161,13 +135,6 @@ class EqExpression
         
     end
 
-
-
-
-    
-
-
-    
 end
 
 

@@ -32,7 +32,6 @@ class Grader
                 @istepval = @istep.evaluate
             end
         rescue => exc
-            p exc
             @is_exception = exc.message
         end
         
