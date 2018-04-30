@@ -28,7 +28,7 @@ class Evaluator
       :parse=> :sum_prod_parse,
       :post=>:sum_prod_postfix
     },
-    "product" => {
+    "prod" => {
       :eval=>:product,
       :parse=> :sum_prod_parse,
       :post=>:sum_prod_postfix

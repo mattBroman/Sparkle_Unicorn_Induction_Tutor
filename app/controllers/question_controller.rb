@@ -1,6 +1,5 @@
 #Dir["../../lib/assets/*.rb"].each {|file| require_dependency file }
 require_dependency '../../lib/assets/Pk.rb'
-require_dependency '../../lib/assets/Grader.rb'
 require_dependency '../../lib/assets/Base.rb'
 require_dependency '../../lib/assets/Assumption.rb'
 require_dependency '../../lib/assets/EqExpression.rb'
@@ -10,6 +9,9 @@ require_dependency '../../lib/assets/Assumption.rb'
 require_dependency '../../lib/assets/MyErrors.rb'
 require_dependency '../../lib/assets/Show.rb'
 require_dependency '../../lib/assets/Uih.rb'
+require_dependency '../../lib/assets/Grader.rb'
+require_dependency '../../lib/assets/IStep.rb'
+
 
 
 #require "#{Rails.root}/lib/assets/Grader"

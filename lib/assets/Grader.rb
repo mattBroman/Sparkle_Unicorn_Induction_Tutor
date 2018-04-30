@@ -8,7 +8,7 @@ class Grader
    def initialize(args,pk=nil)
         
         @pk = pk
-        
+       
         
         #check the base case
         begin
@@ -25,7 +25,7 @@ class Grader
         #check the inductive step
         begin
             @istep_json = JSON.parse(args)["inductiveStep"].to_json
-
+           
             @istep = IStep.new(args,@pk)
            
             if not @istep.nil? 
