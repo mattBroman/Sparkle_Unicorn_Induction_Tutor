@@ -11,7 +11,8 @@
     "files": [
       "tests/**/*.js",
       "tests/**/_*.js",
-      "!tests/common.js"
+      "!tests/common.js",
+      "tests_latex/**/postfixToInfix.js"
     ],
     "failFast": true
   },
