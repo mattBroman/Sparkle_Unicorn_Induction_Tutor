@@ -1,6 +1,6 @@
 function jsontolatex(data){
     
-``    
+ 
     
     
     
@@ -40,10 +40,11 @@ function isComplexOperator(arg){
 
 function getcomplexblock(_postfix){
  const postfix = _postfix;
- const inner = 0
+ let inner = 0
  const nextBlock = [];
  let nextToken = postfix.shift();
  while(nextToken !== '|' || inner > 0) {
+  if(nextToken==="|") inner-=1;
   if (nextToken === 'sum' || nextToken === 'prod') inner += 3;
   nextBlock.push(nextToken);
   nextToken = postfix.shift();

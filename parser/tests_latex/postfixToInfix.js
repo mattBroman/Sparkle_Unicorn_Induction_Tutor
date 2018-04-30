@@ -38,7 +38,7 @@ test("postfix to infix (5)", t => {
 }); 
 
 test("postfix to infix (5)", t => {
-    const expected = "\\sum_{i=0}^{n}{\\prod_{j=1}^{n}{j*i}}+2";
-    const actual = PostfixToInfix(["sum","i","0","|","n","|","i","|","2","+"]);
+    const expected = "\\sum_{i=0}^{n}{\\prod_{j=0}^{n}{j*i}}+2";
+    const actual = PostfixToInfix(["sum","i","0","|","n","|","prod","j","0","|","n","|","j","i","*","|","|","2","+"]);
     t.is(actual, expected);
 }); 
