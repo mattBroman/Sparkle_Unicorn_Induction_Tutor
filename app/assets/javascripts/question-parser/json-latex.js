@@ -2,37 +2,21 @@ function jsontolatex(data){
     let response = ""
     const basecase = data["baseCase"]
     
-    console.log(basecase)
-    if(basecase != null){
-         console.log("in base")
-         const assumptions = basecase["assumptions"]
-         if(assumptions !== null){
-          let b = Object.keys(basecase["assumptions"])[0]
-          response += "{\\bf Basis Step: } We must prove that the base case p(b) holds when $b=" + basecase["assumptions"][b] + "$.\\\\\n"
-         }
-         
-         const eqs = basecase["equivalenceExpressions"]
-         if(eqs){
-          response += "\\begin{align*}\n"
-          response += MultipleEquation(basecase["equivalenceExpressions"]) + "\n"
-          response += "\\end{align*}\n"
-         }
-
-     
-     
-     
-         response += "Therefore p(b) holds. \\\\\n"
-    }
+    response += basecaselatex(basecase)
  
     
-    
-   
-   
-   
     const inductiveStep = data["inductiveStep"]
     
+    response += inductiveSteplatex(inductiveStep);
     
-    if(inductiveStep != null){
+    response += " $p(n)$ holds for all $n \\geq b$."
+    
+    return response;
+}
+
+function inductiveSteplatex(inductiveStep){
+ let response = ""
+  if(inductiveStep != null){
      
      response += "{\\bf Inductive Step: }We must show that $p(k) \\implies p(k+1)$ \\\\\\\\"
     
@@ -57,20 +41,44 @@ function jsontolatex(data){
     }
     
     
-    
-    response += "Because, $p(k) \\implies p(k+1)$ holds,"
+    if(hypothesisdata && showdata && pre && post && uih){
+       response += "Because, $p(k) \\implies p(k+1)$ holds,"
+
+    }
     
     
     
    }
-    
-   response += " $p(n)$ holds for all $n \\geq b$."
-    
-   return response
-    
-    
-    
+   return response;
+ 
 }
+
+function basecaselatex(basecase){
+ let response = "";
+ if(basecase != null){
+         const assumptions = basecase["assumptions"];
+         if(assumptions !== null){
+          let b = Object.keys(basecase["assumptions"])[0];
+          response += "{\\bf Basis Step: } We must prove that the base case p(b) holds when $b=" + basecase["assumptions"][b] + "$.\\\\\n"
+         }
+         
+         const eqs = basecase["equivalenceExpressions"]
+         if(eqs){
+          response += "\\begin{align*}\n"
+          response += MultipleEquation(basecase["equivalenceExpressions"]) + "\n"
+          response += "\\end{align*}\n"
+         }
+         if(assumptions && eqs){
+           response += "Therefore p(b) holds. \\\\\n"
+
+         }
+    }
+ return response;
+ 
+}
+
+
+
 function istepworklatex(pre,uih,post){
  let response = "\\begin{align*}\n"
  
@@ -103,6 +111,9 @@ function assumelatex(eq){
  
  
 }
+
+
+
 
 
 
