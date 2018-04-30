@@ -24,12 +24,10 @@ class UsersController < ApplicationController
   # GET /users/new
   def new_teacher
     session[:page] = "Sign Up Teach"
-    if [:new_user]
-      @user = User.new
-      @user.role = 100
-      @user.save
-      session[:user_id] = @user.id
-    end
+    @user = User.new
+    @user.role = 100
+    @user.save
+    session[:user_id] = @user.id
     session[:new_user] = true
     session[:google] = true 
     redirect_to session_create_path
@@ -37,12 +35,10 @@ class UsersController < ApplicationController
   
   def new_student
     session[:page] = "Sign Up Student"
-    if [:new_user]
-      @user = User.new
-      @user.role = 10
-      @user.save
-      session[:user_id] = @user.id
-    end
+    @user = User.new
+    @user.role = 10
+    @user.save
+    session[:user_id] = @user.id
     session[:new_user] = true
     session[:google] = true
     redirect_to session_create_path

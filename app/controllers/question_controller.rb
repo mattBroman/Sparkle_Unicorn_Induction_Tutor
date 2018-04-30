@@ -36,6 +36,7 @@ class QuestionController < ApplicationController
       if parse['val'] == 'Bad'
         raise RuntimeError
       end
+      map_template
       @question = Question.new(question_params)
       if params[:tags]
         @tags = Tag.where(id: params[:tags].keys)
@@ -69,6 +70,7 @@ class QuestionController < ApplicationController
   
   def update
     @question = Question.find(params[:id])
+    map_template
     @question.update(question_params)
     @question.tags.destroy_all
     if params[:tags]
@@ -81,7 +83,10 @@ class QuestionController < ApplicationController
   def show
     @question = Question.find(params[:id])
     @responce = session[:responce]
-    @comment = session[:comment]
+    set_template
+    @comment = session[:comment] ? session[:comment] : @text
+    session[:comment] = nil
+    session[:responce] = nil
   end
   
   def grade
@@ -100,7 +105,7 @@ class QuestionController < ApplicationController
       @responce = grader.evaluate
       session[:responce] = @responce
     end
-    session[:comment] = (params["set-size"] == nil) ? 'text goes here' : params["set-size"]
+    session[:comment] = (params["set-size"] == nil) ?  set_template : params["set-size"]
     @attempt = Attempt.new
     @attempt.correct = @responce[:correct]
     @attempt.basis = @responce[:baseCase][:result]
@@ -144,8 +149,37 @@ class QuestionController < ApplicationController
   end
   
   private
-  def question_params
-    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty, :user_id, :tags => [])
+  
+  def temp_map 
+    @tempMap = {"Full" => "1", "Half" => "2", "None" => "3"}
   end
+  
+  def full
+    @text = 
+    "\\begin{base}\n\\end{base}\n\\begin{inductiveStep}\n\\assume{=}\n\\show{=}\n\\useIH{=}\n\\end{inductiveStep}"
+  end
+  
+  def half
+    @text =
+    "\\begin{base}\n\\end{base}\n\\begin{inductiveStep}\n\\end{inductiveStep}"
+  end
+  
+  def none
+    @text = 'text goes here'
+  end
+  
+  def question_params
+    params.require(:question).permit(:val, :title, :p_k, :implies, :difficulty, :user_id, :template, :tags => [])
+  end
+  
+  def map_template
+    temp_map
+    params[:question][:template] = @tempMap[params[:question][:template]]
+  end
+  
+  def set_template
+    @question.template == 1 ? full : (@question.template == 2 ? half : none)
+  end
+  
   
 end
