@@ -50,9 +50,24 @@ RSpec.describe Pk do
         end
 
         
-
         
-
+        it "should evaluate a valid input" do
+            lv = "\\sum_{i=1}^{n}{(3*i)-2}"
+            
+            rv = "n"
+            
+            pk = Pk.new(lv,rv)
+            pk.evaluate.should be == {"left"=>["sum","i","1","|","n","|","3","i","*","2","-","|"],"right"=>["n"] }
+        end
+        
+        it "should evaluate a valid input" do
+            lv = "n+n*3-2"
+            
+            rv = "n"
+            
+            pk = Pk.new(lv,rv)
+            pk.evaluate.should be == {"left"=>["n","n","3","*","+","2","-"],"right"=>["n"] }
+        end
         
     end
     

@@ -184,6 +184,8 @@ class Evaluator
       tvals.each do |t|
          z = base.map{|x| x =="k" ? t : x}
          y = eqn.map{|x| x =="k" ? t : x}
+         p solve(z.clone)
+         p solve(y.clone)
          same &= (solve(z.clone) == solve(y.clone))
          
       end
@@ -233,7 +235,7 @@ class Evaluator
     end
     lower_post = shunting_yard(lower)
     while not lower_post.empty? do
-      postfix.push(lower_post.pop)
+      postfix.push(lower_post.shift)
     end
     postfix.push("|")
     #push upper
@@ -252,7 +254,7 @@ class Evaluator
     upper_post = shunting_yard(upper)
 
     while not upper_post.empty? do
-      postfix.push(upper_post.pop)
+      postfix.push(upper_post.shift)
     end
     
     postfix.push("|")
@@ -271,7 +273,7 @@ class Evaluator
     eq_post = shunting_yard(eq)
 
     while not eq_post.empty? do
-      postfix.push(eq_post.pop)
+      postfix.push(eq_post.shift)
     end
     postfix.push("|")
     

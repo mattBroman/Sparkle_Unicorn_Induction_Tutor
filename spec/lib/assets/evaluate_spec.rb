@@ -160,7 +160,7 @@ RSpec.describe Evaluator do
     end
     context "solve product" do
         it "solves product expressions (1)" do
-            eq1 = ["product","i","1","|","4","|","i","|"]
+            eq1 = ["prod","i","1","|","4","|","i","|"]
             e.solve(eq1).should be 24.0
         end
                     

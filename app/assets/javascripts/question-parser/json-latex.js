@@ -221,7 +221,7 @@ function PostfixComplex(name,postfix){
  const eq = PostfixToInfix(eqblock.nextBlock)
  
  return{
-  operand: `\\${name}_{${iter}=${lowerbound}}^{${upperbound}}{${eq}}`,
+  operand: `\\${name}_{${iter}=${lowerbound}}^{${upperbound}}{(${eq})}`,
   remainder: eqblock.remainder
  }
  
