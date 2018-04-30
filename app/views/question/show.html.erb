@@ -26,34 +26,59 @@
   </div>
   
   <% if @responce != nil %> 
-
-    <p>
-      Basis: <%= @responce["baseCase"]["result"] %>
-      <% if @responce["baseCase"]["error"] %>
-        , Error <%= @responce["baseCase"]["error"] %>
-      <% end %>
-    </p>
-    <p>
-      InductiveStep: <%= @responce["inductiveStep"]["result"] %>
-      <% if @responce["inductiveStep"]["error"] %>
-        , Error <%= @responce["inductiveStep"]["error"] %>
-      <% end %>
-    </p>
-    <p>
-      Hypothesis: <%= @responce["inductiveStep"]["hypothesis"]["result"] %>
-      <% if @responce["inductiveStep"]["hypothesis"]["error"] %>
-        , Error <%= @responce["inductiveStep"]["hypothesis"]["error"] %>
-      <% end %>
-    </p>
-    <p>
-      To Show : <%= @responce["inductiveStep"]["toShow"]["result"] %>
-      <% if @responce["inductiveStep"]["toShow"]["error"] %>
-        , Error <%= @responce["inductiveStep"]["toShow"]["error"] %>
-      <% end %>
-    </p>
+    <h5 class = "text-center" style="padding-bottom:20px;">
+     <u>Results</u>
+    </h5>
+  
+    <div class = "row">
+      <div class = "col-sm-6 col-md-6 col-lg-3">
+        <div class = "text-center">
+          <p class=<%= @responce["baseCase"]["result"] ? "good" : "bad" %>>
+            <u>Basis</u>
+          </p>
+          <% if @responce["baseCase"]["error"] %>
+            <p>
+              Error: <%= @responce["baseCase"]["error"] %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <div class = "col-sm-6 col-md-6 col-lg-3">
+        <div class = "text-center">
+          <p class=<%= @responce["inductiveStep"]["result"] ? "good" : "bad" %>>
+            <u>InductiveStep</u>
+          </p>
+          <% if @responce["inductiveStep"]["error"] %>
+            <p>
+              Error: <%= @responce["inductiveStep"]["error"] %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <div class = "col-sm-6 col-md-6 col-lg-3">
+        <div class = "text-center">
+          <p class=<%= @responce["inductiveStep"]["hypothesis"]["result"]  ? "good" : "bad" %>>
+            <u>Hypothesis</u>
+          </p>
+          <% if @responce["inductiveStep"]["hypothesis"]["error"] %>
+            <p>
+              Error: <%= @responce["inductiveStep"]["hypothesis"]["error"] %>
+            </p>
+        <% end %>
+        </div>
+      </div>
+      <div class = "col-sm-6 col-md-6 col-lg-3">
+        <div class="text-center">
+          <p class=<%= @responce["inductiveStep"]["toShow"]["result"] ? "good" : "bad" %>>
+            <u>To Show</u>
+          </p>
+          <% if @responce["inductiveStep"]["toShow"]["error"] %>
+            <p>
+              Error: <%= @responce["inductiveStep"]["toShow"]["error"] %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
-</div>
-
-<div class = "text-center">
-  <%= link_to 'Back', session[:back] %>
 </div>

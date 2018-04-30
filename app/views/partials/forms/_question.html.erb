@@ -22,6 +22,11 @@
   </div>
   
   <div class="form-group">
+    <%= q.label :template %>
+    <%= q.select :template, options_for_select(['Full', 'Half', 'None'], 'None'), class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
     <%= q.label :tags %>
     <% @tags.each do |t| %>
       <div class = "form-check">

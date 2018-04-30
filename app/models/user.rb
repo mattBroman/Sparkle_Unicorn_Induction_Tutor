@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-    has_many :questions
-    has_many :tags
-    has_many :attempts
+    has_many :questions, dependent: :delete_all
+    has_many :tags, dependent: :delete_all
+    has_many :attempts, dependent: :delete_all
     has_and_belongs_to_many :sections
     
     def self.from_omniauth(auth)
