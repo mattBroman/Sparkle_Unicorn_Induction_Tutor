@@ -27,6 +27,11 @@ ActiveRecord::Schema.define(version: 20180430001035) do
     t.index ["user_id"], name: "index_attempts_on_user_id"
   end
 
+  create_table "problems", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "p_k"
     t.string "implies"
