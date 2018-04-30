@@ -99,6 +99,69 @@ _InductiveStep
       };
     }
 
+_ProdBlock
+  = "\\prod"
+    from:_SumBlock_From
+    to:_SumBlock_To
+    "{"
+    _*
+    expression:_Expression
+    _*
+    "}"
+    {
+      return ["prod"]
+        .concat(from)
+        .concat(["|"])
+        .concat(to)
+        .concat(["|"])
+        .concat(expression)
+        .concat(["|"]);
+    }
+
+
+_SumBlock
+  = "\\sum"
+    from:_SumBlock_From
+    to:_SumBlock_To
+    "{"
+    _*
+    expression:_Expression
+    _*
+    "}"
+    {
+      return ["sum"]
+        .concat(from)
+        .concat(["|"])
+        .concat(to)
+        .concat(["|"])
+        .concat(expression)
+        .concat(["|"]);
+    }
+
+_SumBlock_To
+  = "^{"
+    _*
+    expression:_Expression
+    _*
+    "}"
+    {
+      return expression;
+    }
+
+_SumBlock_From
+  = "_{" 
+    _*
+    variable:[a-z]
+    _*
+    "="
+    _*
+    expression:_Expression
+    _*
+    "}"
+    {
+      return [variable].concat(expression);
+    }
+
 _AssumeBlock
   = "\\assume{"
     _*
@@ -196,6 +259,8 @@ _Term
   }
   / _Numeral
   / variable:[a-z] { return [variable]; }
+  / _SumBlock
+  / _ProdBlock
 
 _Numeral
   = neg:"-"? 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pegjs -o parser.js --format globals -e PARSER grammar.pegjs",
-    "test": "pegjs --allowed-start-rules '_, _Newline, _Numeral, _Term, _Expression, _Expression_AS, _Expression_MD, _Expression_E, _Expression_P, _EquivalenceExpression, _Assumption, _InductiveStep, _BaseCase, _AssumeBlock, _ShowBlock, _UseIHBlock, _Proof, _Root' -o parser.js grammar.pegjs && ava"
+    "test": "pegjs --allowed-start-rules '_, _Newline, _Numeral, _Term, _Expression, _Expression_AS, _Expression_MD, _Expression_E, _Expression_P, _EquivalenceExpression, _Assumption, _InductiveStep, _BaseCase, _AssumeBlock, _SumBlock_From, _SumBlock_To, _SumBlock, _ProdBlock, _ShowBlock, _UseIHBlock, _Proof, _Root' -o parser.js grammar.pegjs && ava"
   },
   "ava": {
     "files": [

@@ -16,6 +16,8 @@ test('Accepts nested p expressions (2)', pass, "3 ^ ( 2 + 2 ) ^ 4");
 test('Accepts nested p expressions (3)', pass, "3 ^ ( 2 * 2 ) ^ 4");
 test('Accepts nested p expressions (4)', pass, "3 ^ ( 2 ^ 2 ) ^ 4");
 test('Accepts nested p expressions (5)', pass, "3 ^ ( ( 2 + 4 ) + 4 ) ^ 4");
+test('Accepts sum blocks', pass, '3 ^ \\sum_{i=2}^{3}{2i}');
+test('Accepts prod blocks', pass, '3 ^ \\prod_{i=2}^{3}{2i}');
 
 test('Rejects incomplete expression (1)', fail, "10 ^");
 test('Rejects incomplete expression (2)', fail, "^ 13");
@@ -47,4 +49,22 @@ test('Nested p expressions are proper postfix (5)', returns, "3 ^ ( ( 2 + 4 ) + 
       "2", "4", "+",
     "4", "+",
   "4", "^", "^"
+]);
+test('Accepts sum blocks', returns, '3 ^ \\sum_{i=2}^{3}{2i}', [
+  "3",
+  "sum",
+  "i",
+  "2","|",
+  "3","|",
+  "2","i","*","|",
+  "^"
+]);
+test('Accepts prod blocks', returns, '3 ^ \\prod_{i=2}^{3}{2i}', [
+  "3",
+  "prod",
+  "i",
+  "2","|",
+  "3","|",
+  "2","i","*","|",
+  "^"
 ]);
