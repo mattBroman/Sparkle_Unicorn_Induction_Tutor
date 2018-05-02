@@ -12,12 +12,14 @@ class SessionsController < ApplicationController
         redirect_to @user
       else
         flash[:notice] = 'failed to login.'
+        log_out
         redirect_to welcome_index_path
       end
     #new user stuff
     else
       if User.find_by(uid: request.env["omniauth.auth"][:uid])
         flash[:notice] = 'You already have an account'
+        log_out
         redirect_to welcome_index_path
       else
         session[:new_user] = nil

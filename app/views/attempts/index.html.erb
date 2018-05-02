@@ -1,0 +1,8 @@
+<% if teacher? %>
+    <%= render 'partials/tables/attempts/teacher' %>
+<% else %>
+    <%= render 'partials/tables/attempts/student' %>
+<% end %>
+<div class = "text-center">
+    <%= link_to 'Back', session[:back] %>
+</div>

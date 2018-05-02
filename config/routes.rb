@@ -36,4 +36,6 @@ Rails.application.routes.draw do
   post 'attempts/destroy', to: 'attempts#destroy', as: 'delete_attempt'
   get 'attempt/(:id)', to: 'attempts#show', as: 'attempt'
   get '404', to: 'welcome#fail', as: 'welcome_fail' 
+  get 'help/proof', to: 'welcome#proof', as: 'help'
+  get 'attempts/(:user_id)', to: 'attempts#index', as: 'attempts'
 end

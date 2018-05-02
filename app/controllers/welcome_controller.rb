@@ -8,5 +8,8 @@ class WelcomeController < ApplicationController
   
   def fail
   end
+  
+  def proof
+  end
 end
 

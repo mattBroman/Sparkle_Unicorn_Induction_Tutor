@@ -1,27 +1,39 @@
-<div class = "text-center">
-  <% if @user.id == session[:user_id] %>
-    <h1>Howdy <%="#{@user.name}!"%></h1>
-    <h5>This is your home page. Your classes show up here</h5>
-    <% if teacher? %>
-      <% if @sections %>
-        <%= render 'partials/tables/sections/crud' %>
-      <% else %>
-        <p> Your not teaching any classes! create some with the New Section Button </p>
-      <% end %>
-      <%= link_to 'New Section', new_section_path, class: "btn btn-primary" %>
+
+<% if @user.id == session[:user_id] %>
+  <h1 class = "text-center">Howdy <%="#{@user.name}!"%></h1>
+  <% if teacher? %>
+    <% if @sections %>
+      <%= render 'partials/tables/sections/crud' %>
     <% else %>
-      <% if @sections %>
-        <%= render 'partials/tables/sections/list' %>
-      <% else %>
-        <p> Your not enrolled in any classes! Regester in the Enrollment tab.</p>
-      <% end %>
+      <p> Your not teaching any classes! create some with the New Section Button </p>
     <% end %>
-    <%= render 'partials/tables/attempts/base' %>
+    <%= link_to 'New Section', new_section_path, class: "btn btn-primary" %>
+    <% if @attempts %>
+      <%= render 'partials/tables/attempts/teacher' %>
+      <%= link_to 'Attempts', attempts_path(params[:id]), class: "btn btn-primary" %>
+    <% end %>
   <% else %>
-    <h3>This is <%="#{@user.name}"%>'s page</h3>
-    <h5>This is where their stats will go!</h5>
+    <% if @sections %>
+      <%= render 'partials/tables/sections/list' %>
+    <% else %>
+      <p> Your not enrolled in any classes! Regester in the Enrollment tab.</p>
+    <% end %>
+    <% if @attempts %>
+      <%= render 'partials/tables/attempts/student' %>
+      <%= link_to 'Attempts', attempts_path(params[:id]), class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if teacher? %>
+    <h3 class = "text-center"><%="#{@user.name}"%>'s page</h3>
+    <% if @attempts %>
+      <%= render 'partials/tables/attempts/teacher' %>
+      <%= link_to 'Attempts', attempts_path(params[:id]), class: "btn btn-primary" %>
+    <% end %>
     <div class ="text-center">
       <%= link_to 'Back', session[:back] %>
     </div>
+  <% else %>
+    <p>private</p>
   <% end %>
-</div>
+<% end %>
