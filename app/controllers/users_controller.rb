@@ -29,8 +29,7 @@ class UsersController < ApplicationController
     @user.save
     session[:user_id] = @user.id
     session[:new_user] = true
-    session[:google] = true 
-    redirect_to session_create_path
+    redirect_to google_path
   end
   
   def new_student
@@ -40,8 +39,7 @@ class UsersController < ApplicationController
     @user.save
     session[:user_id] = @user.id
     session[:new_user] = true
-    session[:google] = true
-    redirect_to session_create_path
+    redirect_to google_path
   end
 
   # GET /users/1/edit

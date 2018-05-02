@@ -16,14 +16,10 @@ class SessionsController < ApplicationController
       end
     #new user stuff
     else
-      if session[:google]
-        session[:google] = nil
-        redirect_to google_path
+      if User.find_by(uid: request.env["omniauth.auth"][:uid])
+        flash[:notice] = 'You already have an account'
+        redirect_to welcome_index_path
       else
-        if User.find_by(uid: request.env["omniauth.auth"][:uid])
-          flash[:notice] = 'You already have an account'
-          redirect_to welcome_index_path
-        end
         session[:new_user] = nil
         @user = User.find(session[:user_id])
         @user.name = request.env["omniauth.auth"][:info][:name]
